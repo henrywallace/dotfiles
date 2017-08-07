@@ -1,10 +1,22 @@
-" some read-line key-bindings
-inoremap        <C-A> <C-O>^
-inoremap <expr> <C-E> col('.')>strlen(getline('.'))<bar><bar>pumvisible()?"\<Lt>C-E>":"\<Lt>End>"
-nnoremap        <C-A> ^
-nnoremap <expr> <C-E> col('.')>strlen(getline('.'))<bar><bar>pumvisible()?"\<Lt>C-E>":"\<Lt>End>"
+" beginning of line, readline style
+inoremap <c-a> <c-o>^
+nnoremap <c-a> ^
+" end of line, readline style
+inoremap <expr> <c-e> col('.')>strlen(getline('.'))<bar><bar>pumvisible()?"\<Lt>c-e>":"\<Lt>End>"
+nnoremap <expr> <c-e> col('.')>strlen(getline('.'))<bar><bar>pumvisible()?"\<Lt>c-e>":"\<Lt>End>"
+" delete back a word, readline style
+inoremap <c-w> <c-o>db
+nnoremap <c-w> db
+" edit the word under the cursor, readline style
+nnoremap e ciw
+" undo, readline style
+nnoremap <c-_> u
+inoremap <c-_> <c-o>u
+" cut until end of line, readline style
+nnoremap <c-k> y$d$
 
-inoremap <C-Z> <C-O><C-Z>
+" allow suspending vim from insert mode
+inoremap <c-z> <c-o><c-z>
 
 " save swp files to tmp
 set dir=/tmp
@@ -26,10 +38,15 @@ set hlsearch
 set fillchars+=vert:\
 
 
+
+
 " vim-plug configuration: https://github.com/junegunn/vim-plug
 call plug#begin('~/.vim/plugged')
 
-" auto set paste
+" be able to do/undo make window full
+Plug 'vim-scripts/ZoomWin'
+
+" auto set paste off whenver typing (pasting) at inhuman speeds
 Plug 'roxma/vim-paste-easy'
 
 " dracula theme
@@ -80,14 +97,13 @@ colorscheme dracula
 " show line numbers
 set number
 " show line,column in status bar
-set statusline+=%f\ %l\:%c
+" set statusline+=%f\ %l\:%c
 " allow buffers with unsaved changes
 set hidden
 
 " fzf shortcuts
 noremap <c-p> :Files<CR>
 " noremap <c-b> :Buffers<CR>
-
 
 " Go customizations
 let g:go_fmt_command = "goimports"
@@ -102,11 +118,10 @@ autocmd FileType yaml setlocal ts=2 sts=2 sw=2 expandtab
 " Trigger autoread on focus change
 au FocusGained,BufEnter * :silent! !
 
-" Use ripgrep for fzf
+" use ripgrep for fzf
 let $FZF_DEFAULT_COMMAND = 'rg --files --hidden --glob !.git/*'
 let $FZF_DEFAULT_OPTS = '--height=10 --reverse'
-" Ripgrep support using fzf
-" https://github.com/junegunn/fzf.vim#advanced-customization
+" fzf with ripgrep: https://github.com/junegunn/fzf.vim#advanced-customization
 command! -bang -nargs=* Rg
   \ call fzf#vim#grep(
   \   'rg --column --line-number --no-heading --color=always '.shellescape(<q-args>), 1,
