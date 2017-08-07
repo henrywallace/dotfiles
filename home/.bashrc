@@ -4,11 +4,12 @@ GIT_PS1_SHOWUPSTREAM="verbose"
 source ~/.git-prompt.sh
 source ~/.git-completion.sh
 
+# nice prompt
 PROMPT_COMMAND=__prompt_command
 __prompt_command() {
   local status="$?"
   local git="\e[1;32m$(__git_ps1)\e[0m"
-  local dir="\e[1m[ $(pwd) ]\e[0m"
+  local dir="\e[1m[ $(sed "s:\([^/]\)[^/]*/:\1/:g" <<<$PWD) ]\e[0m"
   if [[ ! -z $VIRTUAL_ENV ]]; then
     local venv="\e[1;36m($(basename $VIRTUAL_ENV))\e[0m"
   else
@@ -22,7 +23,7 @@ __prompt_command() {
 # pretty ls colors
 export LSCOLORS=ExFxBxDxCxegedabagacad
 
-#
+# add brew installed binaries to path
 export PATH="$HOME/bin:$HOME/.cask/bin:$PATH"
 
 shopt -s histappend                      # append to history, don't overwrite it
@@ -37,16 +38,22 @@ shopt -s cmdhist
 export GOPATH=$HOME/go
 PATH=$GOPATH/bin:$PATH
 
+# start ssh-agent if not running: https://unix.stackexchange.com/a/90869/162041
 if [ -z "$SSH_AUTH_SOCK" ]; then
   eval $(ssh-agent -s)
   ssh-add
 fi
 
+# standard aliases
 source ~/.bash_aliases
+
+# hub
 source ~/.hub-completion.sh
 
+# gcp
 source /usr/local/google-cloud-sdk/completion.bash.inc
 source /usr/local/google-cloud-sdk/path.bash.inc
 
+# fzf ftw
 export FZF_DEFAULT_OPTS='--height 6 --reverse'
-[ -f ~/.fzf.bash ] && source ~/.fzf.bash
+source ~/.fzf.bash
