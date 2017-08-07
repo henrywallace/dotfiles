@@ -6,6 +6,7 @@ SYNC_FILES="
   $HOME/.vimrc
   $HOME/.bashrc
   $HOME/.bash_aliases
+  $HOME/.inputrc
 "
 
 R="$(dirname $0)"
