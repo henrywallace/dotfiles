@@ -48,5 +48,5 @@ source ~/.hub-completion.sh
 source /usr/local/google-cloud-sdk/completion.bash.inc
 source /usr/local/google-cloud-sdk/path.bash.inc
 
-export FZF_DEFAULT_OPTS='--height 40% --reverse --border'
+export FZF_DEFAULT_OPTS='--height 6 --reverse'
 [ -f ~/.fzf.bash ] && source ~/.fzf.bash

@@ -4,6 +4,8 @@ inoremap <expr> <C-E> col('.')>strlen(getline('.'))<bar><bar>pumvisible()?"\<Lt>
 nnoremap        <C-A> ^
 nnoremap <expr> <C-E> col('.')>strlen(getline('.'))<bar><bar>pumvisible()?"\<Lt>C-E>":"\<Lt>End>"
 
+inoremap <C-Z> <C-O><C-Z>
+
 " save swp files to tmp
 set dir=/tmp
 
@@ -27,26 +29,14 @@ set fillchars+=vert:\
 " vim-plug configuration: https://github.com/junegunn/vim-plug
 call plug#begin('~/.vim/plugged')
 
-" better commenting
-Plug 'scrooloose/nerdcommenter'
-
 " auto set paste
 Plug 'roxma/vim-paste-easy'
 
 " dracula theme
 Plug 'dracula/vim', { 'as': 'dracula' }
 
-" git inline support
-Plug 'airblade/vim-gitgutter'
-
-" git wrapper
-Plug 'tpope/vim-fugitive'
-
 " Sensible defaults for Vim
 Plug 'tpope/vim-sensible'
-
-" Configure vim based on the project
-Plug 'editorconfig/editorconfig-vim'
 
 " Guess indentation from current buffer
 Plug 'ciaranm/detectindent'
@@ -55,14 +45,9 @@ Plug 'ciaranm/detectindent'
 Plug 'junegunn/fzf', { 'dir': '~/.fzf', 'do': './install --all' }
 Plug 'junegunn/fzf.vim'
 
-" Async linting while I type, fixing on save when I want
-Plug 'w0rp/ale'
-
-" sensible buffer close
-Plug 'qpkorr/vim-bufkill'
-
 " improved status line
 Plug 'vim-airline/vim-airline'
+let g:airline#extensions#tabline#enabled = 1
 
 " tree view of files
 Plug 'scrooloose/nerdtree'
@@ -74,14 +59,16 @@ autocmd bufenter * if (winnr("$") == 1 && exists("b:NERDTree") && b:NERDTree.isT
 let NERDTreeIgnore = ['\.pyc$', '#.*#', '^__pycache__$']
 " show hidden files
 let NERDTreeShowHidden=1
-" tree view + git
-Plug 'Xuyuanp/nerdtree-git-plugin'
+
 " Go language support
 Plug 'fatih/vim-go'
+
 " Python support
 Plug 'python-mode/python-mode'
+
 " Docker support
 Plug 'moby/moby' , {'rtp': '/contrib/syntax/vim/'}
+
 " JSON support
 Plug 'elzr/vim-json'
 
@@ -106,30 +93,11 @@ noremap <c-p> :Files<CR>
 let g:go_fmt_command = "goimports"
 noremap ≥ :GoDef<CR>
 
-" JS customizations
-let g:ale_fixers = {}
-let g:ale_fixers['javascript'] = ['prettier']
-let g:ale_fix_on_save = 1
-let g:ale_javascript_prettier_options = '--single-quote --trailing-comma es5 --jsx-bracket-same-line'
-
-" JSON
-let g:ale_fixers['json'] = ['prettier']
-
 " Python customizations
 let g:pymode_folding = 0
-" let g:ale_linters['python'] = ['flake8']
-
-let g:ale_sign_error = '!'
-let g:ale_sign_warning = '.'
 
 " YAML customizations
 autocmd FileType yaml setlocal ts=2 sts=2 sw=2 expandtab
-
-" sh/bash customizations
-let g:ale_sh_shellcheck_options = '-x'
-
-" Copy and paste using system clipboard
-vnoremap <C-c> "*y
 
 " Trigger autoread on focus change
 au FocusGained,BufEnter * :silent! !
