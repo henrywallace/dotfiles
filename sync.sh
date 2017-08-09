@@ -3,10 +3,13 @@
 set -euo pipefail
 
 SYNC_FILES="
-  $HOME/.vimrc
-  $HOME/.bashrc
   $HOME/.bash_aliases
+  $HOME/.bashrc
+  $HOME/.emacs.d/init.el
+  $HOME/.gitconfig
+  $HOME/.gitignore_global
   $HOME/.inputrc
+  $HOME/.vimrc
 "
 
 R="$(dirname $0)"

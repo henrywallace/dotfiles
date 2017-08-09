@@ -1,0 +1,8 @@
+# -*- mode: gitignore; -*-
+
+\#*\#
+*~
+.DS_Store
+.ropeproject
+.vscode
+vendor
