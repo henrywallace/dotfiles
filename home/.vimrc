@@ -97,40 +97,33 @@ Plug 'elzr/vim-json'
 " Initialize plugin system
 call plug#end()
 
+
 " coloring
 colorscheme dracula
 " show line numbers
 set number
-" show line,column in status bar
-" set statusline+=%f\ %l\:%c
-" allow buffers with unsaved changes
-set hidden
 
 " fzf shortcuts
-noremap <c-p> :Files<CR>
-" noremap <c-b> :Buffers<CR>
+nnoremap <C-F> :Files<CR>
+inoremap <C-F> <C-O>:Files<CR>
+nnoremap <C-B> :Buffers<CR>
+inoremap <C-B> <C-O>:Buffers<CR>
+nnoremap <C-R> :History:<CR>
+inoremap <C-R> <C-O>:History:<CR>
+nnoremap <C-X> :Commands<CR>
+inoremap <C-X> <C-O>:Commands<CR>
 
 " Go customizations
 let g:go_fmt_command = "goimports"
-noremap ≥ :GoDef<CR>
 
-" Python customizations
-let g:pymode_folding = 0
+" fzf files preview command with preview window
+command! -bang -nargs=? -complete=dir Files
+  \ call fzf#vim#files(<q-args>, fzf#vim#with_preview(), <bang>0)
 
-" YAML customizations
-autocmd FileType yaml setlocal ts=2 sts=2 sw=2 expandtab
-
-" Trigger autoread on focus change
-au FocusGained,BufEnter * :silent! !
-
-" use ripgrep for fzf
-let $FZF_DEFAULT_COMMAND = 'rg --files --hidden --glob !.git/*'
-let $FZF_DEFAULT_OPTS = '--height=10 --reverse'
-" fzf with ripgrep: https://github.com/junegunn/fzf.vim#advanced-customization
+" Use ripgrep for fzf#vim#grep.
 command! -bang -nargs=* Rg
   \ call fzf#vim#grep(
   \   'rg --column --line-number --no-heading --color=always '.shellescape(<q-args>), 1,
   \   <bang>0 ? fzf#vim#with_preview('up:60%')
   \           : fzf#vim#with_preview('right:50%:hidden', '?'),
   \   <bang>0)
-
