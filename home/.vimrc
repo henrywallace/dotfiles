@@ -40,7 +40,7 @@ augroup END " }
 set hlsearch
 
 " nicer split window: https://stackoverflow.com/a/9001540/2601179
-set fillchars+=vert:\
+set fillchars+=vert:\ |
 
 
 
