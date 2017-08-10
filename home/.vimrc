@@ -19,8 +19,12 @@ nnoremap <c-k> Ydd
 " allow suspending vim from insert mode
 inoremap <c-z> <c-o><c-z>
 
-" save swp files to tmp
-set dir=/tmp
+
+" auto strip whitespaces on save: https://unix.stackexchange.com/a/75431/162041
+autocmd BufWritePre * :%s/\s\+$//e
+
+" save swp files to tmp: https://stackoverflow.com/a/21026618/2601179
+set directory=$HOME/.vim/swapfiles//
 
 " use par for formatting paragraph:wqs
 set equalprg=par
