@@ -13,7 +13,8 @@ nnoremap e ciw
 nnoremap <c-_> u
 inoremap <c-_> <c-o>u
 " cut until end of line, readline style
-nnoremap <c-k> y$d$
+inoremap <c-k> <esc>Yddi
+nnoremap <c-k> Ydd
 
 " allow suspending vim from insert mode
 inoremap <c-z> <c-o><c-z>
