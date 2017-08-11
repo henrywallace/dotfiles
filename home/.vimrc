@@ -16,12 +16,11 @@ nnoremap <c-k> Ydd
 " allow suspending vim from insert mode
 inoremap <c-z> <c-o><c-z>
 
+" no more folding!
+set nofoldenable
 
 " auto strip whitespaces on save: https://unix.stackexchange.com/a/75431/162041
 autocmd BufWritePre * :%s/\s\+$//e
-
-" save swp files to tmp: https://stackoverflow.com/a/21026618/2601179
-set directory=$HOME/.vim/swapfiles//
 
 " use par for formatting paragraph:wqs
 set equalprg=par
@@ -81,9 +80,6 @@ let NERDTreeShowHidden=1
 
 " Go language support
 Plug 'fatih/vim-go'
-
-" Python support
-Plug 'python-mode/python-mode'
 
 " Docker support
 Plug 'moby/moby' , {'rtp': '/contrib/syntax/vim/'}
