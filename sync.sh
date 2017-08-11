@@ -2,18 +2,16 @@
 
 set -euo pipefail
 
-SYNC_FILES="
-  $HOME/.bash_aliases
-  $HOME/.bashrc
-  $HOME/.emacs.d/init.el
-  $HOME/.gitconfig
-  $HOME/.gitignore_global
-  $HOME/.inputrc
-  $HOME/.vimrc
+HOME_FILES="
+  .bash_aliases
+  .bashrc
+  .emacs.el
+  .gitconfig
+  .gitignore_global
+  .inputrc
+  .vimrc
 "
 
-R="$(dirname $0)"
-
-for f in $SYNC_FILES; do
-  cp "$f" "$R/home/$(basename $f)";
+for f in $HOME_FILES; do
+  cp "$HOME/$f" "$(dirname $0)/home/$f";
 done
