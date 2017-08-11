@@ -4,9 +4,6 @@ nnoremap <c-a> ^
 " end of line, readline style
 inoremap <expr> <c-e> col('.')>strlen(getline('.'))<bar><bar>pumvisible()?"\<Lt>c-e>":"\<Lt>End>"
 nnoremap <expr> <c-e> col('.')>strlen(getline('.'))<bar><bar>pumvisible()?"\<Lt>c-e>":"\<Lt>End>"
-" delete back a word, readline style
-inoremap <c-w> <c-o>db
-nnoremap <c-w> db
 " edit the word under the cursor, readline style
 nnoremap e ciw
 " undo, readline style
