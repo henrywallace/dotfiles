@@ -22,6 +22,9 @@ __prompt_command() {
   # trap "tput sgr0" DEBUG
 }
 
+# https://www.gnu.org/software/bash/manual/html_node/The-Shopt-Builtin.html
+shopt -s cdspell dirspell dotglob globstar
+
 # pretty ls colors
 export LSCOLORS=ExFxBxDxCxegedabagacad
 
