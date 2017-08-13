@@ -26,7 +26,9 @@ __prompt_command() {
 shopt -s cdspell dirspell dotglob globstar
 
 # pretty ls colors
-export LSCOLORS=ExFxBxDxCxegedabagacad
+# https://apple.stackexchange.com/a/33679/192291
+export CLICOLOR=1
+export LSCOLORS=gxBxhxDxfxhxhxhxhxcxcx
 
 # add brew installed binaries to path
 export PATH="$HOME/bin:$HOME/.cask/bin:$PATH"
