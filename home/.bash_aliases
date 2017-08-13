@@ -1,21 +1,28 @@
 alias brc='vim ~/.bashrc'
-alias c='clear'
-alias emacs='emacs -nw'
-alias j='jobs -l'
-alias julia='exec /Applications/Julia-0.3.10.app/Contents/Resources/julia/bin/julia'
-alias k='kubectl'
-alias l='ls'
-alias ll='ls -lh'
-alias ls='ls -G'
-alias rld='source ~/.bashrc'
-alias ta='tmux attach'
-alias v=vim
 alias vrc='vim ~/.vimrc'
+alias rld='source ~/.bashrc'
+
+alias init='cd ~/init'
+
+alias c='clear'
+alias j='jobs -l'
+
+
+alias l='ls -G'
+alias ll='ls -Glh'
+
+alias k='kubectl'
+alias ta='tmux attach'
+
+alias v=vim
+alias e='emacs -nw'
+alias emacs='emacs -nw'
 
 # allow watching aliases: https://unix.stackexchange.com/a/25329/162041
 alias watch='watch '
 
 # go
+alias gp='cd $GOPATH'
 alias goi='go install -v $(glide novendor)'
 alias got='go test $(glide novendor)'
 
