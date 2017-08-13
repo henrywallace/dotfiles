@@ -38,11 +38,16 @@ set hlsearch
 " nicer split window: https://stackoverflow.com/a/9001540/2601179
 set fillchars+=vert:\ |
 
-
-
+let g:ale_sign_column_always = 1
+let g:ale_sign_error = '!'
+let g:ale_sign_warning = '.'
+let g:airline#extensions#ale#enabled = 1
 
 " vim-plug configuration: https://github.com/junegunn/vim-plug
 call plug#begin('~/.vim/plugged')
+
+" asynchronous linting
+Plug 'w0rp/ale'
 
 " be able to do/undo make window full
 Plug 'vim-scripts/ZoomWin'
