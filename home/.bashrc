@@ -33,13 +33,14 @@ export LSCOLORS=gxBxhxDxfxhxhxhxhxcxcx
 # add brew installed binaries to path
 export PATH="$HOME/bin:$HOME/.cask/bin:$PATH"
 
-shopt -s histappend                      # append to history, don't overwrite it
+# https://unix.stackexchange.com/a/18443/162041
+# https://www.gnu.org/software/bash/manual/html_node/Bash-Variables.html
 export HISTFILESIZE=1000000              # big big history
 export HISTSIZE=1000000                  # big big history
-export HISTCONTROL=ignoredups:erasedups  # no duplicate entries
 export HISTIGNORE='ls:bg:fg'             # don't add simple commands to history
 export HISTTIMEFORMAT='%F %T '           # add timestamps to history
-shopt -s cmdhist
+HISTCONTROL=ignoredups
+shopt -s histappend cmdhist
 
 # go path
 export GOPATH=$HOME/go
