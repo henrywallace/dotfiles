@@ -5,11 +5,13 @@ source ~/.git-prompt.sh
 source ~/.git-completion.sh
 
 # nice prompt
+# https://unix.stackexchange.com/a/275016/162041
+# https://wiki.archlinux.org/index.php/Bash/Prompt_customization
 PROMPT_COMMAND=__prompt_command
 __prompt_command() {
   local status="$?"
   local git="\e[1;32m$(__git_ps1)\e[0m"
-  local dir="\e[1m[ $(sed "s:\([^/]\)[^/]*/:\1/:g" <<<$PWD) ]\e[0m"
+  local dir="\e[1m\h:$(sed "s:\([^/\.]\)[^/]*/:\1/:g" <<< ${PWD/#$HOME/\~})\e[0m"
   if [[ ! -z $VIRTUAL_ENV ]]; then
     local venv="\e[1;36m($(basename $VIRTUAL_ENV))\e[0m"
   else
