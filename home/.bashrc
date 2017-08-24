@@ -62,3 +62,26 @@ source /usr/local/google-cloud-sdk/path.bash.inc
 # fzf ftw
 export FZF_DEFAULT_OPTS='--height 6 --reverse'
 source ~/.fzf.bash
+
+# Makefile completion: https://stackoverflow.com/a/36044470/2601179
+function _makefile_targets {
+    local curr_arg;
+    local targets;
+
+    # Find makefile targets available in the current directory
+    targets=''
+    if [[ -e "$(pwd)/Makefile" ]]; then
+        targets=$( \
+            grep -oE '^[a-zA-Z0-9_-]+:' Makefile \
+            | sed 's/://' \
+            | tr '\n' ' ' \
+        )
+    fi
+
+    # Filter targets based on user input to the bash completion
+    curr_arg=${COMP_WORDS[COMP_CWORD]}
+    COMPREPLY=( $(compgen -W "${targets[@]}" -- $curr_arg ) );
+}
+if [ "$(uname)" == Darwin ]; then
+  complete -F _makefile_targets make
+fi
