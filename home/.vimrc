@@ -46,6 +46,9 @@ let g:airline#extensions#ale#enabled = 1
 " vim-plug configuration: https://github.com/junegunn/vim-plug
 call plug#begin('~/.vim/plugged')
 
+" detect indent on files
+Plug 'tpope/vim-sleuth'
+
 " asynchronous linting
 Plug 'w0rp/ale'
 
