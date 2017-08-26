@@ -32,7 +32,14 @@ __prompt_command() {
 # pretty ls colors
 # https://apple.stackexchange.com/a/33679/192291
 export CLICOLOR=1
-export LSCOLORS=gxBxhxDxfxhxhxhxhxcxcx
+case $(uname -s) in
+Darwin)
+  export LSCOLORS=gxBxhxDxfxhxhxhxhxcxcx
+  ;;
+Linux)
+  alias ls='ls --color=auto'
+  ;;
+esac
 
 # add brew installed binaries to path
 export PATH="$HOME/bin:$HOME/.cask/bin:$PATH"
