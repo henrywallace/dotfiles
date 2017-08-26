@@ -1,8 +1,15 @@
+# git prompt
 GIT_PS1_SHOWDIRTYSTATE="yes"
 GIT_PS1_SHOWSTASHSTATE="yes"
 GIT_PS1_SHOWUPSTREAM="verbose"
-source ~/.git-prompt.sh
-source ~/.git-completion.sh
+GIT_PROMPT=~/.git-prompt.sh
+test -f $GIT_PROMPT || curl -sS -o $GIT_PROMPT https://raw.githubusercontent.com/git/git/master/contrib/completion/git-prompt.sh
+source $GIT_PROMPT
+
+# git completion
+GIT_COMPLETION=~/.git-completion.sh
+test -f $GIT_COMPLETION || curl -sS -o $GIT_COMPLETION https://raw.githubusercontent.com/git/git/master/contrib/completion/git-completion.bash
+source $GIT_COMPLETION
 
 # nice prompt
 # https://unix.stackexchange.com/a/275016/162041
