@@ -6,7 +6,7 @@ alias init='cd ~/init'
 
 alias c='clear'
 alias j='jobs -l'
-
+alias less='less -gSN'
 
 alias l='ls -G'
 alias ll='ls -Glh'
