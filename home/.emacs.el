@@ -6,7 +6,7 @@
    t)
   (package-initialize))
 
-(load-theme 'dracula t)
+;; (load-theme 'dracula t)
 
 (add-hook 'before-save-hook 'delete-trailing-whitespace)
 
@@ -46,7 +46,8 @@
 (global-set-key (kbd "C-c w")         (quote copy-word))
 
 ;; faster kbd for goto-line
-(global-set-key (kbd "C-l") 'goto-line)
+(global-set-key (kbd "C-f") 'goto-line)
+(global-set-key (kbd "C-w") 'backward-kill-word)
 
 ;; smoother scrolling
 (require 'smooth-scrolling)
@@ -124,3 +125,49 @@
   (local-set-key (kbd "M-*") 'pop-tag-mark)
 )
 (add-hook 'go-mode-hook 'my-go-mode-hook)
+(custom-set-variables
+ ;; custom-set-variables was added by Custom.
+ ;; If you edit it by hand, you could mess it up, so be careful.
+ ;; Your init file should contain only one such instance.
+ ;; If there is more than one, they won't work right.
+ '(safe-local-variable-values
+   (quote
+    ((eval when
+	   (require
+	    (quote js2-mode)
+	    nil
+	    (quote noerror))
+	   (progn
+	     (make-local-variable
+	      (quote js2-basic-offset))
+	     (setq js2-basic-offset 2)))
+     (eval when
+	   (require
+	    (quote web-mode)
+	    nil
+	    (quote noerror))
+	   (progn
+	     (make-local-variable
+	      (quote web-mode-indentation-params))
+	     (make-local-variable
+	      (quote web-mode-markup-indent-offset))
+	     (make-local-variable
+	      (quote web-mode-css-indent-offset))
+	     (make-local-variable
+	      (quote web-mode-code-indent-offset))
+	     (make-local-variable
+	      (quote web-mode-indent-offset))
+	     (setf
+	      (cdr
+	       (assoc "case-extra-offset" web-mode-indentation-params))
+	      nil)
+	     (setq web-mode-markup-indent-offset 2)
+	     (setq web-mode-css-indent-offset 2)
+	     (setq web-mode-code-indent-offset 2)
+	     (setq web-mode-indent-style 2)))))))
+(custom-set-faces
+ ;; custom-set-faces was added by Custom.
+ ;; If you edit it by hand, you could mess it up, so be careful.
+ ;; Your init file should contain only one such instance.
+ ;; If there is more than one, they won't work right.
+ )

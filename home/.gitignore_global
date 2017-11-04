@@ -6,3 +6,5 @@
 .ropeproject
 .vscode
 vendor
+.vscode
+__pycache__

@@ -18,13 +18,16 @@ PROMPT_COMMAND=__prompt_command
 __prompt_command() {
   local status="$?"
   local git="\e[1;32m$(__git_ps1)\e[0m"
-  local dir="\e[1m\h:$(sed "s:\([^/\.]\)[^/]*/:\1/:g" <<< ${PWD/#$HOME/\~})\e[0m"
+  local dir="\e[1m$(sed "s:\([^/\.]\)[^/]*/:\1/:g" <<< ${PWD/#$HOME/\~})\e[0m"
   if [[ ! -z $VIRTUAL_ENV ]]; then
     local venv="\e[1;36m($(basename $VIRTUAL_ENV))\e[0m"
   else
     local venv=''
   fi
-  PS1="$dir $git $venv $status\n$ "
+  # PS1="$status $venv $git $dir\n$ "
+  local prefix="$(whoami)@$(hostname):"
+  local stash="$(test -d .git && git stash list | echo $(wc -l) || echo)"
+  PS1="$prefix$dir $venv $git $stash\n$ "
   # shopt -s extdebug
   # trap "tput sgr0" DEBUG
 }
@@ -32,26 +35,18 @@ __prompt_command() {
 # pretty ls colors
 # https://apple.stackexchange.com/a/33679/192291
 export CLICOLOR=1
-case $(uname -s) in
-Darwin)
-  export LSCOLORS=gxBxhxDxfxhxhxhxhxcxcx
-  ;;
-Linux)
-  alias ls='ls --color=auto'
-  ;;
-esac
 
 # add brew installed binaries to path
 export PATH="$HOME/bin:$HOME/.cask/bin:$PATH"
 
 # https://unix.stackexchange.com/a/18443/162041
 # https://www.gnu.org/software/bash/manual/html_node/Bash-Variables.html
-export HISTFILESIZE=1000000              # big big history
-export HISTSIZE=1000000                  # big big history
-export HISTIGNORE='ls:bg:fg'             # don't add simple commands to history
+export HISTFILESIZE=10000000             # big big history
+export HISTSIZE=10000000                 # big big history
 export HISTTIMEFORMAT='%F %T '           # add timestamps to history
 HISTCONTROL=ignoredups
 shopt -s histappend cmdhist
+
 
 # go path
 export GOPATH=$HOME/go
@@ -66,14 +61,11 @@ fi
 # standard aliases
 source ~/.bash_aliases
 
-# hub
-source ~/.hub-completion.sh
-
 # gcp
 source /usr/local/google-cloud-sdk/completion.bash.inc
 source /usr/local/google-cloud-sdk/path.bash.inc
-
-# fzf ftw
+:
+# fzf fuzzy searching
 export FZF_DEFAULT_OPTS='--height 6 --reverse'
 source ~/.fzf.bash
 
@@ -96,6 +88,4 @@ function _makefile_targets {
     curr_arg=${COMP_WORDS[COMP_CWORD]}
     COMPREPLY=( $(compgen -W "${targets[@]}" -- $curr_arg ) );
 }
-if [ "$(uname)" == Darwin ]; then
-  complete -F _makefile_targets make
-fi
+complete -F _makefile_targets make

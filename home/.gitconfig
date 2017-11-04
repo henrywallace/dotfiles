@@ -1,13 +1,18 @@
 [user]
-	name = Henry Wallace
-	email = henry@henrywallace.io
+    name = Henry Wallace
+    email = henry@henrywallace.io
+
 [push]
-	default = simple
+    default = simple
+
 [core]
-	editor = vim
-	excludesfile = $HOME/.gitignore_global
+    editor = vim
+    excludesfile = /Users/henrywallace/.gitignore_global
+
 [alias]
-	a = add
-	b = branch
-	c = checkout
-	r = rebase
+    a = add
+    b = branch -vv
+    c = checkout
+    r = rebase
+    br = branch -vv
+    co = checkout

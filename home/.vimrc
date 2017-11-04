@@ -38,19 +38,11 @@ set hlsearch
 " nicer split window: https://stackoverflow.com/a/9001540/2601179
 set fillchars+=vert:\ |
 
-let g:ale_sign_column_always = 1
-let g:ale_sign_error = '!'
-let g:ale_sign_warning = '.'
-let g:airline#extensions#ale#enabled = 1
-
 " vim-plug configuration: https://github.com/junegunn/vim-plug
 call plug#begin('~/.vim/plugged')
 
 " detect indent on files
 Plug 'tpope/vim-sleuth'
-
-" asynchronous linting
-Plug 'w0rp/ale'
 
 " be able to do/undo make window full
 Plug 'vim-scripts/ZoomWin'
@@ -63,9 +55,6 @@ Plug 'dracula/vim', { 'as': 'dracula' }
 
 " Sensible defaults for Vim
 Plug 'tpope/vim-sensible'
-
-" Guess indentation from current buffer
-Plug 'ciaranm/detectindent'
 
 " fuzzy finder
 Plug 'junegunn/fzf', { 'dir': '~/.fzf', 'do': './install --all' }
@@ -118,6 +107,8 @@ inoremap <C-X> <C-O>:Commands<CR>
 let g:go_fmt_command = "goimports"
 
 " fzf files preview command with preview window
-command! -bang -nargs=? -complete=dir Files
-  \ call fzf#vim#files(<q-args>, fzf#vim#with_preview(), <bang>0)
+command! -bang -nargs=? -complete=dir Fiiles
+  \ call fzf#vim#files('rg --column --line-number --no-heading --color=always '.shellescape(<q-args>).'| tr -d "\017"', 1, <bang>0)
+"command! -bang -nargs=? -complete=dir Files
+"  \ call fzf#vim#files(<q-args>, fzf#vim#with_pre
 let g:fzf_layout = { 'down': '~40%' }
