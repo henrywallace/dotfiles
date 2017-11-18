@@ -25,7 +25,7 @@ alias ll='ls -la'
 
 # editors
 alias e='emacs'
-alias emacs='emacsclient -t -nw'
+alias emacs='emacsclient -c -t -nw'
 alias v=vim
 
 # golang

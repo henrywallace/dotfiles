@@ -38,7 +38,7 @@
 (add-to-list 'auto-mode-alist '("\\.bashrc\\'" . shell-script-mode))
 (add-to-list 'auto-mode-alist '("\\.bash_aliases\\'" . shell-script-mode))
 (set-default 'truncate-lines t)
-(global-git-commit-mode)
+;; (global-git-commit-mode)
 (global-set-key (kbd "C-f") 'goto-line)
 
 ;; misc third-party

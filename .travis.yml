@@ -2,3 +2,5 @@ os:
   - linux
   - osx
 
+install:
+  - ./install.sh

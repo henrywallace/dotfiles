@@ -6,7 +6,7 @@
     default = simple
 
 [core]
-    editor = emacsclient -t -nw
+    editor = emacsclient -c -t -nw
     # https://stackoverflow.com/a/11262153
     excludesfile = ~/.gitignore_global
     pager = diff-so-fancy | less --tabs=4 -RFX
