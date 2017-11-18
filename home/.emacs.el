@@ -36,15 +36,21 @@
 (add-hook 'before-save-hook 'delete-trailing-whitespace)
 (add-to-list 'auto-mode-alist '("\\.bashrc\\'" . shell-script-mode))
 (add-to-list 'auto-mode-alist '("\\.bash_aliases\\'" . shell-script-mode))
+(set-default 'truncate-lines t)
+(global-git-commit-mode)
+
+;; store all backup and autosave files in the tmp dir
+;; http://emacsredux.com/blog/2013/05/09/keep-backup-and-auto-save-files-out-of-the-way/
+(setq backup-directory-alist
+      `((".*" . ,temporary-file-directory)))
+(setq auto-save-file-name-transforms
+      `((".*" ,temporary-file-directory t)))
 
 (defun get-point (symbol &optional arg)
   "get the point"
   (funcall symbol arg)
   (point)
   )
-
-(set-default 'truncate-lines t)
-(global-git-commit-mode)
 
 (defun copy-thing (begin-of-thing end-of-thing &optional arg)
   "copy thing between beg & end into kill ring"
