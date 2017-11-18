@@ -1,6 +1,7 @@
 # config
 alias ba='emacs ~/.bash_aliases'
 alias brc='emacs ~/.bashrc'
+alias el='emacs ~/.emacs.el'
 alias rld='source ~/.bashrc'
 alias vrc='vim ~/.vimrc'
 
