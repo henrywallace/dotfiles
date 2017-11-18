@@ -1,6 +1,7 @@
 ;; wanted packages
 (setq package-list
       '(
+	ace-window
 	auto-package-update
 	counsel
 	flx
@@ -44,6 +45,8 @@
 (setq py-use-font-lock-doc-face-p t)
 (require 'smooth-scrolling)
 (smooth-scrolling-mode 1)
+(require 'ace-window)
+(global-set-key (kbd "M-p") 'ace-window)
 
 ;; store all backup and autosave files in the tmp dir
 ;; http://emacsredux.com/blog/2013/05/09/keep-backup-and-auto-save-files-out-of-the-way/
@@ -119,6 +122,7 @@
  '(font-lock-string-face ((t (:foreground "red" :weight bold))))
  '(font-lock-type-face ((t (:foreground "black"))))
  '(font-lock-variable-name-face ((t (:foreground "brightblue"))))
+ '(highlight ((t (:background "paleturquoise"))))
  '(isearch ((t (:background "yellow" :foreground "black"))))
  '(lazy-highlight ((t (:background "paleturquoise"))))
  '(sh-quoted-exec ((t (:foreground "brightblue")))))
@@ -131,7 +135,7 @@
  '(git-commit-summary-max-length 50)
  '(package-selected-packages
    (quote
-    (counsel magit yaml-mode swiper smooth-scrolling smex python-mode python-docstring py-isort markdown-mode json-snatcher json-reformat go-guru go-autocomplete git-auto-commit-mode flycheck flx dracula-theme auto-package-update)))
+    (ace-window counsel magit yaml-mode swiper smooth-scrolling smex python-mode python-docstring py-isort markdown-mode json-snatcher json-reformat go-guru go-autocomplete git-auto-commit-mode flycheck flx dracula-theme auto-package-update)))
  '(safe-local-variable-values
    (quote
     ((eval when
