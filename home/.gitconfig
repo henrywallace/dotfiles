@@ -6,13 +6,19 @@
     default = simple
 
 [core]
-    editor = vim
-    excludesfile = /Users/henrywallace/.gitignore_global
+    editor = emacs -nw
+    # https://stackoverflow.com/a/11262153
+    excludesfile = ~/.gitignore_global
+    pager = diff-so-fancy | less --tabs=4 -RFX
 
 [alias]
-    a = add
-    b = branch -vv
-    c = checkout
-    r = rebase
-    br = branch -vv
     co = checkout
+
+[color "diff"]
+    frag = blue dim
+    meta = black dim
+    commit = blue
+
+[log]
+    graphColors = black
+    abbrevCommit = true

@@ -6,15 +6,18 @@
    t)
   (package-initialize))
 
-;; (load-theme 'dracula t)
-
 (add-hook 'before-save-hook 'delete-trailing-whitespace)
+(add-to-list 'auto-mode-alist '("\\.bashrc\\'" . shell-script-mode))
+(add-to-list 'auto-mode-alist '("\\.bash_aliases\\'" . shell-script-mode))
 
 (defun get-point (symbol &optional arg)
   "get the point"
   (funcall symbol arg)
   (point)
   )
+
+(set-default 'truncate-lines t)
+(global-git-commit-mode)
 
 (defun copy-thing (begin-of-thing end-of-thing &optional arg)
   "copy thing between beg & end into kill ring"
@@ -47,7 +50,7 @@
 
 ;; faster kbd for goto-line
 (global-set-key (kbd "C-f") 'goto-line)
-(global-set-key (kbd "C-w") 'backward-kill-word)
+;; (global-set-key (kbd "C-w") 'backward-kill-word)
 
 ;; smoother scrolling
 (require 'smooth-scrolling)
@@ -65,13 +68,13 @@
 (setq show-paren-delay 0)
 (set-face-attribute 'show-paren-match nil
 		    :weight 'bold
-		    :foreground "white"
-		    :background "magenta")
+		    :foreground "black"
+		    :background "yellow")
 
 ;; nice region selection color :)
 (set-face-attribute 'region nil
-		    :foreground "brightwhite"
-		    :background "magenta")
+		    :foreground "black"
+		    :background "yellow")
 
 ;; ivy for the win
 (require 'ivy)
@@ -85,17 +88,10 @@
 (define-key read-expression-map (kbd "C-r") 'counsel-expression-history)
 (set-face-attribute 'ivy-current-match nil
 		    :weight 'bold
-		    :foreground "white"
+		    :foreground "black"
                     :background "magenta")
 
 (setq-default fill-column 79)
-
-;; better search color
-(set-face-attribute 'isearch nil
-		    :weight 'bold
-		    :foreground "white"
-		    :background "magenta")
-
 
 ;; Uncomment or comment single lines, in addition to regions.
 ;; http://stackoverflow.com/questions/9688748/emacs-comment-uncomment-current-line
@@ -109,27 +105,43 @@
         (comment-or-uncomment-region beg end)))
 (global-set-key (kbd "M-;") 'comment-or-uncomment-region-or-line)
 
-
-;; a better go mode
+;; golang! :D
+(require 'go-guru)
 (defun my-go-mode-hook ()
-  ; Use goimports instead of go-fmt
-  (setq gofmt-command "goimports")
-  ; Call Gofmt before saving
   (add-hook 'before-save-hook 'gofmt-before-save)
-  ; Customize compile command to run go build
+  (setq gofmt-command "goimports")
   (if (not (string-match "go" compile-command))
       (set (make-local-variable 'compile-command)
            "go build -v && go test -v && go vet"))
-  ; Godef jump key binding
+  (go-guru-hl-identifier-mode)
   (local-set-key (kbd "M-.") 'godef-jump)
-  (local-set-key (kbd "M-*") 'pop-tag-mark)
-)
+  (local-set-key (kbd "M-,") 'pop-tag-mark)
+  (local-set-key (kbd "M-p") 'compile)
+  (auto-complete-mode 1))
 (add-hook 'go-mode-hook 'my-go-mode-hook)
-(custom-set-variables
- ;; custom-set-variables was added by Custom.
+(with-eval-after-load 'go-mode
+  (require 'go-autocomplete))
+
+(custom-set-faces
+ ;; custom-set-faces was added by Custom.
  ;; If you edit it by hand, you could mess it up, so be careful.
  ;; Your init file should contain only one such instance.
  ;; If there is more than one, they won't work right.
+ '(font-lock-comment-face ((t (:foreground "green" :weight bold))))
+ '(font-lock-constant-face ((t (:foreground "black"))))
+ '(font-lock-function-name-face ((t (:foreground "black" :weight bold))))
+ '(font-lock-keyword-face ((t (:foreground "black"))))
+ '(font-lock-string-face ((t (:foreground "red" :weight bold))))
+ '(font-lock-type-face ((t (:foreground "black"))))
+ '(font-lock-variable-name-face ((t (:foreground "brightblue"))))
+ '(isearch ((t (:background "yellow" :foreground "black"))))
+ '(sh-quoted-exec ((t (:foreground "brightblue")))))
+
+(custom-set-variables
+ '(git-commit-summary-max-length 50)
+ '(package-selected-packages
+   (quote
+    (magit counsel yaml-mode swiper smooth-scrolling smex python-mode python-docstring py-isort markdown-mode json-snatcher json-reformat go-guru go-autocomplete git-auto-commit-mode flycheck flx dracula-theme auto-package-update)))
  '(safe-local-variable-values
    (quote
     ((eval when
@@ -165,9 +177,3 @@
 	     (setq web-mode-css-indent-offset 2)
 	     (setq web-mode-code-indent-offset 2)
 	     (setq web-mode-indent-style 2)))))))
-(custom-set-faces
- ;; custom-set-faces was added by Custom.
- ;; If you edit it by hand, you could mess it up, so be careful.
- ;; Your init file should contain only one such instance.
- ;; If there is more than one, they won't work right.
- )

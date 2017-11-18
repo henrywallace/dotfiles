@@ -64,7 +64,7 @@ source ~/.bash_aliases
 # gcp
 source /usr/local/google-cloud-sdk/completion.bash.inc
 source /usr/local/google-cloud-sdk/path.bash.inc
-:
+
 # fzf fuzzy searching
 export FZF_DEFAULT_OPTS='--height 6 --reverse'
 source ~/.fzf.bash
