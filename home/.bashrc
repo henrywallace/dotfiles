@@ -47,10 +47,16 @@ export HISTTIMEFORMAT='%F %T '           # add timestamps to history
 HISTCONTROL=ignoredups
 shopt -s histappend cmdhist
 
+# emacs daemon
+# https://stackoverflow.com/a/5578718
+export ALTERNATE_EDITOR=""
 
-# go path
+# golang
 export GOPATH=$HOME/go
 PATH=$GOPATH/bin:$PATH
+
+# rustlang
+PATH=.cargo/bin:$PATH
 
 # start ssh-agent if not running: https://unix.stackexchange.com/a/90869/162041
 if [ -z "$SSH_AUTH_SOCK" ]; then

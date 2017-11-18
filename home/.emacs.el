@@ -38,6 +38,12 @@
 (add-to-list 'auto-mode-alist '("\\.bash_aliases\\'" . shell-script-mode))
 (set-default 'truncate-lines t)
 (global-git-commit-mode)
+(global-set-key (kbd "C-f") 'goto-line)
+
+;; misc third-party
+(setq py-use-font-lock-doc-face-p t)
+(require 'smooth-scrolling)
+(smooth-scrolling-mode 1)
 
 ;; store all backup and autosave files in the tmp dir
 ;; http://emacsredux.com/blog/2013/05/09/keep-backup-and-auto-save-files-out-of-the-way/
@@ -45,17 +51,6 @@
       `((".*" . ,temporary-file-directory)))
 (setq auto-save-file-name-transforms
       `((".*" ,temporary-file-directory t)))
-
-;; faster kbd for goto-line
-(global-set-key (kbd "C-f") 'goto-line)
-;; (global-set-key (kbd "C-w") 'backward-kill-word)
-
-;; smoother scrolling
-(require 'smooth-scrolling)
-(smooth-scrolling-mode 1)
-
-;; misc third-party
-(setq py-use-font-lock-doc-face-p t)
 
 ;; clearer matching parens
 (show-paren-mode 1)
@@ -72,7 +67,6 @@
 
 ;; ivy for the win
 (ivy-mode 1)
-(require 'flx)
 (setq enable-recursive-minibuffers t)
 (setq ivy-use-virtual-buffers t)
 (setq ivy-re-builders-alist '((t . ivy--regex-fuzzy)))
@@ -126,6 +120,7 @@
  '(font-lock-type-face ((t (:foreground "black"))))
  '(font-lock-variable-name-face ((t (:foreground "brightblue"))))
  '(isearch ((t (:background "yellow" :foreground "black"))))
+ '(lazy-highlight ((t (:background "paleturquoise"))))
  '(sh-quoted-exec ((t (:foreground "brightblue")))))
 
 (custom-set-variables

@@ -18,13 +18,13 @@ alias c='clear'
 alias j='jobs -l'
 alias less='less -gS'
 alias le='less'
-alias ls='exa --group-directories-first'
+alias ls="exa --group-directories-first -I '*~'"
 alias l='ls'
 alias ll='ls -la'
 
 # editors
 alias e='emacs'
-alias emacs='emacs -nw'
+alias emacs='emacsclient -t -nw'
 alias v=vim
 
 # golang
@@ -39,6 +39,7 @@ alias dif='git diff master..HEAD --stat'
 alias g='git'
 alias gb='git branch -vv'
 alias gd='git diff'
+alias gdc='git diff --cached'
 alias gs='git status'
 alias lg='git log --oneline master..HEAD'
 alias llg='git log --graph --oneline'
