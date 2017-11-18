@@ -6,6 +6,7 @@ alias rld='source ~/.bashrc'
 alias vrc='vim ~/.vimrc'
 
 # misc
+alias bup='brew upgrade'
 alias init='cd ~/init'
 alias k='kubectl'
 alias rg='rg -M100 --colors path:fg:green --colors path:style:bold --colors line:fg:blue --colors line:style:bold'
