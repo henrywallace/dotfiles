@@ -24,8 +24,8 @@ alias l='ls'
 alias ll='ls -la'
 
 # editors
-alias e='emacs'
-alias emacs='emacsclient -c -t -nw'
+alias e='emacs -nw'
+alias emacs='emacs -nw'
 alias v=vim
 
 # golang
@@ -41,6 +41,7 @@ alias g='git'
 alias gb='git branch -vv'
 alias gd='git diff'
 alias gdc='git diff --cached'
+alias gf='git fetch -av'
 alias gs='git status'
 alias lg='git log --oneline master..HEAD'
 alias llg='git log --graph --oneline'
