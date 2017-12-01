@@ -13,5 +13,5 @@ HOME_FILES="
 "
 
 for f in $HOME_FILES; do
-  cp "$HOME/$f" "$(dirname $0)/home/$f";
+  cp "$HOME/$f" "$(dirname $0)/home/$f" 2> /dev/null || echo "missing local $HOME/$f";
 done
