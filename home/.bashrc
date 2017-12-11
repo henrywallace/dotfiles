@@ -1,3 +1,14 @@
+#
+# This bashrc configuration was written only to work on OSX.
+# TODO: make this flexible enough to work on all *nix.
+#
+# This config assumes the following conig also exit:
+#
+#   ~/.bash_aliases
+#   /usr/local/google-cloud-sdk/completion.bash.inc
+#   /usr/local/google-cloud-sdk/path.bash.inc
+#
+
 # git prompt
 GIT_PS1_SHOWDIRTYSTATE="yes"
 GIT_PS1_SHOWSTASHSTATE="yes"
@@ -17,17 +28,19 @@ source $GIT_COMPLETION
 PROMPT_COMMAND=__prompt_command
 __prompt_command() {
   local status="$?"
-  local git="\e[1;32m$(__git_ps1)\e[0m"
+  # vvv trim whitespace: https://stackoverflow.com/a/12973694
+  local git="\e[1;32m$(echo $(__git_ps1) | xargs)\e[0m"
   local dir="\e[1m$(sed "s:\([^/\.]\)[^/]*/:\1/:g" <<< ${PWD/#$HOME/\~})\e[0m"
   if [[ ! -z $VIRTUAL_ENV ]]; then
     local venv="\e[1;36m($(basename $VIRTUAL_ENV))\e[0m"
   else
     local venv=''
   fi
-  # PS1="$status $venv $git $dir\n$ "
-  local prefix="$(whoami)@$(hostname):"
-  local stash="$(test -d .git && git stash list | echo $(wc -l) || echo)"
-  PS1="$prefix$dir $venv $git $stash\n$ "
+  local prefix="$(hostname)"
+  # PS1="$venv$git[$prefix $dir] "
+  PS1="[$prefix $dir] "
+
+  # At one point, in time, I thought colorizing the typed command was cool:
   # shopt -s extdebug
   # trap "tput sgr0" DEBUG
 }
@@ -41,9 +54,9 @@ export PATH="$HOME/bin:$HOME/.cask/bin:$PATH"
 
 # https://unix.stackexchange.com/a/18443/162041
 # https://www.gnu.org/software/bash/manual/html_node/Bash-Variables.html
-export HISTFILESIZE=10000000             # big big history
-export HISTSIZE=10000000                 # big big history
-export HISTTIMEFORMAT='%F %T '           # add timestamps to history
+export HISTFILESIZE=10000000    # history 10^7
+export HISTSIZE=10000000        # history 10^7
+export HISTTIMEFORMAT='%F %T '  # add timestamps to history
 HISTCONTROL=ignoredups
 shopt -s histappend cmdhist
 
@@ -58,22 +71,25 @@ PATH=$GOPATH/bin:$PATH
 # rustlang
 PATH=.cargo/bin:$PATH
 
-# start ssh-agent if not running: https://unix.stackexchange.com/a/90869/162041
+# Start ssh-agent if not running: https://unix.stackexchange.com/a/90869/162041
 if [ -z "$SSH_AUTH_SOCK" ]; then
   eval $(ssh-agent -s)
   ssh-add
 fi
 
-# standard aliases
+# Standard aliases
 source ~/.bash_aliases
 
-# gcp
+# GCP
+# TODO: add auto-downloads for this:
 source /usr/local/google-cloud-sdk/completion.bash.inc
 source /usr/local/google-cloud-sdk/path.bash.inc
 
 # fzf fuzzy searching
+FZF_SH=~/.fzf.sh
+test -f $FZF_SH || curl -sS -o $FZF_SH https://raw.githubusercontent.com/junegunn/fzf/master/shell/key-bindings.bash
+source $FZF_SH
 export FZF_DEFAULT_OPTS='--height 6 --reverse'
-source ~/.fzf.bash
 
 # Makefile completion: https://stackoverflow.com/a/36044470/2601179
 function _makefile_targets {
@@ -95,3 +111,5 @@ function _makefile_targets {
     COMPREPLY=( $(compgen -W "${targets[@]}" -- $curr_arg ) );
 }
 complete -F _makefile_targets make
+
+[ -f ~/.fzf.bash ] && source ~/.fzf.bash
