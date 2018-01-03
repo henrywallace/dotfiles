@@ -1,0 +1,88 @@
+# docker
+alias enhance='function ne() { docker run --rm -v "$(pwd)/`dirname ${@:$#}`":/ne/input -it alexjc/neural-enhance ${@:1:$#-1} "input/`basename ${@:$#}`"; }; ne'
+
+# config
+alias ba='emacs ~/.bash_aliases'
+alias brc='emacs ~/.bashrc'
+alias el='emacs ~/.emacs.el'
+alias rld='source ~/.bashrc'
+alias vrc='vim ~/.vimrc'
+
+# misc
+alias sudo='sudo '
+alias bup='brew upgrade && brew cleanup'
+alias c='clear'
+alias celar='clear'
+alias dotf='cd ~/dotfiles'
+alias rg='rg --heading -n --color=always --colors path:fg:green --colors path:style:bold --colors line:fg:blue --colors line:style:bold'
+alias rgo="rg -g '*.go'"
+alias ta='tmux attach'
+alias watch='watch --color ' # https://unix.stackexchange.com/a/25329/162041
+alias yup='yolk --upgrade'
+alias shellcheck='shellcheck --color=always'
+
+# gke
+alias gc='gcloud compute'
+
+# k8s
+alias k='kubectl'
+alias kt='kubetail'
+alias mk='minikube'
+alias kn='kubectl get no'
+alias kp='kubectl get po'
+alias mkl='minikube service list'
+alias wp='watch kubectl get pods'
+alias wpa='watch kubectl get pods --all-namespaces'
+
+# generic
+alias c='clear'
+alias cp='cp -i'
+alias j='jobs -l'
+alias l='ls'
+alias le='less'
+alias less='less -gSR'
+alias ll='ls -la'
+alias ls="exa --group-directories-first -I '*~'"
+alias mv='mv -i'
+alias rm='rm -i'
+
+# editors
+alias e='emacs'
+alias emacs='emacs -nw'
+alias v=vim
+
+# golang
+alias de='dep ensure -v'
+alias dup='go get -u github.com/golang/dep/cmd/dep'
+alias goi='go install -v ./...'
+
+# rustlang
+alias cup='cargo install-update -a'
+
+# git
+alias cleanup='git branch --merge master | grep -v master | xargs git branch -d'
+alias conflicts="rg '<<<<<<<'"
+alias dif='git diff master..HEAD --stat'
+alias g-='git checkout -'
+alias g='git'
+alias ga='git add -u'
+alias gb='git branch -vv'
+alias gd='git diff'
+alias gdc='git diff --cached'
+alias gk='git checkout'
+alias gm='git checkout master'
+alias gn='git checkout -b'
+alias gp='git pull --rebase'
+alias gs='git status'
+alias lg='git log --oneline master..HEAD'
+alias lgp='git log -p master..HEAD'
+alias llg='git log --graph --oneline'
+alias lr='git show HEAD -p'
+alias lrq='git show HEAD'
+alias rb='git rebase -i master'
+alias rc='git rebase --continue'
+alias review='git log --stat --reverse master..HEAD'
+alias st='git stash show -p'
+alias sta='git stash'
+alias stl='git stash list | wc -l | xargs'
+alias stp='git stash pop'

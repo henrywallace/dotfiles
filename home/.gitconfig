@@ -1,12 +1,12 @@
 [user]
-    name = Henry Wallace
-    email = henry@henrywallace.io
+	name = Henry Wallace
+	email = henry@henrywallace.io
 
 [push]
     default = simple
 
 [core]
-    editor = emacsclient -c -t -nw
+    editor = vim
     # https://stackoverflow.com/a/11262153
     excludesfile = ~/.gitignore_global
     pager = diff-so-fancy | less --tabs=4 -RFX
@@ -16,9 +16,16 @@
 
 [color "diff"]
     frag = blue dim
-    meta = black dim
+    meta = blue dim
     commit = blue
 
 [log]
-    graphColors = black
+    graphColors = red
     abbrevCommit = true
+[filter "lfs"]
+	required = true
+	clean = git-lfs clean -- %f
+	smudge = git-lfs smudge -- %f
+	process = git-lfs filter-process
+[http]
+	cookiefile = /Users/henrywallace/.gitcookies

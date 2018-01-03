@@ -1,5 +1,4 @@
 set colored-stats on
-set blink-matching-paren on
 set visible-stats on
 
 "\e[1;5C": forward-word

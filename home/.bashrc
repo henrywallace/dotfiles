@@ -4,14 +4,14 @@
 #
 # This config assumes the following conig also exit:
 #
-#   ~/.bash_aliases
+#   ~/.aliases
 #   /usr/local/google-cloud-sdk/completion.bash.inc
 #   /usr/local/google-cloud-sdk/path.bash.inc
 #
 
 # git prompt
-GIT_PS1_SHOWDIRTYSTATE="yes"
-GIT_PS1_SHOWSTASHSTATE="yes"
+#GIT_PS1_SHOWDIRTYSTATE="yes"
+#GIT_PS1_SHOWSTASHSTATE="yes"
 GIT_PS1_SHOWUPSTREAM="verbose"
 GIT_PROMPT=~/.git-prompt.sh
 test -f $GIT_PROMPT || curl -sS -o $GIT_PROMPT https://raw.githubusercontent.com/git/git/master/contrib/completion/git-prompt.sh
@@ -29,16 +29,13 @@ PROMPT_COMMAND=__prompt_command
 __prompt_command() {
   local status="$?"
   # vvv trim whitespace: https://stackoverflow.com/a/12973694
-  local git="\e[1;32m$(echo $(__git_ps1) | xargs)\e[0m"
-  local dir="\e[1m$(sed "s:\([^/\.]\)[^/]*/:\1/:g" <<< ${PWD/#$HOME/\~})\e[0m"
-  if [[ ! -z $VIRTUAL_ENV ]]; then
-    local venv="\e[1;36m($(basename $VIRTUAL_ENV))\e[0m"
-  else
-    local venv=''
-  fi
+  local git="$(echo $(__git_ps1) | xargs)"
+  local dir="$(sed "s:\([^/\.]\)[^/]*/:\1/:g" <<< ${PWD/#$HOME/\~})"
+  #venv=$(echo $(basename $VIRTUAL_ENV) | xargs)
   local prefix="$(hostname)"
   # PS1="$venv$git[$prefix $dir] "
-  PS1="[$prefix $dir] "
+  # PS1="$git[$prefix $dir] "
+  PS1="$git[$prefix $dir] "
 
   # At one point, in time, I thought colorizing the typed command was cool:
   # shopt -s extdebug
@@ -78,7 +75,7 @@ if [ -z "$SSH_AUTH_SOCK" ]; then
 fi
 
 # Standard aliases
-source ~/.bash_aliases
+source ~/.aliases
 
 # GCP
 # TODO: add auto-downloads for this:

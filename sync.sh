@@ -3,7 +3,7 @@
 set -e
 
 HOME_FILES="
-  .bash_aliases
+  .aliases
   .bashrc
   .emacs.el
   .gitconfig

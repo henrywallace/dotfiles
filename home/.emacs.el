@@ -1,19 +1,22 @@
 ;; wanted packages
 (setq package-list
       '(
-	ace-window
 	auto-package-update
 	counsel
 	flx
 	flycheck
 	go-autocomplete
 	go-guru
-	magit
 	markdown-mode
 	python-mode
 	swiper
 	yaml-mode
 	))
+
+;; shell scripting
+'(sh-basic-offset 2)
+'(sh-indentation 2)
+'(smie-indent-basic 2)
 
 ;; where to install those packages
 (setq package-archives
@@ -38,15 +41,13 @@
 (add-to-list 'auto-mode-alist '("\\.bashrc\\'" . shell-script-mode))
 (add-to-list 'auto-mode-alist '("\\.bash_aliases\\'" . shell-script-mode))
 (set-default 'truncate-lines t)
-;; (global-git-commit-mode)
 (global-set-key (kbd "C-f") 'goto-line)
 
 ;; misc third-party
 (setq py-use-font-lock-doc-face-p t)
 (require 'smooth-scrolling)
 (smooth-scrolling-mode 1)
-(require 'ace-window)
-(global-set-key (kbd "M-p") 'ace-window)
+;; (require 'pymacs)
 
 ;; store all backup and autosave files in the tmp dir
 ;; http://emacsredux.com/blog/2013/05/09/keep-backup-and-auto-save-files-out-of-the-way/
@@ -93,6 +94,11 @@
         (comment-or-uncomment-region beg end)))
 (global-set-key (kbd "M-;") 'comment-or-uncomment-region-or-line)
 
+;; kill pesky python buffers
+;; https://emacs.stackexchange.com/a/14511
+(setq kill-buffer-query-functions (delq 'process-kill-buffer-query-function kill-buffer-query-functions))
+
+
 ;; golang! :D
 (require 'go-guru)
 (defun my-go-mode-hook ()
@@ -107,25 +113,25 @@
   (local-set-key (kbd "M-p") 'compile)
   (auto-complete-mode 1))
 (add-hook 'go-mode-hook 'my-go-mode-hook)
-(with-eval-after-load 'go-mode
-  (require 'go-autocomplete))
+;; (with-eval-after-load 'go-mode
+;;   (require 'go-autocomplete))
 
-(custom-set-faces
- ;; custom-set-faces was added by Custom.
- ;; If you edit it by hand, you could mess it up, so be careful.
- ;; Your init file should contain only one such instance.
- ;; If there is more than one, they won't work right.
- '(font-lock-comment-face ((t (:foreground "green" :weight bold))))
- '(font-lock-constant-face ((t (:foreground "black"))))
- '(font-lock-function-name-face ((t (:foreground "black" :weight bold))))
- '(font-lock-keyword-face ((t (:foreground "black"))))
- '(font-lock-string-face ((t (:foreground "red" :weight bold))))
- '(font-lock-type-face ((t (:foreground "black"))))
- '(font-lock-variable-name-face ((t (:foreground "brightblue"))))
- '(highlight ((t (:background "paleturquoise"))))
- '(isearch ((t (:background "yellow" :foreground "black"))))
- '(lazy-highlight ((t (:background "paleturquoise"))))
- '(sh-quoted-exec ((t (:foreground "brightblue")))))
+;; (custom-set-faces
+;;  ;; custom-set-faces was added by Custom.
+;;  ;; If you edit it by hand, you could mess it up, so be careful.
+;;  ;; Your init file should contain only one such instance.
+;;  ;; If there is more than one, they won't work right.
+;;  '(font-lock-comment-face ((t (:foreground "green"))))
+;;  '(font-lock-constant-face ((t (:foreground "black"))))
+;;  '(font-lock-function-name-face ((t (:foreground "black" :weight bold))))
+;;  '(font-lock-keyword-face ((t (:foreground "black"))))
+;;  '(font-lock-string-face ((t (:foreground "red" :weight bold))))
+;;  '(font-lock-type-face ((t (:foreground "blue"))))
+;;  '(font-lock-variable-name-face ((t (:foreground "brightblue"))))
+;;  '(highlight ((t (:background "paleturquoise"))))
+;;  '(isearch ((t (:background "magenta" :foreground "black"))))
+;;  '(lazy-highlight ((t (:background "paleturquoise"))))
+;;  '(sh-quoted-exec ((t (:foreground "brightblue")))))
 
 (custom-set-variables
  ;; custom-set-variables was added by Custom.
@@ -135,7 +141,7 @@
  '(git-commit-summary-max-length 50)
  '(package-selected-packages
    (quote
-    (ace-window counsel magit yaml-mode swiper smooth-scrolling smex python-mode python-docstring py-isort markdown-mode json-snatcher json-reformat go-guru go-autocomplete git-auto-commit-mode flycheck flx dracula-theme auto-package-update)))
+    (esup pymacs flycheck-gometalinter evil ace-window counsel yaml-mode swiper smooth-scrolling smex python-mode python-docstring py-isort markdown-mode json-snatcher json-reformat go-guru go-autocomplete git-auto-commit-mode flycheck flx dracula-theme auto-package-update)))
  '(safe-local-variable-values
    (quote
     ((eval when
@@ -171,3 +177,10 @@
 	     (setq web-mode-css-indent-offset 2)
 	     (setq web-mode-code-indent-offset 2)
 	     (setq web-mode-indent-style 2)))))))
+(custom-set-faces
+ ;; custom-set-faces was added by Custom.
+ ;; If you edit it by hand, you could mess it up, so be careful.
+ ;; Your init file should contain only one such instance.
+ ;; If there is more than one, they won't work right.
+ '(isearch ((t (:background "green" :foreground "white" :weight bold))))
+ '(lazy-highlight ((t (:background "turquoise3" :foreground "black")))))

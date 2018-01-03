@@ -44,6 +44,8 @@ call plug#begin('~/.vim/plugged')
 " detect indent on files
 Plug 'tpope/vim-sleuth'
 
+Plug 'tpope/vim-markdown'
+
 " be able to do/undo make window full
 Plug 'vim-scripts/ZoomWin'
 
@@ -107,8 +109,8 @@ inoremap <C-X> <C-O>:Commands<CR>
 let g:go_fmt_command = "goimports"
 
 " fzf files preview command with preview window
-command! -bang -nargs=? -complete=dir Fiiles
-  \ call fzf#vim#files('rg --column --line-number --no-heading --color=always '.shellescape(<q-args>).'| tr -d "\017"', 1, <bang>0)
+" command! -bang -nargs=? -complete=dir Fiiles
+"   \ call fzf#vim#files('rg --column --line-number --no-heading --color=always '.shellescape(<q-args>).'| tr -d "\017"', 1, <bang>0)
 "command! -bang -nargs=? -complete=dir Files
 "  \ call fzf#vim#files(<q-args>, fzf#vim#with_pre
 let g:fzf_layout = { 'down': '~40%' }
