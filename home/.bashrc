@@ -51,7 +51,7 @@ __prompt_command() {
   # vvv trim whitespace: https://stackoverflow.com/a/12973694
   local git="$(echo $(__git_ps1) | xargs)"
   local dir="$(sed "s:\([^/\.]\)[^/]*/:\1/:g" <<< ${PWD/#$HOME/\~})"
-  #venv=$(echo $(basename $VIRTUAL_ENV) | xargs)
+  # venv=$(echo $(basename $VIRTUAL_ENV) | xargs)
   local prefix="$(hostname)"
   # PS1="$venv$git[$prefix $dir] "
   # PS1="$git[$prefix $dir] "

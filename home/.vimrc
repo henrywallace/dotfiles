@@ -2,8 +2,8 @@
 inoremap <c-a> <c-o>^
 nnoremap <c-a> ^
 " end of line, readline style
-inoremap <expr> <c-e> col('.')>strlen(getline('.'))<bar><bar>pumvisible()?"\<Lt>c-e>":"\<Lt>End>"
 nnoremap <expr> <c-e> col('.')>strlen(getline('.'))<bar><bar>pumvisible()?"\<Lt>c-e>":"\<Lt>End>"
+inoremap <expr> <c-e> col('.')>strlen(getline('.'))<bar><bar>pumvisible()?"\<Lt>c-e>":"\<Lt>End>"
 " edit the word under the cursor, readline style
 nnoremap e ciw
 " undo, readline style
@@ -40,6 +40,9 @@ set fillchars+=vert:\ |
 
 " vim-plug configuration: https://github.com/junegunn/vim-plug
 call plug#begin('~/.vim/plugged')
+
+" move lines up or down with with [e and ]e
+Plug 'tpope/vim-unimpaired'
 
 " detect indent on files
 Plug 'tpope/vim-sleuth'
@@ -104,6 +107,9 @@ nnoremap <C-R> :History:<CR>
 inoremap <C-R> <C-O>:History:<CR>
 nnoremap <C-X> :Commands<CR>
 inoremap <C-X> <C-O>:Commands<CR>
+
+nnoremap <M-Up> [e
+inoremap <M-Down> <C-O>]e<CR>
 
 " Go customizations
 let g:go_fmt_command = "goimports"

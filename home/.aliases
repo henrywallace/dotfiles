@@ -9,17 +9,19 @@ alias rld='source ~/.bashrc'
 alias vrc='vim ~/.vimrc'
 
 # misc
+alias div='printf "%$(tput cols)s\n" | tr " " ='
 alias sudo='sudo '
 alias bup='brew upgrade && brew cleanup'
 alias c='clear'
 alias celar='clear'
 alias dotf='cd ~/dotfiles'
-alias rg='rg --heading -n --color=always --colors path:fg:green --colors path:style:bold --colors line:fg:blue --colors line:style:bold'
+alias rg='rg -n --color=always --colors path:fg:green --colors path:style:bold --colors line:fg:blue --colors line:style:bold'
 alias rgo="rg -g '*.go'"
 alias ta='tmux attach'
 alias watch='watch --color ' # https://unix.stackexchange.com/a/25329/162041
 alias yup='yolk --upgrade'
 alias shellcheck='shellcheck --color=always'
+alias d='cd ~/Desktop'
 
 # gke
 alias gc='gcloud compute'
@@ -45,6 +47,9 @@ alias ll='ls -la'
 alias ls="exa --group-directories-first -I '*~'"
 alias mv='mv -i'
 alias rm='rm -i'
+alias ..='cd ..'
+alias ...='cd ../..'
+# alias -='cd -'
 
 # editors
 alias e='emacs'
@@ -55,6 +60,9 @@ alias v=vim
 alias de='dep ensure -v'
 alias dup='go get -u github.com/golang/dep/cmd/dep'
 alias goi='go install -v ./...'
+alias reinstall='dep ensure -v && go install -v ./...'
+alias gome='cd $GOPATH/src/github.com/henrywallace'
+alias gdoc='echo http://localhost:6060; godoc -play -notes="TODO|HELP|QUESTION" -http :6060'
 
 # rustlang
 alias cup='cargo install-update -a'
@@ -66,7 +74,10 @@ alias dif='git diff master..HEAD --stat'
 alias g-='git checkout -'
 alias g='git'
 alias ga='git add -u'
-alias gb='git branch -vv'
+alias gb="git for-each-ref --color=always --sort=-committerdate refs/heads/ --format='%(HEAD)|%(color:green)%(committerdate:relative)%(color:reset)|%(color:blue)%(refname:short)%(color:reset)|%(contents:subject)|%(color:red)%(objectname:short)%(color:reset)' | column -t -s '|'"
+alias gc='git checkout'
+# _completion_loader git
+# complete -o bashdefault -o default -o nospace -F _git g
 alias gd='git diff'
 alias gdc='git diff --cached'
 alias gk='git checkout'
@@ -77,8 +88,9 @@ alias gs='git status'
 alias lg='git log --oneline master..HEAD'
 alias lgp='git log -p master..HEAD'
 alias llg='git log --graph --oneline'
-alias lr='git show HEAD -p'
-alias lrq='git show HEAD'
+alias lr='git show HEAD'
+alias lrq='git show HEAD -q; echo'
+alias lrp='lr'
 alias rb='git rebase -i master'
 alias rc='git rebase --continue'
 alias review='git log --stat --reverse master..HEAD'
