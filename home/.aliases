@@ -1,32 +1,53 @@
+#
 # docker
+#
 alias enhance='function ne() { docker run --rm -v "$(pwd)/`dirname ${@:$#}`":/ne/input -it alexjc/neural-enhance ${@:1:$#-1} "input/`basename ${@:$#}`"; }; ne'
+alias ubu='docker run --rm -it $1 ubuntu'
 
+#
 # config
+#
 alias ba='emacs ~/.bash_aliases'
 alias brc='emacs ~/.bashrc'
 alias el='emacs ~/.emacs.el'
 alias rld='source ~/.bashrc'
 alias vrc='vim ~/.vimrc'
 
+#
 # misc
-alias div='printf "%$(tput cols)s\n" | tr " " ='
-alias sudo='sudo '
+#
 alias bup='brew upgrade && brew cleanup'
 alias c='clear'
 alias celar='clear'
+alias cl='clear; ls'
+alias d='cd ~/Desktop'
+alias div='tput setaf 4; tput bold; printf "%$(tput cols)s\n" | tr " " =; tput sgr0'
 alias dotf='cd ~/dotfiles'
 alias rg='rg -n --color=always --colors path:fg:green --colors path:style:bold --colors line:fg:blue --colors line:style:bold'
-alias rgo="rg -g '*.go'"
-alias ta='tmux attach'
-alias watch='watch --color ' # https://unix.stackexchange.com/a/25329/162041
-alias yup='yolk --upgrade'
 alias shellcheck='shellcheck --color=always'
-alias d='cd ~/Desktop'
+alias sudo='sudo '  # allow for sudo completion
+alias ta='tmux attach'
+alias watch='watch --color ' # allow watch completion https://unix.stackexchange.com/a/25329/162041
+alias yup='yolk --upgrade'
+# simple and quick HTTP server
+function serve() {
+  if [ -z "$1" ]; then
+    echo http://localhost:8000
+  else
+    echo "http://localhost:$1"
+  fi
+  echo "python -m SimpleHTTPServer $1"
+  python -m SimpleHTTPServer $1
+}
 
+#
 # gke
-alias gc='gcloud compute'
+#
+alias compute='gcloud compute'
 
+#
 # k8s
+#
 alias k='kubectl'
 alias kt='kubetail'
 alias mk='minikube'
@@ -36,7 +57,9 @@ alias mkl='minikube service list'
 alias wp='watch kubectl get pods'
 alias wpa='watch kubectl get pods --all-namespaces'
 
+#
 # generic
+#
 alias c='clear'
 alias cp='cp -i'
 alias j='jobs -l'
@@ -49,25 +72,31 @@ alias mv='mv -i'
 alias rm='rm -i'
 alias ..='cd ..'
 alias ...='cd ../..'
-# alias -='cd -'
 
+#
 # editors
+#
 alias e='emacs'
 alias emacs='emacs -nw'
 alias v=vim
 
+#
 # golang
+#
 alias de='dep ensure -v'
-alias dup='go get -u github.com/golang/dep/cmd/dep'
 alias goi='go install -v ./...'
-alias reinstall='dep ensure -v && go install -v ./...'
+alias got='go test ./...'
 alias gome='cd $GOPATH/src/github.com/henrywallace'
 alias gdoc='echo http://localhost:6060; godoc -play -notes="TODO|HELP|QUESTION" -http :6060'
 
+#
 # rustlang
+#
 alias cup='cargo install-update -a'
 
+#
 # git
+#
 alias cleanup='git branch --merge master | grep -v master | xargs git branch -d'
 alias conflicts="rg '<<<<<<<'"
 alias dif='git diff master..HEAD --stat'
@@ -75,12 +104,12 @@ alias g-='git checkout -'
 alias g='git'
 alias ga='git add -u'
 alias gb="git for-each-ref --color=always --sort=-committerdate refs/heads/ --format='%(HEAD)|%(color:green)%(committerdate:relative)%(color:reset)|%(color:blue)%(refname:short)%(color:reset)|%(contents:subject)|%(color:red)%(objectname:short)%(color:reset)' | column -t -s '|'"
-alias gc='git checkout'
-# _completion_loader git
-# complete -o bashdefault -o default -o nospace -F _git g
+alias gc='git commit'
+alias gco='git checkout'
 alias gd='git diff'
 alias gdc='git diff --cached'
 alias gk='git checkout'
+alias gl='git log --stat master..HEAD'
 alias gm='git checkout master'
 alias gn='git checkout -b'
 alias gp='git pull --rebase'
@@ -89,12 +118,29 @@ alias lg='git log --oneline master..HEAD'
 alias lgp='git log -p master..HEAD'
 alias llg='git log --graph --oneline'
 alias lr='git show HEAD'
-alias lrq='git show HEAD -q; echo'
 alias lrp='lr'
-alias rb='git rebase -i master'
+alias lrq='git show HEAD -q; echo'
 alias rc='git rebase --continue'
 alias review='git log --stat --reverse master..HEAD'
 alias st='git stash show -p'
 alias sta='git stash'
-alias stl='git stash list | wc -l | xargs'
+alias stc='git stash list | wc -l | xargs'
+alias stl='git stash list'
 alias stp='git stash pop'
+# rebase master or rebase back $1 commits
+function rb () {
+  if [ -z "$1" ]; then
+    git rebase -i master
+  else
+    echo "git rebase -i HEAD~$1"
+    git rebase -i "HEAD~$1"
+  fi
+}
+# git commit ammend, with quick option for no-edit
+function gca() {
+  if [ "$1" == "-" ] || [ "$1" == "--" ]; then
+    git commit --amend --no-edit
+  else
+    git commit --amend
+  fi
+}
