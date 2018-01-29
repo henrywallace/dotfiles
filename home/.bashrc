@@ -29,9 +29,9 @@ esac
 alias alert='notify-send --urgency=low -i "$([ $? = 0 ] && echo terminal || echo error)" "$(history|tail -n1|sed -e '\''s/^\s*[0-9]\+\s*//;s/[;&|]\s*alert$//'\'')"'
 
 # git prompt
-#GIT_PS1_SHOWDIRTYSTATE="yes"
+GIT_PS1_SHOWDIRTYSTATE="yes"
 #GIT_PS1_SHOWSTASHSTATE="yes"
-#GIT_PS1_SHOWUPSTREAM="verbose"
+GIT_PS1_SHOWUPSTREAM="verbose"
 GIT_PROMPT=~/.git-prompt.sh
 test -f $GIT_PROMPT || curl -sS -o $GIT_PROMPT https://raw.githubusercontent.com/git/git/master/contrib/completion/git-prompt.sh
 source $GIT_PROMPT
@@ -78,7 +78,7 @@ __prompt_command() {
   prefix="$(hostname -s)"
 
   # Git
-  git="$BLUE$BOLD$(echo $(__git_ps1) | xargs)$NC"
+  git="$BLUE$BOLD$(__git_ps1 "[%s]")$NC"
   # stash count
   stashes="$(git stash list 2> /dev/null || echo NOGIT)"
   if [ "$stashes" == "NOGIT" ]; then
