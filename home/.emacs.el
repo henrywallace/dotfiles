@@ -33,6 +33,10 @@
   (unless (package-installed-p package)
     (package-install package)))
 
+;; smart mode line
+(setq sml/no-confirm-load-theme t)
+(sml/setup)
+
 ;; misc built-in
 (menu-bar-mode -1)
 (column-number-mode 1)
@@ -94,10 +98,9 @@
         (comment-or-uncomment-region beg end)))
 (global-set-key (kbd "M-;") 'comment-or-uncomment-region-or-line)
 
-;; kill pesky python buffers
+;; kill freakin' pesky python buffers that won't die
 ;; https://emacs.stackexchange.com/a/14511
 (setq kill-buffer-query-functions (delq 'process-kill-buffer-query-function kill-buffer-query-functions))
-
 
 ;; golang! :D
 (require 'go-guru)
@@ -113,8 +116,6 @@
   (local-set-key (kbd "M-p") 'compile)
   (auto-complete-mode 1))
 (add-hook 'go-mode-hook 'my-go-mode-hook)
-;; (with-eval-after-load 'go-mode
-;;   (require 'go-autocomplete))
 
 ;; (custom-set-faces
 ;;  ;; custom-set-faces was added by Custom.
@@ -138,10 +139,13 @@
  ;; If you edit it by hand, you could mess it up, so be careful.
  ;; Your init file should contain only one such instance.
  ;; If there is more than one, they won't work right.
+ '(custom-safe-themes
+   (quote
+    ("3c83b3676d796422704082049fc38b6966bcad960f896669dfc21a7a37a748fa" default)))
  '(git-commit-summary-max-length 50)
  '(package-selected-packages
    (quote
-    (esup pymacs flycheck-gometalinter evil ace-window counsel yaml-mode swiper smooth-scrolling smex python-mode python-docstring py-isort markdown-mode json-snatcher json-reformat go-guru go-autocomplete git-auto-commit-mode flycheck flx dracula-theme auto-package-update)))
+    (smart-mode-line esup pymacs flycheck-gometalinter evil ace-window counsel yaml-mode swiper smooth-scrolling smex python-mode python-docstring py-isort markdown-mode json-snatcher json-reformat go-guru go-autocomplete git-auto-commit-mode flycheck flx dracula-theme auto-package-update)))
  '(safe-local-variable-values
    (quote
     ((eval when

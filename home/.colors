@@ -1,0 +1,19 @@
+#!/bin/bash
+#
+# More human readable color vars. Also, we are careful to wrap them in
+# \[ and \] such that readline can correcltly interpret the length of
+# printed strings. This is especially pertinent for PS1.
+#
+# http://www.tldp.org/HOWTO/Bash-Prompt-HOWTO/nonprintingchars.html
+# https://superuser.com/a/367280/577047
+
+BLACK="\[$(tput setaf 1)\]"
+RED="\[$(tput setaf 1)\]"
+GREEN="\[$(tput setaf 2)\]"
+YELLOW="\[$(tput setaf 3)\]"
+BLUE="\[$(tput setaf 4)\]"
+MAGENTA="\[$(tput setaf 5)\]"
+CYAN="\[$(tput setaf 6)\]"
+WHITE="\[$(tput setaf 7)\]"
+BOLD="\[$(tput bold)\]"
+NC="\[$(tput sgr0)\]"

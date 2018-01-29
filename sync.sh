@@ -5,6 +5,7 @@ set -e
 HOME_FILES="
   .aliases
   .bashrc
+  .colors
   .emacs.el
   .gitconfig
   .gitignore_global

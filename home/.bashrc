@@ -25,14 +25,13 @@ case "$TERM" in
 	xterm-color) color_prompt=yes;;
 esac
 
-# Add an "alert" alias for long running commands.  Use like so:
-#	sleep 10; alert
+# Add an "alert" alias for long running commands, e.g. `sleep 10; alert`
 alias alert='notify-send --urgency=low -i "$([ $? = 0 ] && echo terminal || echo error)" "$(history|tail -n1|sed -e '\''s/^\s*[0-9]\+\s*//;s/[;&|]\s*alert$//'\'')"'
 
 # git prompt
 #GIT_PS1_SHOWDIRTYSTATE="yes"
 #GIT_PS1_SHOWSTASHSTATE="yes"
-GIT_PS1_SHOWUPSTREAM="verbose"
+#GIT_PS1_SHOWUPSTREAM="verbose"
 GIT_PROMPT=~/.git-prompt.sh
 test -f $GIT_PROMPT || curl -sS -o $GIT_PROMPT https://raw.githubusercontent.com/git/git/master/contrib/completion/git-prompt.sh
 source $GIT_PROMPT
@@ -42,22 +41,49 @@ GIT_COMPLETION=~/.git-completion.sh
 test -f $GIT_COMPLETION || curl -sS -o $GIT_COMPLETION https://raw.githubusercontent.com/git/git/master/contrib/completion/git-completion.bash
 source $GIT_COMPLETION
 
-# nice prompt
+# because colors are awesome
+source ~/.colors
+
+# Nice prompt ^_^
 # https://unix.stackexchange.com/a/275016/162041
 # https://wiki.archlinux.org/index.php/Bash/Prompt_customization
 PROMPT_COMMAND=__prompt_command
 __prompt_command() {
-  local status="$?"
-  # vvv trim whitespace: https://stackoverflow.com/a/12973694
-  local git="$(echo $(__git_ps1) | xargs)"
-  local dir="$(sed "s:\([^/\.]\)[^/]*/:\1/:g" <<< ${PWD/#$HOME/\~})"
-  venv="$(echo $(basename $VIRTUAL_ENV 2> /dev/null || echo) | xargs)"
-  local prefix="$(hostname)"
-  # PS1="$venv$git[$prefix $dir] "
-  # PS1="$git[$prefix $dir] "
-  PS1="$venv$git[$prefix $dir] "
+  # The previous exit code.
+  if [ "$?" == "0" ]; then
+    status="$?"
+  else
+    status="$RED$BOLD$?$NC"
+  fi
 
-  # At one point, in time, I thought colorizing the typed command was cool:
+  # The current directory
+  # trim whitespace: https://stackoverflow.com/a/12973694
+  dir="$BOLD$(sed "s:\([^/\.]\)[^/]*/:\1/:g" <<< ${PWD/#$HOME/\~})$NC"
+
+  # Python
+  venv="$(echo $(basename $VIRTUAL_ENV 2> /dev/null || echo) | xargs)"
+  if [ ! -z "$venv" ]; then
+    venv="$GREEN$BOLD($venv)$NC"
+  fi
+  prefix="$(hostname -s)"
+
+  # Git
+  git="$BLUE$BOLD$(echo $(__git_ps1) | xargs)$NC"
+  stashes="$(git stash list 2> /dev/null || echo NOGIT)"
+  if [ "$stashes" == "NOGIT" ]; then
+    nstash=""
+  else
+    nstash="$(echo "$stashes" | xargs | wc -l | xargs)"
+  fi
+
+  # Stats
+  stats="($nstash,$status)"
+
+  PS1="$venv$git$stats[$prefix $dir] "
+
+  # At one point, in time, I thought colorizing the typed command was
+  # cool:
+  #
   # shopt -s extdebug
   # trap "tput sgr0" DEBUG
 }
@@ -112,8 +138,7 @@ export FZF_DEFAULT_OPTS='--height 6 --reverse'
 function _makefile_targets {
     local curr_arg;
     local targets;
-
-    # Find makefile targets available in the current directory
+    # find makefile targets available in the current directory
     targets=''
     if [[ -e "$(pwd)/Makefile" ]]; then
         targets=$( \
@@ -122,8 +147,7 @@ function _makefile_targets {
             | tr '\n' ' ' \
         )
     fi
-
-    # Filter targets based on user input to the bash completion
+    # filter targets based on user input to the bash completion
     curr_arg=${COMP_WORDS[COMP_CWORD]}
     COMPREPLY=( $(compgen -W "${targets[@]}" -- $curr_arg ) );
 }

@@ -107,6 +107,7 @@ alias gb="git for-each-ref --color=always --sort=-committerdate refs/heads/ --fo
 alias gc='git commit'
 alias gco='git checkout'
 alias gd='git diff'
+alias gdk='echo; git diff --stat; echo'
 alias gdc='git diff --cached'
 alias gk='git checkout'
 alias gl='git log --stat master..HEAD'
