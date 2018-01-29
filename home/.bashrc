@@ -44,6 +44,16 @@ source $GIT_COMPLETION
 # because colors are awesome
 source ~/.colors
 
+# PS2 controls the prefix that the terminal prints after typing \-return. By
+# default it's "> ". We change it to just 2 spaces, so that after copying it,
+# pasting it would be a valid entry into a terminal.
+PS2=" "
+
+# PS4 controls the prefix for running shell scripts in debug mode, i.e. `set
+# -x`. We add the script name and line number for more clarity, instead of the
+# default "++ "
+PS4="$0:$LINENO: "
+
 # Nice prompt ^_^
 # https://unix.stackexchange.com/a/275016/162041
 # https://wiki.archlinux.org/index.php/Bash/Prompt_customization
@@ -69,15 +79,23 @@ __prompt_command() {
 
   # Git
   git="$BLUE$BOLD$(echo $(__git_ps1) | xargs)$NC"
+  # stash count
   stashes="$(git stash list 2> /dev/null || echo NOGIT)"
   if [ "$stashes" == "NOGIT" ]; then
     nstash=""
   else
     nstash="$(echo "$stashes" | xargs | wc -l | xargs)"
   fi
+  # num commits in branch
+  commits="$(git rev-list --count HEAD 2> /dev/null || echo NOGIT)"
+  if [ "$commits" == "NOGIT" ]; then
+    ncommit=""
+  else
+    ncommit="$(git log --oneline master..HEAD | wc -l | xargs)"
+  fi
 
   # Stats
-  stats="($nstash,$status)"
+  stats="[$ncommit.$nstash.$status]"
 
   PS1="$venv$git$stats[$prefix $dir] "
 
@@ -178,3 +196,8 @@ done
 	-W "$(grep "^Host" ~/.ssh/config | \
 	grep -v "[?*]" | cut -d " " -f2 | \
 	tr ' ' '\n')" scp sftp ssh
+
+# Cowthink
+animal="$(cowthink -l | tail -n +2 | xargs | tr ' ' '\n' | sort -R | head -1)"
+method="$(echo cowthink cowsay | xargs | tr ' ' '\n' | sort -R | head -1)"
+$method -f $animal $(fortune)
