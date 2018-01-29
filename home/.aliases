@@ -1,8 +1,10 @@
+# -*- mode: sh -*-
+
 #
 # docker
 #
 alias enhance='function ne() { docker run --rm -v "$(pwd)/`dirname ${@:$#}`":/ne/input -it alexjc/neural-enhance ${@:1:$#-1} "input/`basename ${@:$#}`"; }; ne'
-alias ubu='docker run --rm -it $1 ubuntu'
+alias ub='docker run --rm -it $1 ubuntu'
 
 #
 # config
@@ -18,14 +20,16 @@ alias vrc='vim ~/.vimrc'
 #
 alias bup='brew upgrade && brew cleanup'
 alias c='clear'
-alias celar='clear'
-alias cl='clear; ls'
+alias celar='clear'  # why can this human not learn?
 alias d='cd ~/Desktop'
 alias div='tput setaf 4; tput bold; printf "%$(tput cols)s\n" | tr " " =; tput sgr0'
 alias dotf='cd ~/dotfiles'
+alias kr="jobs -l | grep '+' | awk '{print $2}' | kill"
+alias ports='lsof -iTCP -sTCP:LISTEN -n -P'
 alias rg='rg -n --color=always --colors path:fg:green --colors path:style:bold --colors line:fg:blue --colors line:style:bold'
 alias shellcheck='shellcheck --color=always'
 alias sudo='sudo '  # allow for sudo completion
+alias t='tmux'
 alias ta='tmux attach'
 alias watch='watch --color ' # allow watch completion https://unix.stackexchange.com/a/25329/162041
 alias yup='yolk --upgrade'

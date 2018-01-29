@@ -61,7 +61,7 @@ PROMPT_COMMAND=__prompt_command
 __prompt_command() {
   # The previous exit code.
   if [ "$?" == "0" ]; then
-    status="$CYAN$BOLD$?$NC"
+    status="$BLUE$BOLD$?$NC"
   else
     status="$RED$BOLD$?$NC"
   fi
@@ -73,12 +73,12 @@ __prompt_command() {
   # Python
   venv="$(echo $(basename $VIRTUAL_ENV 2> /dev/null || echo) | xargs)"
   if [ ! -z "$venv" ]; then
-    venv="{$GREEN$BOLD$venv$NC}"
+    venv="$GREEN$BOLD[$venv]$NC"
   fi
   prefix="$(hostname -s)"
 
   # Git
-  git="$(__git_ps1 "{$BLUE$BOLD%s$NC}")"
+  git="$(__git_ps1 "$BLUE$BOLD[%s]$NC")"
   # stash count
   stashes="$(git stash list 2> /dev/null || echo NOGIT)"
   if [ "$stashes" == "NOGIT" ]; then
@@ -97,9 +97,9 @@ __prompt_command() {
   # Stats
 
   if [ -z "$ncommit" ]; then
-    stats="{$status}"
+    stats="[$status]"
   else
-    stats="{$BOLD$ncommit${NC}c.$BOLD$nstash${NC}s.$status}"
+    stats="[$ncommit${NC} $nstash${NC} $status]"
   fi
 
   PS1="$venv$git$stats[$prefix $dir] "
@@ -203,7 +203,6 @@ done
 	tr ' ' '\n')" scp sftp ssh
 
 # Cowthink
-# animal="$(cowthink -l | tail -n +2 | xargs | tr ' ' '\n' | sort -R | head -1)"
 animals="
 bud-frogs
 default
@@ -226,4 +225,7 @@ $HOME/.misc/hypno.cow
 "
 animal="$(echo "$animals" | sed '/^$/d' | sort -R | head -1)"
 method="$(echo cowthink cowsay | xargs | tr ' ' '\n' | sort -R | head -1)"
-$method -f $animal $(fortune -s)
+# Only display cowthink every other login.
+if [ "$(shuf -i1-2 -n1)" -le "1" ]; then
+  $method -f $animal $(fortune -s)
+fi

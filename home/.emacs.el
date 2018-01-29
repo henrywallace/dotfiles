@@ -11,6 +11,7 @@
 	python-mode
 	swiper
 	yaml-mode
+        vim-empty-lines-mode
 	))
 
 ;; shell scripting
@@ -36,6 +37,9 @@
 ;; smart mode line
 (setq sml/no-confirm-load-theme t)
 (sml/setup)
+
+;; vim-style empty-lines
+(global-vim-empty-lines-mode)
 
 ;; misc built-in
 (menu-bar-mode -1)
@@ -145,7 +149,7 @@
  '(git-commit-summary-max-length 50)
  '(package-selected-packages
    (quote
-    (smart-mode-line esup pymacs flycheck-gometalinter evil ace-window counsel yaml-mode swiper smooth-scrolling smex python-mode python-docstring py-isort markdown-mode json-snatcher json-reformat go-guru go-autocomplete git-auto-commit-mode flycheck flx dracula-theme auto-package-update)))
+    (vim-empty-lines-mode smart-mode-line esup pymacs flycheck-gometalinter evil ace-window counsel yaml-mode swiper smooth-scrolling smex python-mode python-docstring py-isort markdown-mode json-snatcher json-reformat go-guru go-autocomplete git-auto-commit-mode flycheck flx dracula-theme auto-package-update)))
  '(safe-local-variable-values
    (quote
     ((eval when
