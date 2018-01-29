@@ -10,9 +10,10 @@ HOME_FILES="
   .gitconfig
   .gitignore_global
   .inputrc
+  .misc
   .vimrc
 "
 
 for f in $HOME_FILES; do
-  cp "$HOME/$f" "$(dirname $0)/home/$f" 2> /dev/null || echo "missing local $HOME/$f";
+  cp -r "$HOME/$f" "$(dirname $0)/home/$f" 2> /dev/null || echo "missing file $HOME/$f";
 done

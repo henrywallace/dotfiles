@@ -9,8 +9,8 @@
 
 # If not running interactively, don't do anything
 case $- in
-	*i*) ;;
-	*) return;;
+  *i*) ;;
+  *) return;;
 esac
 
 # check the window size after each command and, if necessary,
@@ -61,7 +61,7 @@ PROMPT_COMMAND=__prompt_command
 __prompt_command() {
   # The previous exit code.
   if [ "$?" == "0" ]; then
-    status="$?"
+    status="$CYAN$BOLD$?$NC"
   else
     status="$RED$BOLD$?$NC"
   fi
@@ -73,12 +73,12 @@ __prompt_command() {
   # Python
   venv="$(echo $(basename $VIRTUAL_ENV 2> /dev/null || echo) | xargs)"
   if [ ! -z "$venv" ]; then
-    venv="$GREEN$BOLD($venv)$NC"
+    venv="{$GREEN$BOLD$venv$NC}"
   fi
   prefix="$(hostname -s)"
 
   # Git
-  git="$BLUE$BOLD$(__git_ps1 "[%s]")$NC"
+  git="$(__git_ps1 "{$BLUE$BOLD%s$NC}")"
   # stash count
   stashes="$(git stash list 2> /dev/null || echo NOGIT)"
   if [ "$stashes" == "NOGIT" ]; then
@@ -95,7 +95,12 @@ __prompt_command() {
   fi
 
   # Stats
-  stats="[$ncommit.$nstash.$status]"
+
+  if [ -z "$ncommit" ]; then
+    stats="{$status}"
+  else
+    stats="{$BOLD$ncommit${NC}c.$BOLD$nstash${NC}s.$status}"
+  fi
 
   PS1="$venv$git$stats[$prefix $dir] "
 
@@ -203,7 +208,6 @@ animals="
 bud-frogs
 default
 elephant
-eyes
 flaming-sheep
 kitty
 koala
@@ -218,7 +222,8 @@ three-eyes
 tux
 udder
 vader
+$HOME/.misc/hypno.cow
 "
-animal="$(echo "$animals" | sort -R | head -1)"
+animal="$(echo "$animals" | sed '/^$/d' | sort -R | head -1)"
 method="$(echo cowthink cowsay | xargs | tr ' ' '\n' | sort -R | head -1)"
 $method -f $animal $(fortune -s)
