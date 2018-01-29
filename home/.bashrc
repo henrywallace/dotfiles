@@ -198,6 +198,27 @@ done
 	tr ' ' '\n')" scp sftp ssh
 
 # Cowthink
-animal="$(cowthink -l | tail -n +2 | xargs | tr ' ' '\n' | sort -R | head -1)"
+# animal="$(cowthink -l | tail -n +2 | xargs | tr ' ' '\n' | sort -R | head -1)"
+animals="
+bud-frogs
+default
+elephant
+eyes
+flaming-sheep
+kitty
+koala
+moofasa
+moose
+satanic
+sheep
+skeleton
+small
+stegosaurus
+three-eyes
+tux
+udder
+vader
+"
+animal="$(echo "$animals" | sort -R | head -1)"
 method="$(echo cowthink cowsay | xargs | tr ' ' '\n' | sort -R | head -1)"
-$method -f $animal $(fortune)
+$method -f $animal $(fortune -s)
