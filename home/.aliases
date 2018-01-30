@@ -1,6 +1,11 @@
 # -*- mode: sh -*-
 
 #
+# override
+#
+alias date='/usr/local/opt/coreutils/libexec/gnubin/date'
+
+#
 # docker
 #
 alias enhance='function ne() { docker run --rm -v "$(pwd)/`dirname ${@:$#}`":/ne/input -it alexjc/neural-enhance ${@:1:$#-1} "input/`basename ${@:$#}`"; }; ne'
@@ -125,6 +130,7 @@ alias llg='git log --graph --oneline'
 alias lr='git show HEAD'
 alias lrp='lr'
 alias lrq='git show HEAD -q; echo'
+alias lrqq='echo; git log --oneline HEAD~..HEAD; echo'
 alias rc='git rebase --continue'
 alias review='git log --stat --reverse master..HEAD'
 alias st='git stash show -p'

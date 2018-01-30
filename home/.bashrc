@@ -54,16 +54,43 @@ PS2=" "
 # default "++ "
 PS4="$0:$LINENO: "
 
+function now_ns {
+    /usr/local/opt/coreutils/libexec/gnubin/date +%s%N
+}
+
+function timer_start {
+  timer_start=${timer_start:-"$(now_ns)"}
+}
+
+function timer_stop {
+  local delta_ns=$((($(now_ns) - $timer_start)))
+  since="$delta_ns"
+  unset timer_start
+}
+
 # Nice prompt ^_^
 # https://unix.stackexchange.com/a/275016/162041
 # https://wiki.archlinux.org/index.php/Bash/Prompt_customization
-PROMPT_COMMAND=__prompt_command
 __prompt_command() {
+  local EXIT="$?"
+
+  # Display how long previous command took if it took than 1 second. We do this
+  # as close to capturing the true exit code as possible, so to be as true to
+  # the time as possible.
+  timer_stop
+  if command -v mp &> /dev/null; then
+    if [ "$since" -ge "1000000000" ]; then
+      dur="[$CYAN$BOLD$(mp durfmt ${since}ns)$NC]"
+    else
+      dur=""
+    fi
+  fi
+
   # The previous exit code.
-  if [ "$?" == "0" ]; then
-    status="$BLUE$BOLD$?$NC"
+  if [ "$EXIT" == "0" ]; then
+    status="$GREEN$BOLD$EXIT$NC"
   else
-    status="$RED$BOLD$?$NC"
+    status="${RED}${BOLD}$EXIT${NC}"
   fi
 
   # The current directory
@@ -73,18 +100,17 @@ __prompt_command() {
   # Python
   venv="$(echo $(basename $VIRTUAL_ENV 2> /dev/null || echo) | xargs)"
   if [ ! -z "$venv" ]; then
-    venv="$GREEN$BOLD[$venv]$NC"
+    venv="$MAGENTA$BOLD[$venv]$NC"
   fi
   prefix="$(hostname -s)"
 
   # Git
   git="$(__git_ps1 "$BLUE$BOLD[%s]$NC")"
   # stash count
-  stashes="$(git stash list 2> /dev/null || echo NOGIT)"
-  if [ "$stashes" == "NOGIT" ]; then
+  if [ ! -d .git ]; then
     nstash=""
   else
-    nstash="$(echo "$stashes" | xargs | wc -l | xargs)"
+    nstash="$(git stash list | wc -l | xargs)"
   fi
   # num commits in branch
   commits="$(git rev-list --count HEAD 2> /dev/null || echo NOGIT)"
@@ -102,7 +128,7 @@ __prompt_command() {
     stats="[$ncommit${NC} $nstash${NC} $status]"
   fi
 
-  PS1="$venv$git$stats[$prefix $dir] "
+  PS1="$dur$venv$git$stats[$prefix $dir] "
 
   # At one point, in time, I thought colorizing the typed command was
   # cool:
@@ -110,6 +136,8 @@ __prompt_command() {
   # shopt -s extdebug
   # trap "tput sgr0" DEBUG
 }
+trap 'timer_start' DEBUG
+PROMPT_COMMAND=__prompt_command
 
 # pretty ls colors
 # https://apple.stackexchange.com/a/33679/192291
@@ -216,7 +244,6 @@ satanic
 sheep
 skeleton
 small
-stegosaurus
 three-eyes
 tux
 udder

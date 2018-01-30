@@ -1,8 +1,31 @@
+(custom-set-faces
+ ;; custom-set-faces was added by Custom.
+ ;; If you edit it by hand, you could mess it up, so be careful.
+ ;; Your init file should contain only one such instance.
+ ;; If there is more than one, they won't work right.
+ '(font-lock-comment-face ((t (:foreground "black" :weight bold))))
+ '(isearch ((t (:background "green" :foreground "white" :weight bold))))
+ '(ivy-current-match ((t (:background "black" :foreground "white" :weight bold))))
+ '(ivy-cursor ((t (:background "black" :foreground "white" :weight bold))))
+ '(ivy-minibuffer-match-face-1 ((t (:background "cyan"))))
+ '(ivy-minibuffer-match-face-2 ((t (:background "blue" :foreground "#000000"))))
+ '(ivy-minibuffer-match-face-3 ((t (:background "blue" :foreground "black"))))
+ '(ivy-minibuffer-match-face-4 ((t (:background "blue" :foreground "black" :weight bold))))
+ '(ivy-prompt-match ((t (:inherit ivy-current-match :background "black" :weight bold))))
+ '(lazy-highlight ((t (:background "turquoise3" :foreground "black"))))
+ '(region ((t (:background "black" :foreground "yellow"))))
+ '(show-paren-match ((t (:background "black" :foreground "green" :weight bold))))
+ '(show-paren-mismatch ((t (:background "black" :foreground "red" :weight bold))))
+ '(tty-menu-disabled-face ((t (:background "blue" :foreground "red"))))
+ '(vim-empty-lines-face ((t (:foreground "white")))))
+
 ;; wanted packages
 (setq package-list
       '(
 	auto-package-update
 	counsel
+	drag-stuff
+	editorconfig
 	flx
 	flycheck
 	go-autocomplete
@@ -41,6 +64,16 @@
 ;; vim-style empty-lines
 (global-vim-empty-lines-mode)
 
+;; editor configuration, e.g. indent size for shell scripts
+;;(add-to-list 'load-path "~/.emacs.d/lisp")
+;;(require 'editorconfig)
+;;(editorconfig-mode 1)
+
+;; better move lines
+;; (drag-stuff-global-mode)
+;; (global-set-key (kbd "C-n") 'drag-stuff-up)
+;; (global-set-key (kbd "C-m") 'drag-stuff-down)
+
 ;; misc built-in
 (menu-bar-mode -1)
 (column-number-mode 1)
@@ -64,18 +97,9 @@
 (setq auto-save-file-name-transforms
       `((".*" ,temporary-file-directory t)))
 
-;; clearer matching parens
+;; faster matching parens
 (show-paren-mode 1)
 (setq show-paren-delay 0)
-(set-face-attribute 'show-paren-match nil
-		    :weight 'bold
-		    :foreground "black"
-		    :background "yellow")
-
-;; nice region selection color :)
-(set-face-attribute 'region nil
-		    :foreground "black"
-		    :background "yellow")
 
 ;; ivy for the win
 (ivy-mode 1)
@@ -85,10 +109,6 @@
 (global-set-key (kbd "M-x") 'counsel-M-x)
 (global-set-key (kbd "C-x C-f") 'counsel-find-file)
 (define-key read-expression-map (kbd "C-r") 'counsel-expression-history)
-(set-face-attribute 'ivy-current-match nil
-		    :weight 'bold
-		    :foreground "black"
-                    :background "magenta")
 
 ;; Uncomment or comment single lines, in addition to regions.
 ;; http://stackoverflow.com/questions/9688748/emacs-comment-uncomment-current-line
@@ -145,11 +165,11 @@
  ;; If there is more than one, they won't work right.
  '(custom-safe-themes
    (quote
-    ("3c83b3676d796422704082049fc38b6966bcad960f896669dfc21a7a37a748fa" default)))
+    ("ff7625ad8aa2615eae96d6b4469fcc7d3d20b2e1ebc63b761a349bebbb9d23cb" "3c83b3676d796422704082049fc38b6966bcad960f896669dfc21a7a37a748fa" default)))
  '(git-commit-summary-max-length 50)
  '(package-selected-packages
    (quote
-    (vim-empty-lines-mode smart-mode-line esup pymacs flycheck-gometalinter evil ace-window counsel yaml-mode swiper smooth-scrolling smex python-mode python-docstring py-isort markdown-mode json-snatcher json-reformat go-guru go-autocomplete git-auto-commit-mode flycheck flx dracula-theme auto-package-update)))
+    (editorconfig drag-stuff vim-empty-lines-mode smart-mode-line esup pymacs flycheck-gometalinter evil ace-window counsel yaml-mode swiper smooth-scrolling smex python-mode python-docstring py-isort markdown-mode json-snatcher json-reformat go-guru go-autocomplete git-auto-commit-mode flycheck flx dracula-theme auto-package-update)))
  '(safe-local-variable-values
    (quote
     ((eval when
@@ -185,10 +205,3 @@
 	     (setq web-mode-css-indent-offset 2)
 	     (setq web-mode-code-indent-offset 2)
 	     (setq web-mode-indent-style 2)))))))
-(custom-set-faces
- ;; custom-set-faces was added by Custom.
- ;; If you edit it by hand, you could mess it up, so be careful.
- ;; Your init file should contain only one such instance.
- ;; If there is more than one, they won't work right.
- '(isearch ((t (:background "green" :foreground "white" :weight bold))))
- '(lazy-highlight ((t (:background "turquoise3" :foreground "black")))))
