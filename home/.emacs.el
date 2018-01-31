@@ -37,6 +37,10 @@
         vim-empty-lines-mode
 	))
 
+;; divider
+(set-face-background 'vertical-border "black")
+(set-face-foreground 'vertical-border (face-background 'vertical-border))
+
 ;; shell scripting
 '(sh-basic-offset 2)
 '(sh-indentation 2)
@@ -60,6 +64,7 @@
 ;; smart mode line
 (setq sml/no-confirm-load-theme t)
 (sml/setup)
+(setq sml/theme 'respectful)
 
 ;; vim-style empty-lines
 (global-vim-empty-lines-mode)
