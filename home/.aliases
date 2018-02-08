@@ -112,7 +112,6 @@ alias dif='git diff master..HEAD --stat'
 alias g-='git checkout -'
 alias g='git'
 alias ga='git add -u'
-alias gb="git for-each-ref --color=always --sort=-committerdate refs/heads/ --format='%(HEAD)|%(color:green)%(committerdate:relative)%(color:reset)|%(color:blue)%(refname:short)%(color:reset)|%(contents:subject)|%(color:red)%(objectname:short)%(color:reset)' | column -t -s '|'"
 alias gc='git commit'
 alias gco='git checkout'
 alias gd='git diff'
@@ -154,4 +153,15 @@ function gca() {
   else
     git commit --amend
   fi
+}
+# pretty git branches
+function gb() {
+    branches="$(git for-each-ref --color=always --sort=-committerdate refs/heads/ --format='%(HEAD)|%(color:green)%(committerdate:relative)%(color:reset)|%(color:blue)%(refname:short)%(color:reset)|%(contents:subject)|%(color:red)%(objectname:short)%(color:reset)' | column -t -s '|')"
+    if [ -z "$1" ]; then
+	echo "$(echo "$branches" | head -4)"
+    elif [ "$1" == '-a' ]; then
+	echo "$branches"
+    else
+	echo "$(echo "$branches" | head "$1")"
+    fi
 }

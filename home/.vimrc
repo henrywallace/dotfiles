@@ -95,6 +95,7 @@ call plug#end()
 
 " coloring
 colorscheme dracula
+
 " show line numbers
 set number
 

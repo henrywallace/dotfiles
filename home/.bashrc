@@ -80,7 +80,7 @@ __prompt_command() {
   timer_stop
   if command -v mp &> /dev/null; then
     if [ "$since" -ge "1000000000" ]; then
-      dur="[$CYAN$BOLD$(mp durfmt ${since}ns)$NC]"
+      dur="$CYAN$BOLD[$(mp durfmt ${since}ns)]$NC"
     else
       dur=""
     fi
@@ -100,24 +100,27 @@ __prompt_command() {
   # Python
   venv="$(echo $(basename $VIRTUAL_ENV 2> /dev/null || echo) | xargs)"
   if [ ! -z "$venv" ]; then
-    venv="$MAGENTA$BOLD[$venv]$NC"
+    venv="$GREEN$BOLD[$venv]$NC"
   fi
   prefix="$(hostname -s)"
 
   # Git
   git="$(__git_ps1 "$BLUE$BOLD[%s]$NC")"
   # stash count
-  if [ ! -d .git ]; then
-    nstash=""
+  if ! git rev-parse --is-inside-work-tree &> /dev/null; then
+      nstash=""
   else
     nstash="$(git stash list | wc -l | xargs)"
+    if [ -z "$(echo $nstash | xargs)" ]; then
+	nstash="0"
+    fi
   fi
   # num commits in branch
   commits="$(git rev-list --count HEAD 2> /dev/null || echo NOGIT)"
   if [ "$commits" == "NOGIT" ]; then
     ncommit=""
   else
-    ncommit="$(git log --oneline master..HEAD | wc -l | xargs)"
+      ncommit="$(git log --oneline master..HEAD | wc -l | xargs)"
   fi
 
   # Stats
