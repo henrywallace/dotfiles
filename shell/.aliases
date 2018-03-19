@@ -88,12 +88,13 @@ function wp() {
 alias c='clear'
 alias cp='cp -i'
 alias j='jobs -l'
-alias l='ls'
 alias le='less'
 alias less='less -gSR'
 alias he='head'
 alias ll='ls -la'
-alias ls="exa --group-directories-first -I '*~'"
+alias ls="exa --group-directories-first -I '*~|.git' -a -F"
+alias lsd="ls -T -L 2"
+alias l='ls'
 alias mv='mv -i'
 alias rm='rm -i'
 alias ..='cd ..'
