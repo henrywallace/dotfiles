@@ -55,7 +55,11 @@ PS2=" "
 PS4="$0:$LINENO: "
 
 function now_ns {
-    /usr/local/opt/coreutils/libexec/gnubin/date +%s%N
+  if [ "$(uname -s)" == "Darwin" ]; then
+   /usr/local/opt/coreutils/libexec/gnubin/date +%s%N
+  else
+   date +%s%N
+  fi
 }
 
 function timer_start {
@@ -166,7 +170,7 @@ export GOPATH=$HOME/go
 PATH=$GOPATH/bin:$PATH
 
 # rustlang
-PATH=.cargo/bin:$PATH
+PATH="$HOME/.cargo/bin:$PATH"
 
 # Start ssh-agent if not running: https://unix.stackexchange.com/a/90869/162041
 if [ -z "$SSH_AUTH_SOCK" ]; then
@@ -179,8 +183,14 @@ source ~/.aliases
 
 # GCP
 # TODO: add auto-downloads for this:
-source /usr/local/google-cloud-sdk/completion.bash.inc
-source /usr/local/google-cloud-sdk/path.bash.inc
+if [ "$(uname -s)" == "Linux" ]; then
+  GCLOUD=/usr/share/google-cloud-sdk
+else
+  GCLOUD=/usr/local
+fi
+if [ -f "$GCLOUD/path.bash.inc" ]; then source "$GCLOUD/path.bash.inc"; fi
+if [ -f "$GCLOUD/completion.bash.inc" ]; then source "$GCLOUD/completion.bash.inc"; fi
+
 
 # fzf fuzzy searching
 FZF_SH=~/.fzf.sh
