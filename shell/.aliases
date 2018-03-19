@@ -30,7 +30,7 @@ alias c='clear'
 alias celar='clear'  # why can this human not learn?
 alias d='cd ~/Desktop'
 alias div='tput setaf 4; tput bold; printf "%$(tput cols)s\n" | tr " " =; tput sgr0'
-alias dotf='cd ~/dotfiles'
+alias dtf='cd ~/dotfiles'
 # alias kr="jobs -l | grep '+' | awk '{print $2}' | kill"
 alias ports='lsof -iTCP -sTCP:LISTEN -n -P'
 alias rg='rg -n --color=always --colors path:fg:green --colors path:style:bold --colors line:fg:blue --colors line:style:bold'
