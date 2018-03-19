@@ -186,13 +186,11 @@ source ~/.aliases
 if [ "$(uname -s)" == "Linux" ]; then
   GCLOUD=/usr/share/google-cloud-sdk
 else
-  GCLOUD=/usr/local/google-cloud-sdk
+  GCLOUD=/usr/local
 fi
-
 if [ -f "$GCLOUD/path.bash.inc" ]; then source "$GCLOUD/path.bash.inc"; fi
 if [ -f "$GCLOUD/completion.bash.inc" ]; then source "$GCLOUD/completion.bash.inc"; fi
 
-# PATH=$PATH:$GCLOUD/bin
 
 # fzf fuzzy searching
 FZF_SH=~/.fzf.sh
