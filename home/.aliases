@@ -177,12 +177,15 @@ function gca() {
 }
 # pretty git branches
 function gb() {
-    branches="$(git for-each-ref --color=always --sort=-committerdate refs/heads/ --format='%(HEAD)|%(color:green)%(committerdate:relative)%(color:reset)|%(color:blue)%(refname:short)%(color:reset)|%(contents:subject)|%(color:red)%(objectname:short)%(color:reset)' | column -t -s '|')"
-    if [ -z "$1" ]; then
-	echo "$(echo "$branches" | head -4)"
-    elif [ "$1" == '-a' ]; then
-	echo "$branches"
-    else
-	echo "$(echo "$branches" | head "$1")"
-    fi
+    branches="$(git for-each-ref --color=always --sort=-committerdate refs/heads/ --format='%(HEAD)|%(color:green)%(committerdate:relative)%(color:reset)|%(color:blue)%(refname:short)%(color:reset)|%(contents:subject)|%(color:cyan)%(objectname:short)%(color:reset)')"
+  echo "num branches: $(echo "$branches" | wc -l | xargs)"
+  if [[ -z "$1" ]]; then
+    echo "$(echo "$branches" | head -6 | column -t -s '|')"
+  elif [[ "$1" =~ -[[:digit:]]+ ]]; then
+    echo "$(echo "$branches" | head "$1" | column -t -s '|')"
+  elif [[ "$1" == "-" ]]; then
+    echo "$(echo "$branches" | column -t -s '|')"
+  else
+    echo "$(echo "$branches" | rg -N "$1" | column -t -s '|')"
+  fi
 }
