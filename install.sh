@@ -12,7 +12,10 @@ curl https://sh.rustup.rs -sSf | sh -s -- -y
 curl -fLo ~/.vim/autoload/plug.vim --create-dirs \
      https://raw.githubusercontent.com/junegunn/vim-plug/master/plug.vim
 
-PKGS='tree'
+PKGS="
+tree
+stow
+"
 
 # platform specific
 case $(uname) in
