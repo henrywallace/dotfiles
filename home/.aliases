@@ -63,10 +63,24 @@ alias k='kubectl'
 alias kt='kubetail'
 alias mk='minikube'
 alias kn='kubectl get no'
-alias kp='kubectl get po'
 alias mkl='minikube service list'
-alias wp='watch kubectl get pods'
-alias wpa='watch kubectl get pods --all-namespaces'
+alias kpa='kp -a'
+alias wpa='wp -a'
+function kp() {
+  if [ -z "$1" ]; then
+    kubectl get pods
+  elif [ "$1" == '-a' ]; then
+    kubectl get pods --all-namespaces
+  else
+    pat="$(echo $@ | tr ' ' '|')"
+    header="$(kubectl get pods --all-namespaces | head -1)"
+    echo "$header"; kubectl get pods --all-namespaces | rg -N --color=always "$pat"
+  fi
+}
+function wp() {
+  export -f kp
+  watch kp $@
+}
 
 #
 # generic
