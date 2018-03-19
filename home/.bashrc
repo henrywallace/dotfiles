@@ -102,7 +102,7 @@ __prompt_command() {
   if [ ! -z "$venv" ]; then
     venv="$GREEN$BOLD[$venv]$NC"
   fi
-  prefix="$(hostname -s)"
+  prefix="$CYAN$(hostname -s)$NC"
 
   # Git
   git="$(__git_ps1 "$BLUE$BOLD[%s]$NC")"
@@ -128,10 +128,10 @@ __prompt_command() {
   if [ -z "$ncommit" ]; then
     stats="[$status]"
   else
-    stats="[$ncommit${NC} $nstash${NC} $status]"
+    stats="[$CYAN$ncommit$NC $CYAN$nstash$NC $status]"
   fi
 
-  PS1="$dur$venv$git$stats[$prefix $dir] "
+  PS1="$dur$venv$git$stats[$prefix $dir]\n$ "
 
   # At one point, in time, I thought colorizing the typed command was
   # cool:
