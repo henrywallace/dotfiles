@@ -22,6 +22,7 @@
 [log]
     graphColors = red
     abbrevCommit = true
+
 [filter "lfs"]
 	required = true
 	clean = git-lfs clean -- %f
@@ -29,3 +30,5 @@
 	process = git-lfs filter-process
 [http]
 	cookiefile = /Users/henrywallace/.gitcookies
+[url "git@github.com:"]
+	insteadOf = https://github.com/

@@ -259,3 +259,5 @@ method="$(echo cowthink cowsay | xargs | tr ' ' '\n' | sort -R | head -1)"
 if [ "$(shuf -i1-2 -n1)" -le "1" ]; then
   $method -f $animal $(fortune -s)
 fi
+
+complete -C /usr/local/bin/vault vault

@@ -16,6 +16,12 @@ nnoremap <c-k> Ydd
 " allow suspending vim from insert mode
 inoremap <c-z> <c-o><c-z>
 
+" Default mapping
+let g:multi_cursor_next_key='<C-n>'
+let g:multi_cursor_prev_key='<C-p>'
+let g:multi_cursor_skip_key='<C-x>'
+let g:multi_cursor_quit_key='<Esc>'
+
 " no more folding!
 set nofoldenable
 
@@ -58,6 +64,9 @@ Plug 'roxma/vim-paste-easy'
 " dracula theme
 Plug 'dracula/vim', { 'as': 'dracula' }
 
+" multi-cursors
+Plug 'terryma/vim-multiple-cursors'
+
 " Sensible defaults for Vim
 Plug 'tpope/vim-sensible'
 
@@ -72,7 +81,7 @@ let g:airline#extensions#tabline#enabled = 1
 " tree view of files
 Plug 'scrooloose/nerdtree'
 " toggle nerdtree: https://github.com/scrooloose/nerdtree
-map <C-n> :NERDTreeToggle<CR> " another comment
+map <C-t> :NERDTreeToggle<CR> " another comment
 " close vim if only nerdtree remaining
 autocmd bufenter * if (winnr("$") == 1 && exists("b:NERDTree") && b:NERDTree.isTabTree()) | q | endif
 " ignore certain files in nerdtree

@@ -37,10 +37,6 @@
         vim-empty-lines-mode
 	))
 
-;; divider
-(set-face-background 'vertical-border "black")
-(set-face-foreground 'vertical-border (face-background 'vertical-border))
-
 ;; shell scripting
 '(sh-basic-offset 2)
 '(sh-indentation 2)
@@ -64,7 +60,6 @@
 ;; smart mode line
 (setq sml/no-confirm-load-theme t)
 (sml/setup)
-(setq sml/theme 'respectful)
 
 ;; vim-style empty-lines
 (global-vim-empty-lines-mode)
@@ -174,7 +169,7 @@
  '(git-commit-summary-max-length 50)
  '(package-selected-packages
    (quote
-    (editorconfig drag-stuff vim-empty-lines-mode smart-mode-line esup pymacs flycheck-gometalinter evil ace-window counsel yaml-mode swiper smooth-scrolling smex python-mode python-docstring py-isort markdown-mode json-snatcher json-reformat go-guru go-autocomplete git-auto-commit-mode flycheck flx dracula-theme auto-package-update)))
+    (toml-mode toml multiple-cursors editorconfig drag-stuff vim-empty-lines-mode smart-mode-line esup pymacs flycheck-gometalinter evil ace-window counsel yaml-mode swiper smooth-scrolling smex python-mode python-docstring py-isort markdown-mode json-snatcher json-reformat go-guru go-autocomplete git-auto-commit-mode flycheck flx dracula-theme auto-package-update)))
  '(safe-local-variable-values
    (quote
     ((eval when
