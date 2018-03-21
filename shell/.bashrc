@@ -135,7 +135,7 @@ __prompt_command() {
     stats="[$CYAN$ncommit$NC $CYAN$nstash$NC $status]"
   fi
 
-  PS1="$dur$venv$git$stats[$prefix $dir]\n$ "
+  PS1="${dur}${venv}${git}${stats}[$prefix $dir]\n$ "
 
   # At one point, in time, I thought colorizing the typed command was
   # cool:
