@@ -176,7 +176,7 @@ function gb() {
     branches="$(git for-each-ref --color=always --sort=-committerdate refs/heads/ --format='%(HEAD)|%(color:green)%(committerdate:relative)%(color:reset)|%(color:blue)%(refname:short)%(color:reset)|%(contents:subject)|%(color:cyan)%(objectname:short)%(color:reset)')"
   echo "num branches: $(echo "$branches" | wc -l | xargs)"
   if [[ -z "$1" ]]; then
-    echo "$(echo "$branches" | head -6 | column -t -s '|')"
+    echo "$(echo "$branches" | head -8 | column -t -s '|')"
   elif [[ "$1" =~ -[[:digit:]]+ ]]; then
     echo "$(echo "$branches" | head "$1" | column -t -s '|')"
   elif [[ "$1" == "-" ]]; then
