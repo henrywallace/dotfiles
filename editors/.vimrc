@@ -101,10 +101,6 @@ Plug 'elzr/vim-json'
 " Initialize plugin system
 call plug#end()
 
-
-" coloring
-colorscheme dracula
-
 " show line numbers
 set number
 

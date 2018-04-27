@@ -37,6 +37,18 @@
         vim-empty-lines-mode
 	))
 
+;; I don't care about emac's vc package, which always prompts me about editing
+;; symlinked files.
+(setq vc-handled-backends nil)
+
+
+;; (use-package xkcd)
+;; ((use-package xkcd) defun showxkcd ()
+;;   "Call this to show xkcd comic of the day on start"
+;;   (require 'xkcd)
+;;   (xkcd)
+;;   (switch-to-buffer "*xkcd*"))
+
 ;; shell scripting
 '(sh-basic-offset 2)
 '(sh-indentation 2)
@@ -172,7 +184,8 @@
     (toml-mode toml multiple-cursors editorconfig drag-stuff vim-empty-lines-mode smart-mode-line esup pymacs flycheck-gometalinter evil ace-window counsel yaml-mode swiper smooth-scrolling smex python-mode python-docstring py-isort markdown-mode json-snatcher json-reformat go-guru go-autocomplete git-auto-commit-mode flycheck flx dracula-theme auto-package-update)))
  '(safe-local-variable-values
    (quote
-    ((eval when
+    ((encoding . utf-8)
+     (eval when
 	   (require
 	    (quote js2-mode)
 	    nil

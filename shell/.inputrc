@@ -22,7 +22,7 @@ set match-hidden-files off
 set page-completions off
 
 # If there are more than N possible completions for a word, ask to show them all.
-set completion-query-items 32
+set completion-query-items 64
 
 # Show extra file information when completing, like `ls -F` does, also color!
 set colored-stats on

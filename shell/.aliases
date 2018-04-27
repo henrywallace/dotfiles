@@ -28,7 +28,7 @@ alias div='tput setaf 4; tput bold; printf "%$(tput cols)s\n" | tr " " =; tput s
 alias dtf='cd ~/dotfiles'
 # alias kr="jobs -l | grep '+' | awk '{print $2}' | kill"
 alias ports='lsof -iTCP -sTCP:LISTEN -n -P'
-alias rg='rg -n --color=always --colors path:fg:green --colors path:style:bold --colors line:fg:blue --colors line:style:bold'
+alias rg='rg --no-heading --color=always --colors path:fg:green --colors path:style:bold --colors line:fg:blue --colors line:style:bold'
 alias shellcheck='shellcheck --color=always'
 alias sudo='sudo '  # allow for sudo completion
 alias t='tmux'
@@ -45,11 +45,14 @@ function serve() {
   echo "python -m SimpleHTTPServer $1"
   python -m SimpleHTTPServer $1
 }
+alias path="echo $PATH | tr ':' '\n' | sort"
 
 #
 # gke
 #
-alias compute='gcloud compute'
+alias com='gcloud compute'
+alias gc='gcloud'
+
 
 #
 # k8s
@@ -84,6 +87,7 @@ alias c='clear'
 alias cp='cp -i'
 alias j='jobs -l'
 alias le='less'
+alias el='tac | le'
 alias less='less -gSR'
 alias he='head'
 alias ll='ls -la'
@@ -125,7 +129,6 @@ alias dif='git diff master..HEAD --stat'
 alias g-='git checkout -'
 alias g='git'
 alias ga='git add -u'
-alias gc='git commit'
 alias gcaa='git add -u && gca'
 alias gco='git checkout'
 alias gd='git diff'
@@ -153,6 +156,7 @@ alias sta='git stash'
 alias stc='git stash list | wc -l | xargs'
 alias stl='git stash list'
 alias stp='git stash pop'
+alias stk='git stash --keep-index'
 alias stash='git stash --keep-index && git stash'
 # rebase master or rebase back $1 commits
 function rb () {

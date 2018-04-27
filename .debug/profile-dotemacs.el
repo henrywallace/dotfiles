@@ -1,4 +1,4 @@
-;;; profile-dotemacs.el --- Profile your Emacs init file
+;; profile-dotemacs.el --- Profile your Emacs init file
 
 ;; Copyright (C) 2010, 2012  David Engster
 

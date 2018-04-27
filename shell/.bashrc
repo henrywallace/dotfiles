@@ -132,7 +132,7 @@ __prompt_command() {
   if [ -z "$ncommit" ]; then
     stats="[$status]"
   else
-    stats="[$CYAN$ncommit$NC $CYAN$nstash$NC $status]"
+    stats="[$status $BOLD$CYAN$ncommit$NC $CYAN$nstash$NC]"
   fi
 
   PS1="${dur}${venv}${git}${stats}[$prefix $dir]\n$ "
@@ -186,11 +186,13 @@ source ~/.aliases
 if [ "$(uname -s)" == "Linux" ]; then
   GCLOUD=/usr/share/google-cloud-sdk
 else
-  GCLOUD=/usr/local
+  GCLOUD=/usr/local/google-cloud-sdk
 fi
+
 if [ -f "$GCLOUD/path.bash.inc" ]; then source "$GCLOUD/path.bash.inc"; fi
 if [ -f "$GCLOUD/completion.bash.inc" ]; then source "$GCLOUD/completion.bash.inc"; fi
 
+# PATH=$PATH:$GCLOUD/bin
 
 # fzf fuzzy searching
 FZF_SH=~/.fzf.sh
@@ -266,7 +268,7 @@ $HOME/.misc/hypno.cow
 animal="$(echo "$animals" | sed '/^$/d' | sort -R | head -1)"
 method="$(echo cowthink cowsay | xargs | tr ' ' '\n' | sort -R | head -1)"
 # Only display cowthink every other login.
-if [ "$(shuf -i1-2 -n1)" -le "1" ]; then
+if [ "$(shuf -i1-8 -n1)" -le "1" ]; then
   $method -f $animal $(fortune -s)
 fi
 
