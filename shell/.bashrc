@@ -168,6 +168,7 @@ export ALTERNATE_EDITOR=""
 # golang
 export GOPATH=$HOME/go
 PATH=$GOPATH/bin:$PATH
+export PATH=$PATH:/usr/local/go/bin
 
 # rustlang
 PATH="$HOME/.cargo/bin:$PATH"

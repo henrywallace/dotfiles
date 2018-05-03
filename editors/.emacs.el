@@ -1,66 +1,30 @@
-(custom-set-faces
- ;; custom-set-faces was added by Custom.
- ;; If you edit it by hand, you could mess it up, so be careful.
- ;; Your init file should contain only one such instance.
- ;; If there is more than one, they won't work right.
- '(font-lock-comment-face ((t (:foreground "black" :weight bold))))
- '(isearch ((t (:background "green" :foreground "white" :weight bold))))
- '(ivy-current-match ((t (:background "black" :foreground "white" :weight bold))))
- '(ivy-cursor ((t (:background "black" :foreground "white" :weight bold))))
- '(ivy-minibuffer-match-face-1 ((t (:background "cyan"))))
- '(ivy-minibuffer-match-face-2 ((t (:background "blue" :foreground "#000000"))))
- '(ivy-minibuffer-match-face-3 ((t (:background "blue" :foreground "black"))))
- '(ivy-minibuffer-match-face-4 ((t (:background "blue" :foreground "black" :weight bold))))
- '(ivy-prompt-match ((t (:inherit ivy-current-match :background "black" :weight bold))))
- '(lazy-highlight ((t (:background "turquoise3" :foreground "black"))))
- '(region ((t (:background "black" :foreground "yellow"))))
- '(show-paren-match ((t (:background "black" :foreground "green" :weight bold))))
- '(show-paren-mismatch ((t (:background "black" :foreground "red" :weight bold))))
- '(tty-menu-disabled-face ((t (:background "blue" :foreground "red"))))
- '(vim-empty-lines-face ((t (:foreground "white")))))
-
 ;; wanted packages
 (setq package-list
       '(
-	auto-package-update
-	counsel
-	drag-stuff
+	;; general
 	editorconfig
-	flx
 	flycheck
+	markdown-mode
+	yaml-mode
+	counsel
+	swiper
+	smex
+	ivy
+        vim-empty-lines-mode
+	;; python
+	elpy
+	python-mode
+	jedi
+	;; golang
 	go-autocomplete
 	go-guru
-	markdown-mode
-	python-mode
-	swiper
-	yaml-mode
-        vim-empty-lines-mode
 	))
-
-;; I don't care about emac's vc package, which always prompts me about editing
-;; symlinked files.
-(setq vc-handled-backends nil)
-
-
-;; (use-package xkcd)
-;; ((use-package xkcd) defun showxkcd ()
-;;   "Call this to show xkcd comic of the day on start"
-;;   (require 'xkcd)
-;;   (xkcd)
-;;   (switch-to-buffer "*xkcd*"))
-
-;; shell scripting
-'(sh-basic-offset 2)
-'(sh-indentation 2)
-'(smie-indent-basic 2)
-
 ;; where to install those packages
 (setq package-archives
       '(("melpa" . "http://melpa.milkbox.net/packages/")
 	("elpa" . "http://tromey.com/elpa/")
 	("gnu" . "http://elpa.gnu.org/packages/")
 	("marmalade" . "http://marmalade-repo.org/packages/")))
-
 ;; activate packages, autoload, refresh, and install missing
 (package-initialize)
 (unless package-archive-contents
@@ -69,9 +33,57 @@
   (unless (package-installed-p package)
     (package-install package)))
 
-;; smart mode line
-(setq sml/no-confirm-load-theme t)
-(sml/setup)
+;; editorconfig
+(require 'editorconfig)
+(editorconfig-mode 1)
+
+;; flycheck config
+(require 'flycheck)
+(global-flycheck-mode)
+
+;; python config
+(require 'elpy)
+(elpy-enable)
+(add-hook 'python-mode-hook (highlight-indentation-mode 0))
+(setq python-fill-docstring-style 'symmetric)
+;; (add-hook 'python-mode-hook 'jedi:setup)
+;; (setq jedi:complete-on-dot t)
+(setq py-use-font-lock-doc-face-p t)
+
+;; ivy
+(require 'ivy)
+(require 'counsel)
+(require 'swiper)
+(require 'smex)
+(ivy-mode 1)
+(setq ivy-use-virtual-buffers t)
+(setq enable-recursive-minibuffers t)
+(global-set-key "\C-s" 'swiper)
+(global-set-key (kbd "C-c C-r") 'ivy-resume)
+(global-set-key (kbd "<f6>") 'ivy-resume)
+(global-set-key (kbd "M-x") 'counsel-M-x)
+(global-set-key (kbd "C-x C-f") 'counsel-find-file)
+
+;; moving lines
+(defun move-line-up ()
+  "Move up the current line."
+  (interactive)
+  (transpose-lines 1)
+  (forward-line -2)
+  (indent-according-to-mode))
+(defun move-line-down ()
+  "Move down the current line."
+  (interactive)
+  (forward-line 1)
+  (transpose-lines 1)
+  (forward-line -1)
+    (indent-according-to-mode))
+(global-set-key [(shift up)]  'move-line-up)
+(global-set-key [(shift down)]  'move-line-down)
+
+;; I don't care about emac's vc package, which always prompts me about editing
+;; symlinked files.
+(setq vc-handled-backends nil)
 
 ;; vim-style empty-lines
 (global-vim-empty-lines-mode)
@@ -97,9 +109,8 @@
 (global-set-key (kbd "C-f") 'goto-line)
 
 ;; misc third-party
-(setq py-use-font-lock-doc-face-p t)
-(require 'smooth-scrolling)
-(smooth-scrolling-mode 1)
+;; (require 'smooth-scrolling)
+;; (smooth-scrolling-mode 1)
 ;; (require 'pymacs)
 
 ;; store all backup and autosave files in the tmp dir
@@ -113,14 +124,14 @@
 (show-paren-mode 1)
 (setq show-paren-delay 0)
 
-;; ivy for the win
-(ivy-mode 1)
-(setq enable-recursive-minibuffers t)
-(setq ivy-use-virtual-buffers t)
-(setq ivy-re-builders-alist '((t . ivy--regex-fuzzy)))
-(global-set-key (kbd "M-x") 'counsel-M-x)
-(global-set-key (kbd "C-x C-f") 'counsel-find-file)
-(define-key read-expression-map (kbd "C-r") 'counsel-expression-history)
+;; ;; ivy for the win
+;; (ivy-mode 1)
+;; (setq enable-recursive-minibuffers t)
+;; (setq ivy-use-virtual-buffers t)
+;; (setq ivy-re-builders-alist '((t . ivy--regex-fuzzy)))
+;; (global-set-key (kbd "M-x") 'counsel-M-x)
+;; (global-set-key (kbd "C-x C-f") 'counsel-find-file)
+;; (define-key read-expression-map (kbd "C-r") 'counsel-expression-history)
 
 ;; Uncomment or comment single lines, in addition to regions.
 ;; http://stackoverflow.com/questions/9688748/emacs-comment-uncomment-current-line
@@ -218,3 +229,26 @@
 	     (setq web-mode-css-indent-offset 2)
 	     (setq web-mode-code-indent-offset 2)
 	     (setq web-mode-indent-style 2)))))))
+
+
+
+(custom-set-faces
+ ;; custom-set-faces was added by Custom.
+ ;; If you edit it by hand, you could mess it up, so be careful.
+ ;; Your init file should contain only one such instance.
+ ;; If there is more than one, they won't work right.
+ '(font-lock-comment-face ((t (:foreground "black" :weight bold))))
+ '(isearch ((t (:background "green" :foreground "white" :weight bold))))
+ '(ivy-current-match ((t (:background "black" :foreground "white" :weight bold))))
+ '(ivy-cursor ((t (:background "black" :foreground "white" :weight bold))))
+ '(ivy-minibuffer-match-face-1 ((t (:background "cyan"))))
+ '(ivy-minibuffer-match-face-2 ((t (:background "blue" :foreground "#000000"))))
+ '(ivy-minibuffer-match-face-3 ((t (:background "blue" :foreground "black"))))
+ '(ivy-minibuffer-match-face-4 ((t (:background "blue" :foreground "black" :weight bold))))
+ '(ivy-prompt-match ((t (:inherit ivy-current-match :background "black" :weight bold))))
+ '(lazy-highlight ((t (:background "turquoise3" :foreground "black"))))
+ '(region ((t (:background "black" :foreground "yellow"))))
+ '(show-paren-match ((t (:background "black" :foreground "cyan" :weight bold))))
+ '(show-paren-mismatch ((t (:background "black" :foreground "red" :weight bold))))
+ '(tty-menu-disabled-face ((t (:background "blue" :foreground "red"))))
+ '(vim-empty-lines-face ((t (:foreground "white")))))
