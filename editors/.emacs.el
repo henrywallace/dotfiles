@@ -21,6 +21,7 @@
 	;; golang
 	go-autocomplete
 	go-guru
+	go-playground
 	))
 ;; where to install those packages
 (setq package-archives

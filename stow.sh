@@ -3,10 +3,10 @@
 set -e
 
 
-if ! hash stow &>/dev/null || ! hash fd &>/dev/null; then
-    echo 'please install `stow` and `fd` with install.sh'
-    exit 1
-fi
+# if ! hash stow &>/dev/null || ! hash fd &>/dev/null; then
+#     echo 'please install `stow` and `fd` with install.sh'
+#     exit 1
+# fi
 
 PKGS=$(fd -t d)
 echo "stowing packages $(echo $PKGS)"

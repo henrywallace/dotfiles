@@ -28,7 +28,7 @@ alias div='tput setaf 4; tput bold; printf "%$(tput cols)s\n" | tr " " =; tput s
 alias dtf='cd ~/dotfiles'
 # alias kr="jobs -l | grep '+' | awk '{print $2}' | kill"
 alias ports='lsof -iTCP -sTCP:LISTEN -n -P'
-alias rg='rg --no-heading --color=always --colors path:fg:green --colors path:style:bold --colors line:fg:blue --colors line:style:bold'
+alias rg='rg -M 512 --no-heading --color=always --colors path:fg:green --colors path:style:bold --colors line:fg:blue --colors line:style:bold'
 alias rgg='rg -tgo'
 alias shellcheck='shellcheck --color=always'
 alias sudo='sudo '  # allow for sudo completion
@@ -124,7 +124,7 @@ alias cup='cargo install-update -a'
 #
 # git
 #
-alias cleanup='git branch --merge master | grep -v master | xargs git branch -d'
+alias cleanup='git branch --merge master | grep -v master | xargs git branch -d 2> /dev/null || echo "no branches to cleanup"'
 alias conflicts="rg '<<<<<<<'"
 alias dif='git diff master..HEAD --stat'
 alias g-='git checkout -'
