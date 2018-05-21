@@ -5,10 +5,13 @@
 	editorconfig
 	flycheck
 	markdown-mode
+	dashboard
 	yaml-mode
 	counsel
 	swiper
+	neotree
 	smex
+	go-rename
 	ivy
         vim-empty-lines-mode
 	;; python
@@ -37,9 +40,17 @@
 (require 'editorconfig)
 (editorconfig-mode 1)
 
+;; dashboard
+(require 'dashboard)
+(dashboard-setup-startup-hook)
+
 ;; flycheck config
 (require 'flycheck)
 (global-flycheck-mode)
+
+;; nicer dividing line
+(set-face-background 'vertical-border "black")
+(set-face-foreground 'vertical-border (face-background 'vertical-border))
 
 ;; python config
 (require 'elpy)
@@ -50,19 +61,31 @@
 ;; (setq jedi:complete-on-dot t)
 (setq py-use-font-lock-doc-face-p t)
 
+;;; scroll buffer not cursor
+(global-set-key "\M-n" "\C-u1\C-v")
+(global-set-key "\M-p" "\C-u1\M-v")
+
 ;; ivy
 (require 'ivy)
 (require 'counsel)
-(require 'swiper)
+;; (require 'swiper)
 (require 'smex)
 (ivy-mode 1)
 (setq ivy-use-virtual-buffers t)
 (setq enable-recursive-minibuffers t)
-(global-set-key "\C-s" 'swiper)
+;; (global-set-key "\C-s" 'swiper)
 (global-set-key (kbd "C-c C-r") 'ivy-resume)
 (global-set-key (kbd "<f6>") 'ivy-resume)
 (global-set-key (kbd "M-x") 'counsel-M-x)
 (global-set-key (kbd "C-x C-f") 'counsel-find-file)
+
+;; less style page up, and down
+(global-set-key (kbd "C-u")  'backward-paragraph)
+(global-set-key (kbd "C-d")  'forward-paragraph)
+
+;; neotree
+(require 'neotree)
+(global-set-key (kbd "M-k") 'neotree-toggle)
 
 ;; moving lines
 (defun move-line-up ()
@@ -247,7 +270,8 @@
  '(ivy-minibuffer-match-face-4 ((t (:background "blue" :foreground "black" :weight bold))))
  '(ivy-prompt-match ((t (:inherit ivy-current-match :background "black" :weight bold))))
  '(lazy-highlight ((t (:background "turquoise3" :foreground "black"))))
- '(region ((t (:background "black" :foreground "yellow"))))
+ '(neo-file-link-face ((t (:foreground "white"))))
+ '(region ((t (:background "black" :foreground "yellow" :slant italic))))
  '(show-paren-match ((t (:background "black" :foreground "cyan" :weight bold))))
  '(show-paren-mismatch ((t (:background "black" :foreground "red" :weight bold))))
  '(tty-menu-disabled-face ((t (:background "blue" :foreground "red"))))

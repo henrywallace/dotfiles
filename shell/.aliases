@@ -29,6 +29,7 @@ alias dtf='cd ~/dotfiles'
 # alias kr="jobs -l | grep '+' | awk '{print $2}' | kill"
 alias ports='lsof -iTCP -sTCP:LISTEN -n -P'
 alias rg='rg --no-heading --color=always --colors path:fg:green --colors path:style:bold --colors line:fg:blue --colors line:style:bold'
+alias rgg='rg -tgo'
 alias shellcheck='shellcheck --color=always'
 alias sudo='sudo '  # allow for sudo completion
 alias t='tmux'
@@ -124,7 +125,7 @@ alias cup='cargo install-update -a'
 # git
 #
 alias cleanup='git branch --merge master | grep -v master | xargs git branch -d'
-alias conflicts="rg '<<<<<<<' --no-heading"
+alias conflicts="rg '<<<<<<<'"
 alias dif='git diff master..HEAD --stat'
 alias g-='git checkout -'
 alias g='git'
@@ -177,8 +178,9 @@ function gca() {
 }
 # pretty git branches
 function gb() {
-    branches="$(git for-each-ref --color=always --sort=-committerdate refs/heads/ --format='%(HEAD)|%(color:green)%(committerdate:relative)%(color:reset)|%(color:blue)%(refname:short)%(color:reset)|%(contents:subject)|%(color:cyan)%(objectname:short)%(color:reset)')"
+  branches="$(git for-each-ref --color=always --sort=-committerdate refs/heads/ --format='%(HEAD)|%(color:green)%(committerdate:relative)%(color:reset)|%(color:blue)%(refname:short)%(color:reset)|%(contents:subject)|%(color:cyan)%(objectname:short)%(color:reset)')"
   echo "num branches: $(echo "$branches" | wc -l | xargs)"
+  echo "num stash:    $(git stash list | wc -l | xargs)"
   if [[ -z "$1" ]]; then
     echo "$(echo "$branches" | head -8 | column -t -s '|')"
   elif [[ "$1" =~ -[[:digit:]]+ ]]; then

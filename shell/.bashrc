@@ -130,9 +130,9 @@ __prompt_command() {
   # Stats
 
   if [ -z "$ncommit" ]; then
-    stats="[$status]"
+    stats=""
   else
-    stats="[$status $BOLD$CYAN$ncommit$NC $CYAN$nstash$NC]"
+    stats="[$BOLD$CYAN$ncommit$NC $CYAN$nstash$NC]"
   fi
 
   PS1="${dur}${venv}${git}${stats}[$prefix $dir]\n$ "

@@ -3,7 +3,7 @@
 	email = henry@henrywallace.io
 
 [push]
-    default = simple
+	default = simple
 
 [core]
     editor = vim
@@ -32,3 +32,7 @@
 	cookiefile = /Users/henrywallace/.gitcookies
 [url "git@github.com:"]
 	insteadOf = https://github.com/
+[pull]
+	ff = only
+[rerere]
+	enabled = true
