@@ -1,0 +1,90 @@
+# search aliases, and print them out in columns
+function ra() {
+  alias | rg "$1" | rg "alias (\w+)='(.*)'" -r '$1%%$2' | column -t -s'%%'
+}
+
+# simple and quick HTTP server
+function serve() {
+  if [ -z "$1" ]; then
+    echo http://localhost:8000
+  else
+    echo "http://localhost:$1"
+  fi
+  python3 -m http.server "$1" --bind 127.0.0.1
+}
+
+# search for k8s pods
+function kp() {
+  if [ -z "$1" ]; then
+    kubectl get pods
+  elif [ "$1" == '-a' ]; then
+    kubectl get pods --all-namespaces
+  else
+    pat="$(echo "$@" | tr -s ' ' '|')"
+    header="$(kubectl get pods --all-namespaces | head -1)"
+    echo "$header"; kubectl get pods --all-namespaces | rg -N --color=always "$pat"
+  fi
+}
+
+# watch k8s pods
+function wp() {
+  export -f kp
+  watch kp "$@"
+}
+
+# like kp but for deployments
+function kd() {
+  if [ -z "$1" ]; then
+    kubectl get deploy
+  elif [ "$1" == '-a' ]; then
+    kubectl get deploy --all-namespaces {
+  else
+    pat="$(echo "$@" | tr -s ' ' '|')"
+    # header="$(kubectl get deploy --all-namespaces | head -1)"
+    echo kubectl get deploy --all-namespaces | rg -N --color=always "$pat"
+  fi
+    }
+
+function wd() {
+  export -f kd
+  watch kd "$@"
+}
+
+# rebase master or rebase back $1 commits
+function rb () {
+  if [ -z "$1" ]; then
+    git rebase -i master
+  else
+    echo git rebase -i "HEAD~$1"
+    git rebase -i "HEAD~$1"
+  # else
+  #   echo git rebase -i "$1"
+  #   git rebase -i "$1"
+  fi
+}
+
+# git commit ammend, with quick option for no-edit
+function gca() {
+  if [ "$1" == "-" ]; then
+    git commit --amend --no-edit
+  else
+    git commit --amend
+  fi
+}
+
+# pretty git branches
+function gb() {
+  git rev-parse --is-inside-work-tree > /dev/null || return
+  branches="$(git for-each-ref --color=always --sort=-committerdate refs/heads/ --format='%(HEAD)|%(color:green)%(committerdate:relative)%(color:reset)|%(color:blue)%(refname:short)%(color:reset)|%(contents:subject)|%(color:cyan)%(objectname:short)%(color:reset)')"
+  echo "num branches: $(echo "$branches" | wc -l | xargs)"
+  echo "num stash:    $(git stash list | wc -l | xargs)"
+  if [[ -z "$1" ]]; then
+    echo "$(echo "$branches" | head -8 | column -t -s '|')"
+  elif [[ "$1" =~ -[[:digit:]]+ ]]; then
+    echo "$(echo "$branches" | head "$1" | column -t -s '|')"
+  elif [[ "$1" == "-" ]]; then
+    echo "$(echo "$branches" | column -t -s '|')"
+  else
+    echo "$(echo "$branches" | rg -N "$1" | column -t -s '|')"
+  fi
+}

@@ -1,141 +1,72 @@
-# -*- mode: sh -*-
-
-#
-# docker
-#
-alias enhance='function ne() { docker run --rm -v "$(pwd)/`dirname ${@:$#}`":/ne/input -it alexjc/neural-enhance ${@:1:$#-1} "input/`basename ${@:$#}`"; }; ne'
-alias ub='docker run --rm -it $1 ubuntu'
-
-#
-# config
-#
-alias ba='emacs ~/.bash_aliases'
-alias brc='emacs ~/.bashrc'
-alias el='emacs ~/.emacs.el'
-alias rld='source ~/.bashrc'
-alias vrc='vim ~/.vimrc'
-
 #
 # misc
 #
-alias tac='tail -r'
-alias bup='brew upgrade && brew prune && brew cleanup'
+alias rld='source ~/.bashrc'
+alias bup='brew upgrade && brew cleanup'
 alias gup='sudo gcloud components update'
-alias c='clear'
-alias celar='clear'  # why can this human not learn?
-alias d='cd ~/Desktop'
 alias div='tput setaf 4; tput bold; printf "%$(tput cols)s\n" | tr " " =; tput sgr0'
-alias dtf='cd ~/dotfiles'
-# alias kr="jobs -l | grep '+' | awk '{print $2}' | kill"
+alias kr="jobs -l | grep '+' | awk '{print $2}' | xargs kill -SIGKILL"
 alias ports='lsof -iTCP -sTCP:LISTEN -n -P'
-alias rg='rg -M 512 --no-heading --color=always --colors path:fg:green --colors path:style:bold --colors line:fg:blue --colors line:style:bold'
-alias rgg='rg -tgo'
+alias rg='rg -M 512 --no-heading'
 alias shellcheck='shellcheck --color=always'
 alias sudo='sudo '  # allow for sudo completion
 alias t='tmux'
 alias ta='tmux attach'
-alias watch='watch --color ' # allow watch completion https://unix.stackexchange.com/a/25329/162041
-alias yup='yolk --upgrade'
-# simple and quick HTTP server
-function serve() {
-  if [ -z "$1" ]; then
-    echo http://localhost:8000
-  else
-    echo "http://localhost:$1"
-  fi
-  echo "python -m SimpleHTTPServer $1"
-  python -m SimpleHTTPServer $1
-}
+alias watch='watch --color ' # allow watch completion with leading space https://unix.stackexchange.com/a/25329/162041
 alias path="echo $PATH | tr ':' '\n' | sort"
-
-#
-# gke
-#
-alias com='gcloud compute'
-alias gc='gcloud'
-
 
 #
 # k8s
 #
 alias k='kubectl'
-alias kt='kubetail'
-alias mk='minikube'
 alias kn='kubectl get no'
 alias mkl='minikube service list'
 alias kpa='kp -a'
 alias wpa='wp -a'
-function kp() {
-  if [ -z "$1" ]; then
-    kubectl get pods
-  elif [ "$1" == '-a' ]; then
-    kubectl get pods --all-namespaces
-  else
-    pat="$(echo $@ | tr ' ' '|')"
-    header="$(kubectl get pods --all-namespaces | head -1)"
-    echo "$header"; kubectl get pods --all-namespaces | rg -N --color=always "$pat"
-  fi
-}
-function wp() {
-  export -f kp
-  watch kp $@
-}
 
 #
 # generic
 #
-alias c='clear'
 alias cp='cp -i'
-alias j='jobs -l'
-alias le='less'
-alias el='tac | le'
-alias less='less -gSR'
-alias he='head'
-alias ll='ls -la'
-alias ls="exa --group-directories-first -I '*~|.git' -a -F"
-alias lsd="ls -T -L 2"
-alias l='ls'
 alias mv='mv -i'
 alias rm='rm -i'
+alias j='jobs -l'
+alias t="exa -TL2 -F"
 alias ..='cd ..'
 alias ...='cd ../..'
+alias tm='tmux'
 
 #
 # editors
 #
-alias e='emacs'
 alias emacs='emacs -nw'
+alias e='emacs'
 alias v=vim
+alias m=micro
 
 #
 # golang
 #
-alias de='dep ensure -v'
 alias goi='go install -v ./...'
-alias got='go test ./...'
-alias gome='cd $GOPATH/src/github.com/henrywallace'
+alias gome='cd $FIRSTGOPATH/src/github.com/henrywallace'
 alias gdoc='echo http://localhost:6060; godoc -play -notes="TODO|HELP|QUESTION" -http :6060'
 
 #
 # rustlang
 #
-alias cup='cargo install-update -a'
+alias cup='rustup update && cargo install-update -a'
 
 #
 # git
 #
 alias cleanup='git branch --merge master | grep -v master | xargs git branch -d 2> /dev/null || echo "no branches to cleanup"'
 alias conflicts="rg '<<<<<<<'"
-alias dif='git diff master..HEAD --stat'
+alias gbranch='git diff --name-only $(git merge-base master HEAD)'
 alias g-='git checkout -'
-alias g='git'
 alias ga='git add -u'
-alias gcaa='git add -u && gca'
-alias gco='git checkout'
 alias gd='git diff'
-alias gdk='echo; git diff --stat; echo'
+alias gds='echo; git diff --stat; echo'
 alias gdc='git diff --cached'
-alias gk='git checkout'
 alias gl='git log --stat master..HEAD'
 alias gm='git checkout master'
 alias gmp='git checkout master && git pull && cleanup'
@@ -146,48 +77,11 @@ alias lg='git log --oneline master..HEAD --color=always'
 alias lgp='git log -p master..HEAD'
 alias llg='git log --graph --oneline'
 alias lr='git show HEAD'
-alias lrp='lr'
-alias lrq='git show HEAD -q; echo'
-alias lrqq='echo; git log --oneline HEAD~..HEAD; echo'
+alias lrq='echo; git log --oneline HEAD~..HEAD; echo'
 alias lrs='git show HEAD --stat'
 alias rc='git rebase --continue'
 alias review='git log --stat --reverse master..HEAD'
-alias st='git stash show -p'
-alias sta='git stash'
-alias stc='git stash list | wc -l | xargs'
+alias p='git stash show -p'
+alias st='git stash --keep-index'
 alias stl='git stash list'
 alias stp='git stash pop'
-alias stk='git stash --keep-index'
-alias stash='git stash --keep-index && git stash'
-# rebase master or rebase back $1 commits
-function rb () {
-  if [ -z "$1" ]; then
-    git rebase -i master
-  else
-    echo "git rebase -i HEAD~$1"
-    git rebase -i "HEAD~$1"
-  fi
-}
-# git commit ammend, with quick option for no-edit
-function gca() {
-  if [ "$1" == "-" ] || [ "$1" == "--" ]; then
-    git commit --amend --no-edit
-  else
-    git commit --amend
-  fi
-}
-# pretty git branches
-function gb() {
-  branches="$(git for-each-ref --color=always --sort=-committerdate refs/heads/ --format='%(HEAD)|%(color:green)%(committerdate:relative)%(color:reset)|%(color:blue)%(refname:short)%(color:reset)|%(contents:subject)|%(color:cyan)%(objectname:short)%(color:reset)')"
-  echo "num branches: $(echo "$branches" | wc -l | xargs)"
-  echo "num stash:    $(git stash list | wc -l | xargs)"
-  if [[ -z "$1" ]]; then
-    echo "$(echo "$branches" | head -8 | column -t -s '|')"
-  elif [[ "$1" =~ -[[:digit:]]+ ]]; then
-    echo "$(echo "$branches" | head "$1" | column -t -s '|')"
-  elif [[ "$1" == "-" ]]; then
-    echo "$(echo "$branches" | column -t -s '|')"
-  else
-    echo "$(echo "$branches" | rg -N "$1" | column -t -s '|')"
-  fi
-}

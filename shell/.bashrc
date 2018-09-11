@@ -179,8 +179,8 @@ if [ -z "$SSH_AUTH_SOCK" ]; then
   ssh-add
 fi
 
-# Standard aliases
 source ~/.aliases
+source ~/.functions
 
 # GCP
 # TODO: add auto-downloads for this:
