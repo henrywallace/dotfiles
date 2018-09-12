@@ -14,7 +14,6 @@ alias t='tmux'
 alias ta='tmux attach'
 alias watch='watch --color ' # allow watch completion with leading space https://unix.stackexchange.com/a/25329/162041
 alias path="echo $PATH | tr ':' '\n' | sort"
-alias bat='bat --theme GitHub'
 
 #
 # k8s
@@ -65,6 +64,7 @@ alias conflicts="rg '<<<<<<<'"
 alias gbranch='git diff --name-only $(git merge-base master HEAD)'
 alias g-='git checkout -'
 alias ga='git add -u'
+alias gap='ga -p'
 alias gd='git diff'
 alias gds='echo; git diff --stat; echo'
 alias gdc='git diff --cached'
