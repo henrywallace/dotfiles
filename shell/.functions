@@ -1,6 +1,6 @@
 # search aliases, and print them out in columns
-function ra() {
-  alias | rg "$1" | rg "alias (\w+)='(.*)'" -r '$1%%$2' | column -t -s'%%'
+function ra(){
+  alias | rg "$@" | rg "alias (\w+)='(.*)'" -r '$1%%$2' | column -t -s'%%'
 }
 
 # simple and quick HTTP server
@@ -75,7 +75,7 @@ function gca() {
 # pretty git branches
 function gb() {
   git rev-parse --is-inside-work-tree > /dev/null || return
-  branches="$(git for-each-ref --color=always --sort=-committerdate refs/heads/ --format='%(HEAD)|%(color:green)%(committerdate:relative)%(color:reset)|%(color:blue)%(refname:short)%(color:reset)|%(contents:subject)|%(color:cyan)%(objectname:short)%(color:reset)')"
+  branches="$(git for-each-ref --color=always --sort=-committerdate refs/heads/ --format='%(HEAD)|%(color:green)%(committerdate:relative)%(color:reset)|%(color:blue)%(refname:short)%(color:reset)|%(contents:subject)')"
   echo "num branches: $(echo "$branches" | wc -l | xargs)"
   echo "num stash:    $(git stash list | wc -l | xargs)"
   if [[ -z "$1" ]]; then

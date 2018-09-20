@@ -35,6 +35,10 @@ alias t="exa -TL2 -F"
 alias ..='cd ..'
 alias ...='cd ../..'
 alias tm='tmux'
+alias ls='exa'
+alias l='ls'
+alias ll='ls -la'
+alias make='colormake'
 
 #
 # editors
@@ -69,6 +73,7 @@ alias gd='git diff'
 alias gds='echo; git diff --stat; echo'
 alias gdc='git diff --cached'
 alias gl='git log --stat master..HEAD'
+alias gr='git rebase master'
 alias gm='git checkout master'
 alias gmp='git checkout master && git pull && cleanup'
 alias gn='git checkout -b'

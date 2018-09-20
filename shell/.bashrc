@@ -44,11 +44,6 @@ source $GIT_COMPLETION
 # because colors are awesome
 source ~/.colors
 
-# PS2 controls the prefix that the terminal prints after typing \-return. By
-# default it's "> ". We change it to just 2 spaces, so that after copying it,
-# pasting it would be a valid entry into a terminal.
-PS2=" "
-
 # PS4 controls the prefix for running shell scripts in debug mode, i.e. `set
 # -x`. We add the script name and line number for more clarity, instead of the
 # default "++ "
