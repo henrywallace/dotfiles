@@ -9,4 +9,6 @@ vendor
 .vscode
 __pycache__
 .ipynb_checkpoints
-env
+env*
+ve*
+graveyard
