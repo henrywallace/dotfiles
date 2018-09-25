@@ -1,6 +1,7 @@
 # search aliases, and print them out in columns
-function ra(){
-  alias | rg "$@" | rg "alias (\w+)='(.*)'" -r '$1%%$2' | column -t -s'%%'
+function ra() {
+  args="$@"
+  alias | rg "$args" | rg "alias (\w+)='(.*)'" -r '$1%%$2' | column -t -s'%%'
 }
 
 # simple and quick HTTP server
