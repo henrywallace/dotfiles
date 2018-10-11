@@ -1,128 +1,171 @@
-" beginning of line, readline style
-inoremap <c-a> <c-o>^
-nnoremap <c-a> ^
-" end of line, readline style
-nnoremap <expr> <c-e> col('.')>strlen(getline('.'))<bar><bar>pumvisible()?"\<Lt>c-e>":"\<Lt>End>"
-inoremap <expr> <c-e> col('.')>strlen(getline('.'))<bar><bar>pumvisible()?"\<Lt>c-e>":"\<Lt>End>"
-" edit the word under the cursor, readline style
-nnoremap e ciw
-" undo, readline style
-nnoremap <c-_> u
-inoremap <c-_> <c-o>u
-" cut until end of line, readline style
-inoremap <c-k> <esc>Yddi
-nnoremap <c-k> Ydd
+"" Plugins
 
-" allow suspending vim from insert mode
-inoremap <c-z> <c-o><c-z>
 
-" Default mapping
-let g:multi_cursor_next_key='<C-n>'
-let g:multi_cursor_prev_key='<C-p>'
-let g:multi_cursor_skip_key='<C-x>'
-let g:multi_cursor_quit_key='<Esc>'
-
-" no more folding!
-set nofoldenable
-
-" auto strip whitespaces on save: https://unix.stackexchange.com/a/75431/162041
-autocmd BufWritePre * :%s/\s\+$//e
-
-" use par for formatting paragraph:wqs
-set equalprg=par
-
-" auto-reload vimrc, with airline: https://github.com/vim-airline/vim-airline/issues/312#issuecomment-68677841
-augroup reload_vimrc " {
-    autocmd!
-    autocmd BufWritePost $MYVIMRC source $MYVIMRC | AirlineRefresh
-    autocmd BufWritePost $MYVIMRC AirlineRefresh
-augroup END " }
-
-" show all matched highlights: http://vim.wikia.com/wiki/Highlight_all_search_pattern_matches
-set hlsearch
-
-" nicer split window: https://stackoverflow.com/a/9001540/2601179
-set fillchars+=vert:\ |
-
-" vim-plug configuration: https://github.com/junegunn/vim-plug
+" vim-plug: https://github.com/junegunn/vim-plug
 call plug#begin('~/.vim/plugged')
 
-" move lines up or down with with [e and ]e
-Plug 'tpope/vim-unimpaired'
-
-" detect indent on files
-Plug 'tpope/vim-sleuth'
-
-Plug 'tpope/vim-markdown'
-
-" be able to do/undo make window full
-Plug 'vim-scripts/ZoomWin'
-
-" auto set paste off whenver typing (pasting) at inhuman speeds
+"" Misc
+" Set paste off when pasting (typing at inhuman speeds).
 Plug 'roxma/vim-paste-easy'
-
-" dracula theme
-Plug 'dracula/vim', { 'as': 'dracula' }
-
-" multi-cursors
-Plug 'terryma/vim-multiple-cursors'
-
-" Sensible defaults for Vim
+" Sensible defaults for Vim.
 Plug 'tpope/vim-sensible'
-
-" fuzzy finder
+" Fuzzy finder.
 Plug 'junegunn/fzf', { 'dir': '~/.fzf', 'do': './install --all' }
 Plug 'junegunn/fzf.vim'
+" Configure vim based on the project
+Plug 'editorconfig/editorconfig-vim'
+" Comment things.
+Plug 'scrooloose/nerdcommenter'
+" You are the code.
+Plug 'junegunn/goyo.vim'
+" Sublime text had some great ideas.
+Plug 'terryma/vim-multiple-cursors'
 
+"" A e s t h e t i c s
+Plug 'crusoexia/vim-monokai'
+Plug 'dracula/vim', { 'as': 'dracula'}
+Plug 'morhetz/gruvbox'
 " improved status line
 Plug 'vim-airline/vim-airline'
-let g:airline#extensions#tabline#enabled = 1
+Plug 'vim-airline/vim-airline-themes'
+" git annotations
+Plug 'airblade/vim-gitgutter'
 
-" tree view of files
-Plug 'scrooloose/nerdtree'
-" toggle nerdtree: https://github.com/scrooloose/nerdtree
-map <C-t> :NERDTreeToggle<CR> " another comment
-" close vim if only nerdtree remaining
-autocmd bufenter * if (winnr("$") == 1 && exists("b:NERDTree") && b:NERDTree.isTabTree()) | q | endif
-" ignore certain files in nerdtree
-let NERDTreeIgnore = ['\.pyc$', '#.*#', '^__pycache__$']
-" show hidden files
-let NERDTreeShowHidden=1
+"" Linting
+Plug 'w0rp/ale'
 
-" Go language support
-Plug 'fatih/vim-go'
-
-" Docker support
-Plug 'moby/moby' , {'rtp': '/contrib/syntax/vim/'}
-
-" JSON support
+"" Syntax
+Plug 'cespare/vim-toml'
 Plug 'elzr/vim-json'
+Plug 'elzr/vim-json'
+Plug 'fatih/vim-go'
+Plug 'kylef/apiblueprint.vim'
+Plug 'moby/moby' , {'rtp': '/contrib/syntax/vim/'}
+Plug 'pangloss/vim-javascript'
+Plug 'rust-lang/rust.vim'
+Plug 'tpope/vim-markdown'
 
-" Initialize plugin system
 call plug#end()
 
-" show line numbers
+
+"" Mappings
+
+" Allow SIGTSTP from within non-normal modes.
+inoremap <c-z> <c-o><c-z>
+vnoremap <c-z> <c-o><c-z>
+
+" Read-line style beginning and end of line, within insert mode.
+inoremap <c-e> <c-o><s-$>
+inoremap <c-a> <c-o><s-^>
+
+" Edit the word under the cursor.
+nnoremap e ciw
+
+nnoremap <leader>d :GoDef<cr>
+nnoremap <leader>r :GoReferrers<cr>
+
+" Window splitting.
+nnoremap <c-v> :vsplit<cr><c-w><c-w>
+nnoremap <c-h> :split<cr><c-w><c-w>
+
+" Mappings for fzf.
+nnoremap <c-l> :Lines<cr>
+nnoremap <c-f> :GFiles<cr>
+nnoremap <c-m> :Commands<cr>
+nnoremap <c-p> :Buffers<cr>
+nnoremap <c-r> :History<cr>
+nnoremap <c-c> :Commands<cr>
+nnoremap <space> :Rg<cr>
+
+" Move line(s) up or down.
+nnoremap <c-j> :m +1<cr>
+
+nnoremap <c-k> :m -2<cr>
+vnoremap <c-j> :m '>+1<cr>gv
+vnoremap <c-k> :m '<-2<cr>gv
+
+" Search for errors from ALE.
+nnoremap <leader>n :ALENextWrap<cr>
+nnoremap <leader>p :ALEPreviousWrap<cr>
+
+
+"" Hooks
+
+" Reload .vimrc on changes.
+autocmd! BufWritePost $MYVIMRC source $MYVIMRC
+
+" Strip whitespaces on save: https://unix.stackexchange.com/a/75431/162041.
+autocmd BufWritePre * :%s/\s\+$//e
+
+" Highlight long lines: https://stackoverflow.com/a/10993757/2601179.
+augroup vimrc_autocmds
+  autocmd BufEnter * highlight OverLength ctermbg=Red ctermfg=Black
+  autocmd BufEnter * match OverLength /\%100v.*/
+augroup END
+
+"" Misc
+
+" Show commands that are typed.
+set showcmd
+
+" Don't fold by default.
+set nofoldenable
+
+" use par for formatting paragraph.
+set equalprg=par
+
+" Show all matched highlights: http://vim.wikia.com/wiki/Highlight_all_search_pattern_matches.
+set hlsearch
+
+" Nicer split window: https://stackoverflow.com/a/9001540/2601179.
+set fillchars+=vert:\ |
+
+" Show line numbers.
 set number
 
-" fzf shortcuts
-nnoremap <C-F> :Files<CR>
-inoremap <C-F> <C-O>:Files<CR>
-nnoremap <C-B> :Buffers<CR>
-inoremap <C-B> <C-O>:Buffers<CR>
-nnoremap <C-R> :History:<CR>
-inoremap <C-R> <C-O>:History:<CR>
-nnoremap <C-X> :Commands<CR>
-inoremap <C-X> <C-O>:Commands<CR>
+" I'd rather lose changes than have to navigate the interactive swap prompts.
+set nobackup
+set noswapfile
 
-nnoremap <M-Up> [e
-inoremap <M-Down> <C-O>]e<CR>
+" Enable syntax, don't override color settings: https://stackoverflow.com/a/33380495/2601179.
+if !exists("g:syntax_on")
+    syntax enable
+endif
 
-" Go customizations
+" A nice color scheme.
+colorscheme gruvbox
+set background=dark
+set termguicolors
+
+" No wrapping of lines.
+set wrap!
+
+
+"" ALE
+
+" always keep gutter open to avoid bouncing
+let g:ale_sign_column_always = 1
+let g:ale_lint_on_enter = 1
+" ale in status line
+let g:airline#extensions#ale#enabled = 1
+" setup for ALE customizations.
+"let g:ale_linters = {}
+"let g:ale_fixers = {}
+
+
+let g:NERDSpaceDelims = 1
+
+
+"" Languages
+
 let g:go_fmt_command = "goimports"
+" Highlight references in scope on cursor hover.
+" let g:go_auto_sameids = 1
+" " show type info on cursor hover.
+" let g:go_auto_type_info = 1
 
-" fzf files preview command with preview window
-" command! -bang -nargs=? -complete=dir Fiiles
-"   \ call fzf#vim#files('rg --column --line-number --no-heading --color=always '.shellescape(<q-args>).'| tr -d "\017"', 1, <bang>0)
-"command! -bang -nargs=? -complete=dir Files
-"  \ call fzf#vim#files(<q-args>, fzf#vim#with_pre
-let g:fzf_layout = { 'down': '~40%' }
+
+"" fzf
+
+let g:fzf_layout = { 'down': '~20%' }
+

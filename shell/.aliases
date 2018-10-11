@@ -15,6 +15,7 @@ alias ta='tmux attach'
 alias watch='watch --color ' # allow watch completion with leading space https://unix.stackexchange.com/a/25329/162041
 alias path="echo $PATH | tr ':' '\n' | sort"
 alias cv='command -V'
+alias vrc='v ~/.vimrc'
 
 #
 # k8s
@@ -92,3 +93,4 @@ alias p='git stash show -p'
 alias st='git stash --keep-index'
 alias stl='git stash list'
 alias stp='git stash pop'
+
