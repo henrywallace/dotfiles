@@ -1,5 +1,9 @@
-"" Plugins
+" Remap leader first, in case loading plugins defines using the leader.
+let mapleader = ' '
+nnoremap <space> <nop>
 
+
+"" Plugins
 
 " vim-plug: https://github.com/junegunn/vim-plug
 call plug#begin('~/.vim/plugged')
@@ -20,6 +24,8 @@ Plug 'scrooloose/nerdcommenter'
 Plug 'junegunn/goyo.vim'
 " Sublime text had some great ideas.
 Plug 'terryma/vim-multiple-cursors'
+" Snippets snippets snippets.
+Plug 'sirver/UltiSnips'
 
 "" A e s t h e t i c s
 Plug 'crusoexia/vim-monokai'
@@ -30,6 +36,8 @@ Plug 'vim-airline/vim-airline'
 Plug 'vim-airline/vim-airline-themes'
 " git annotations
 Plug 'airblade/vim-gitgutter'
+" folding arguments
+Plug 'FooSoft/vim-argwrap'
 
 "" Linting
 Plug 'w0rp/ale'
@@ -61,33 +69,56 @@ inoremap <c-a> <c-o><s-^>
 " Edit the word under the cursor.
 nnoremap e ciw
 
-nnoremap <leader>d :GoDef<cr>
-nnoremap <leader>r :GoReferrers<cr>
+nnoremap <leader>gd :vsplit<cr><c-w><c-w>:GoDef<cr>
+nnoremap gr :GoReferrers<cr>
 
-" Window splitting.
+" Window movement.
 nnoremap <c-v> :vsplit<cr><c-w><c-w>
 nnoremap <c-h> :split<cr><c-w><c-w>
+nnoremap <c-h> <c-w><left>
+nnoremap <c-l> <c-w><right>
+nnoremap <c-j> <c-w><down>
+nnoremap <c-k> <c-w><up>
 
 " Mappings for fzf.
-nnoremap <c-l> :Lines<cr>
+nnoremap <c-g> :Rg<cr>
 nnoremap <c-f> :GFiles<cr>
-nnoremap <c-m> :Commands<cr>
-nnoremap <c-p> :Buffers<cr>
+nnoremap <c-p> :BLines<cr>
+nnoremap <c-x> :Commands<cr>
+nnoremap <c-b> :Buffers<cr>
 nnoremap <c-r> :History<cr>
-nnoremap <c-c> :Commands<cr>
-nnoremap <space> :Rg<cr>
+
+" Navigation
+nnoremap <s-j> 4j
+nnoremap <s-k> 4k
+nnoremap <tab> 8j
+nnoremap <s-tab> 8k
 
 " Move line(s) up or down.
-nnoremap <c-j> :m +1<cr>
-
-nnoremap <c-k> :m -2<cr>
-vnoremap <c-j> :m '>+1<cr>gv
-vnoremap <c-k> :m '<-2<cr>gv
+nnoremap <c-down> :m +1<cr>
+nnoremap <c-up> :m -2<cr>
+vnoremap <c-down>:m '>+1<cr>gv
+vnoremap <c-up> :m '<-2<cr>gv
 
 " Search for errors from ALE.
-nnoremap <leader>n :ALENextWrap<cr>
-nnoremap <leader>p :ALEPreviousWrap<cr>
+nnoremap <leader>n :ALENextWrap<cr>zz
+nnoremap <leader>p :ALEPreviousWrap<cr>zz
 
+" Argument rewrapping.
+nnoremap <leader>a :ArgWrap<cr>
+
+" Fun times with buffers.
+nnoremap <leader>b :bp<cr>
+nnoremap <leader>q :bd<cr>
+
+" Easier saving.
+nnoremap <c-u> :update<cr>
+inoremap <c-u> <c-o>:update<cr>
+
+nnoremap <leader>c :NERDComToggleComment
+
+inoremap <c-j> <c-o>j
+inoremap <c-k> <c-o>k
 
 "" Hooks
 
@@ -100,7 +131,7 @@ autocmd BufWritePre * :%s/\s\+$//e
 " Highlight long lines: https://stackoverflow.com/a/10993757/2601179.
 augroup vimrc_autocmds
   autocmd BufEnter * highlight OverLength ctermbg=Red ctermfg=Black
-  autocmd BufEnter * match OverLength /\%100v.*/
+  autocmd BufEnter * match OverLength /\%101v.*/
 augroup END
 
 "" Misc
@@ -141,31 +172,24 @@ set termguicolors
 set wrap!
 
 
-"" ALE
+"" Misc
 
-" always keep gutter open to avoid bouncing
+" Always keep gutter open to avoid bouncing.
 let g:ale_sign_column_always = 1
-let g:ale_lint_on_enter = 1
-" ale in status line
+" Ale in status line.
 let g:airline#extensions#ale#enabled = 1
-" setup for ALE customizations.
-"let g:ale_linters = {}
-"let g:ale_fixers = {}
+let g:ale_lint_delay = 500
 
+let g:go_fmt_command = 'goimports'
 
+" Insert space after toggling comments.
 let g:NERDSpaceDelims = 1
 
+" Add trailing comma during argument rewrapping.
+let g:argwrap_tail_comma = 1
 
-"" Languages
-
-let g:go_fmt_command = "goimports"
-" Highlight references in scope on cursor hover.
-" let g:go_auto_sameids = 1
-" " show type info on cursor hover.
-" let g:go_auto_type_info = 1
-
-
-"" fzf
-
+" Decrease the height of the fzf search box.
 let g:fzf_layout = { 'down': '~20%' }
 
+" Markdown code fence highlighting.
+let g:markdown_fenced_languages = ['go', 'py', 'sh']
