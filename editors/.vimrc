@@ -48,16 +48,10 @@ Plug 'w0rp/ale'
 Plug 'Shougo/deoplete.nvim'
 Plug 'roxma/nvim-yarp'
 Plug 'roxma/vim-hug-neovim-rpc'
-" for Go
 Plug 'zchee/deoplete-go', { 'do': 'make' }
-" for Python (hopefully better than rope)
 Plug 'zchee/deoplete-jedi'
-" for Rust
 Plug 'sebastianmarkow/deoplete-rust'
-" for JS (flow-based)
-" Plug 'wokalski/autocomplete-flow'
 Plug 'carlitux/deoplete-ternjs'
-
 
 "" Syntax
 Plug 'cespare/vim-toml'
@@ -73,61 +67,6 @@ Plug 'python-mode/python-mode'
 Plug 'tpope/vim-markdown'
 
 call plug#end()
-
-" allow buffers with unsaved changes
-set hidden
-
-" I proclaim it to be incorrect to put two spaces after a sentence
-" ref: https://stackoverflow.com/a/4760477/2528719
-set nojoinspaces
-
-
-" Edit this config file
-nnoremap <leader>ev :vsplit $MYVIMRC<cr>
-nnoremap <leader>sv :source $MYVIMRC<cr>
-
-
-
-" hidden characters
-nmap <leader>l :set list!<CR>
-
-
-"" Deoplete
-" Use deoplete for auto-completion.
-let g:deoplete#enable_at_startup = 1
-" Use smartcase.
-let g:deoplete#enable_smart_case = 1
-" use tab to forward cycle
-inoremap <silent><expr><tab> pumvisible() ? "\<c-n>" : "\<tab>"
-" use tab to backward cycle
-inoremap <silent><expr><s-tab> pumvisible() ? "\<c-p>" : "\<s-tab>"
-" deoplete Go customizations, boosting rank
-call deoplete#custom#source('go', 'rank', 1000)
-" JS Customizations
-let g:deoplete#sources#ternjs#types = 1
-
-
-" Disable rope because is is horrendously slow with big projects
-let g:pymode_rope = 0
-let g:pymode_rope_autoimport = 0
-let g:pymode_rope_lookup_project = 0
-
-
-let g:ale_linters = {}
-let g:ale_fixers = {}
-
-
-" JS customizations
-let g:ale_fixers['javascript'] = ['prettier']
-let g:ale_fix_on_save = 1
-let g:ale_javascript_prettier_use_local_config = 1
-let g:javascript_plugin_flow = 1
-" disable flow checking, using ale instead
-let g:flow#enable = 0
-let g:flow#showquickfix = 0
-" Only use desired plugins for JS, avoids unwanted use of jshint.
-let g:ale_linters = {'javascript': ['eslint', 'flow']}
-
 
 
 "" Mappings
@@ -151,6 +90,14 @@ nnoremap gi :GoImplements<cr>
 " nnoremap <c-v> :vsplit<cr><c-w><c-w>
 " nnoremap <c-h> :split<cr><c-w><c-w>
 nnoremap <c-h> <c-w><left>
+nnoremap <c-l> <c-w><right>
+nnoremap <c-j> <c-w><down>
+nnoremap <c-k> <c-w><up>
+inoremap <c-h> <c-o><c-w><left>
+inoremap <c-l> <c-o><c-w><right>
+inoremap <c-j> <c-o><c-w><down>
+inoremap <c-k> <c-o><c-w><up>
+
 nnoremap <c-l> <c-w><right>
 nnoremap <c-j> <c-w><down>
 nnoremap <c-k> <c-w><up>
@@ -184,13 +131,16 @@ nnoremap <leader>a :ArgWrap<cr>
 nnoremap <leader>b :bp<cr>
 nnoremap <leader>q :bd<cr>
 
-" Easier saving.
+" Easier saving. Note that :update differs from :w in that we only write if
+" the file has in fact changed.
 nnoremap <c-u> :update<cr>
 
-" inoremap <c-j> <c-o>j
-" inoremap <c-k> <c-o>k
-" inoremap <c-h> <c-o>h
-" inoremap <c-l> <c-o>l
+nnoremap <leader>c gcc
+vnoremap <leader>c gc
+
+nnoremap <m-q> gwip
+inoremap <m-q> <c-o>gwip
+
 
 "" Hooks
 
@@ -205,6 +155,7 @@ augroup vimrc_autocmds
   autocmd BufEnter * highlight OverLength ctermbg=Red ctermfg=Black
   autocmd BufEnter * match OverLength /\%101v.*/
 augroup END
+
 
 "" Misc
 
@@ -235,6 +186,10 @@ if !exists("g:syntax_on")
     syntax enable
 endif
 
+" Don't allow double spaces after sentences with rewrapping:
+" https://stackoverflow.com/a/4760477/2528719
+set nojoinspaces
+
 " A nice color scheme.
 colorscheme gruvbox
 set background=dark
@@ -242,12 +197,6 @@ set termguicolors
 
 " No wrapping of lines.
 set wrap!
-
-
-"" Misc
-
-" https://github.com/scrooloose/nerdcommenter#post-installation
-filetype plugin on
 
 " Always keep gutter open to avoid bouncing.
 let g:ale_sign_column_always = 1
@@ -257,9 +206,6 @@ let g:ale_lint_delay = 500
 
 let g:go_fmt_command = 'goimports'
 
-" Insert space after toggling comments.
-let g:NERDSpaceDelims = 1
-
 " Add trailing comma during argument rewrapping.
 let g:argwrap_tail_comma = 1
 
@@ -267,4 +213,46 @@ let g:argwrap_tail_comma = 1
 let g:fzf_layout = { 'down': '~20%' }
 
 " Markdown code fence highlighting.
-let g:markdown_fenced_languages = ['go', 'py', 'sh']
+let g:markdown_fenced_languages = ['go', 'sh', 'python']
+
+" Allow buffers with unsaved changes
+set hidden
+
+" Edit this config file
+nnoremap <leader>ev :vsplit $MYVIMRC<cr>
+nnoremap <leader>sv :source $MYVIMRC<cr>
+
+" hidden characters
+nmap <leader>l :set list!<CR>
+
+
+" Use deoplete for auto-completion.
+let g:deoplete#enable_at_startup = 1
+" Use smartcase.
+let g:deoplete#enable_smart_case = 1
+" use tab to forward cycle
+inoremap <silent><expr><tab> pumvisible() ? "\<c-n>" : "\<tab>"
+" use tab to backward cycle
+inoremap <silent><expr><s-tab> pumvisible() ? "\<c-p>" : "\<s-tab>"
+" deoplete Go customizations, boosting rank
+call deoplete#custom#source('go', 'rank', 1000)
+" JS Customizations
+let g:deoplete#sources#ternjs#types = 1
+
+" Disable rope because it is so freaking slow; come on.
+let g:pymode_rope = 0
+let g:pymode_rope_autoimport = 0
+let g:pymode_rope_lookup_project = 0
+
+silent! py3 pass
+
+let g:ale_linters = {}
+let g:ale_fixers = {}
+let g:ale_fixers['javascript'] = ['prettier']
+let g:ale_fix_on_save = 1
+let g:ale_javascript_prettier_use_local_config = 1
+let g:javascript_plugin_flow = 1
+let g:flow#enable = 0
+let g:flow#showquickfix = 0
+let g:ale_linters = {'javascript': ['eslint', 'flow']}
+
