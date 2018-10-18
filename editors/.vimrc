@@ -18,14 +18,16 @@ Plug 'junegunn/fzf', { 'dir': '~/.fzf', 'do': './install --all' }
 Plug 'junegunn/fzf.vim'
 " Configure vim based on the project
 Plug 'editorconfig/editorconfig-vim'
-" Comment things.
-Plug 'scrooloose/nerdcommenter'
+" Commenting
+Plug 'tpope/vim-commentary'
 " You are the code.
 Plug 'junegunn/goyo.vim'
 " Sublime text had some great ideas.
 Plug 'terryma/vim-multiple-cursors'
-" Snippets snippets snippets.
-Plug 'sirver/UltiSnips'
+" Git wrapper
+Plug 'tpope/vim-fugitive'
+" Helper for GitHub
+Plug 'tpope/vim-rhubarb'
 
 "" A e s t h e t i c s
 Plug 'crusoexia/vim-monokai'
@@ -42,18 +44,90 @@ Plug 'FooSoft/vim-argwrap'
 "" Linting
 Plug 'w0rp/ale'
 
+"" Autocomplete
+Plug 'Shougo/deoplete.nvim'
+Plug 'roxma/nvim-yarp'
+Plug 'roxma/vim-hug-neovim-rpc'
+" for Go
+Plug 'zchee/deoplete-go', { 'do': 'make' }
+" for Python (hopefully better than rope)
+Plug 'zchee/deoplete-jedi'
+" for Rust
+Plug 'sebastianmarkow/deoplete-rust'
+" for JS (flow-based)
+" Plug 'wokalski/autocomplete-flow'
+Plug 'carlitux/deoplete-ternjs'
+
+
 "" Syntax
 Plug 'cespare/vim-toml'
 Plug 'elzr/vim-json'
-Plug 'elzr/vim-json'
 Plug 'fatih/vim-go'
+Plug 'flowtype/vim-flow'
 Plug 'kylef/apiblueprint.vim'
 Plug 'moby/moby' , {'rtp': '/contrib/syntax/vim/'}
 Plug 'pangloss/vim-javascript'
+Plug 'pangloss/vim-javascript'
 Plug 'rust-lang/rust.vim'
+Plug 'python-mode/python-mode'
 Plug 'tpope/vim-markdown'
 
 call plug#end()
+
+" allow buffers with unsaved changes
+set hidden
+
+" I proclaim it to be incorrect to put two spaces after a sentence
+" ref: https://stackoverflow.com/a/4760477/2528719
+set nojoinspaces
+
+
+" Edit this config file
+nnoremap <leader>ev :vsplit $MYVIMRC<cr>
+nnoremap <leader>sv :source $MYVIMRC<cr>
+
+
+
+" hidden characters
+nmap <leader>l :set list!<CR>
+
+
+"" Deoplete
+" Use deoplete for auto-completion.
+let g:deoplete#enable_at_startup = 1
+" Use smartcase.
+let g:deoplete#enable_smart_case = 1
+" use tab to forward cycle
+inoremap <silent><expr><tab> pumvisible() ? "\<c-n>" : "\<tab>"
+" use tab to backward cycle
+inoremap <silent><expr><s-tab> pumvisible() ? "\<c-p>" : "\<s-tab>"
+" deoplete Go customizations, boosting rank
+call deoplete#custom#source('go', 'rank', 1000)
+" JS Customizations
+let g:deoplete#sources#ternjs#types = 1
+
+
+" Disable rope because is is horrendously slow with big projects
+let g:pymode_rope = 0
+let g:pymode_rope_autoimport = 0
+let g:pymode_rope_lookup_project = 0
+
+
+let g:ale_linters = {}
+let g:ale_fixers = {}
+
+
+" JS customizations
+let g:ale_fixers['javascript'] = ['prettier']
+let g:ale_fix_on_save = 1
+let g:ale_javascript_prettier_use_local_config = 1
+let g:javascript_plugin_flow = 1
+" disable flow checking, using ale instead
+let g:flow#enable = 0
+let g:flow#showquickfix = 0
+" Only use desired plugins for JS, avoids unwanted use of jshint.
+let g:ale_linters = {'javascript': ['eslint', 'flow']}
+
 
 
 "" Mappings
@@ -71,10 +145,11 @@ nnoremap e ciw
 
 nnoremap <leader>gd :vsplit<cr><c-w><c-w>:GoDef<cr>
 nnoremap gr :GoReferrers<cr>
+nnoremap gi :GoImplements<cr>
 
 " Window movement.
-nnoremap <c-v> :vsplit<cr><c-w><c-w>
-nnoremap <c-h> :split<cr><c-w><c-w>
+" nnoremap <c-v> :vsplit<cr><c-w><c-w>
+" nnoremap <c-h> :split<cr><c-w><c-w>
 nnoremap <c-h> <c-w><left>
 nnoremap <c-l> <c-w><right>
 nnoremap <c-j> <c-w><down>
@@ -89,10 +164,8 @@ nnoremap <c-b> :Buffers<cr>
 nnoremap <c-r> :History<cr>
 
 " Navigation
-nnoremap <s-j> 4j
-nnoremap <s-k> 4k
-nnoremap <tab> 8j
-nnoremap <s-tab> 8k
+nnoremap <s-j> 8j
+nnoremap <s-k> 8k
 
 " Move line(s) up or down.
 nnoremap <c-down> :m +1<cr>
@@ -113,12 +186,11 @@ nnoremap <leader>q :bd<cr>
 
 " Easier saving.
 nnoremap <c-u> :update<cr>
-inoremap <c-u> <c-o>:update<cr>
 
-nnoremap <leader>c :NERDComToggleComment
-
-inoremap <c-j> <c-o>j
-inoremap <c-k> <c-o>k
+" inoremap <c-j> <c-o>j
+" inoremap <c-k> <c-o>k
+" inoremap <c-h> <c-o>h
+" inoremap <c-l> <c-o>l
 
 "" Hooks
 
@@ -173,6 +245,9 @@ set wrap!
 
 
 "" Misc
+
+" https://github.com/scrooloose/nerdcommenter#post-installation
+filetype plugin on
 
 " Always keep gutter open to avoid bouncing.
 let g:ale_sign_column_always = 1

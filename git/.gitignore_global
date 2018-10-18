@@ -1,15 +1,16 @@
 # -*- mode: gitignore; -*-
 
-\#*\#
 *~
 .DS_Store
+.ipynb_checkpoints
 .ropeproject
 .vscode
-vendor
 .vscode
-__pycache__
-.ipynb_checkpoints
-env*
-ve*
 Gopkg.lock
+Untitled.ipynb
+\#*\#
+__pycache__
+env*
 graveyard
+ve*
+vendor

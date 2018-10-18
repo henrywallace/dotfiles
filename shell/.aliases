@@ -16,6 +16,7 @@ alias watch='watch --color ' # allow watch completion with leading space https:/
 alias path="echo $PATH | tr ':' '\n' | sort"
 alias cv='command -V'
 alias vrc='v ~/.vimrc'
+alias exa='exa --group-directories-first'
 
 #
 # k8s
@@ -68,6 +69,7 @@ alias cup='rustup update && cargo install-update -a'
 alias cleanup='git branch --merge master | grep -v master | xargs git branch -d 2> /dev/null || echo "no branches to cleanup"'
 alias conflicts="rg '<<<<<<<'"
 alias gbranch='git diff --name-only $(git merge-base master HEAD)'
+alias gdd='git diff --stat $(git merge-base master HEAD)'
 alias g-='git checkout -'
 alias ga='git add -u'
 alias gap='ga -p'
@@ -94,3 +96,6 @@ alias st='git stash --keep-index'
 alias stl='git stash list'
 alias stp='git stash pop'
 
+git-since() {
+  git log --oneline --since="one day ago" --no-merges --pretty='format:%an - %s - %h'
+}
