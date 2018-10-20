@@ -41,7 +41,6 @@ alias tm='tmux'
 alias ls='exa -F --group-directories-first'
 alias l='ls'
 alias ll='ls -la'
-alias make='colormake'
 
 #
 # editors
