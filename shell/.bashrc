@@ -39,28 +39,28 @@ source $GIT_COMPLETION
 # because colors are awesome
 source ~/.colors
 
-# PS4 controls the prefix for running shell scripts in debug mode, i.e. `set
-# -x`. We add the script name and line number for more clarity, instead of the
-# default "++ "
-PS4="$0:$LINENO: "
+# # PS4 controls the prefix for running shell scripts in debug mode, i.e. `set
+# # -x`. We add the script name and line number for more clarity, instead of the
+# # default "++ "
+# PS4="$0:$LINENO: "
 
-function now_ns {
-  if [ "$(uname -s)" == "Darwin" ]; then
-   /usr/local/opt/coreutils/libexec/gnubin/date +%s%N
-  else
-   date +%s%N
-  fi
-}
+# function now_ns {
+#   if [ "$(uname -s)" == "Darwin" ]; then
+#    /usr/local/opt/coreutils/libexec/gnubin/date +%s%N
+#   else
+#    date +%s%N
+#   fi
+# }
 
-function timer_start {
-  timer_start=${timer_start:-"$(now_ns)"}
-}
+# function timer_start {
+#   timer_start=${timer_start:-"$(now_ns)"}
+# }
 
-function timer_stop {
-  local delta_ns=$((($(now_ns) - $timer_start)))
-  since="$delta_ns"
-  unset timer_start
-}
+# function timer_stop {
+#   local delta_ns=$((($(now_ns) - $timer_start)))
+#   since="$delta_ns"
+#   unset timer_start
+# }
 
 # Nice prompt ^_^
 # https://unix.stackexchange.com/a/275016/162041
@@ -68,17 +68,18 @@ function timer_stop {
 __prompt_command() {
   local EXIT="$?"
 
-  # Display how long previous command took if it took than 1 second. We do this
-  # as close to capturing the true exit code as possible, so to be as true to
-  # the time as possible.
-  timer_stop
-  if command -v mp &> /dev/null; then
-    if [ "$since" -ge "1000000000" ]; then
-      dur="$CYAN$BOLD[$(mp durfmt ${since}ns)]$NC"
-    else
-      dur=""
-    fi
-  fi
+  # # Display how long previous command took if it took than 1 second. We do this
+  # # as close to capturing the true exit code as possible, so to be as true to
+  # # the time as possible.
+  # timer_stop
+  # if command -v mp &> /dev/null; then
+  #   if [ "$since" -ge "1000000000" ]; then
+  #     dur="$CYAN$BOLD[$(mp durfmt ${since}ns)]$NC"
+  #   else
+  #     dur=""
+  #   fi
+  # fi
+  dur=""
 
   # The previous exit code.
   if [ "$EXIT" == "0" ]; then
@@ -133,7 +134,7 @@ __prompt_command() {
   # shopt -s extdebug
   # trap "tput sgr0" DEBUG
 }
-trap 'timer_start' DEBUG
+# trap 'timer_start' DEBUG
 PROMPT_COMMAND=__prompt_command
 
 # pretty ls colors
@@ -169,8 +170,7 @@ if [ -z "$SSH_AUTH_SOCK" ]; then
   ssh-add
 fi
 
-source ~/.aliases
-source ~/.functions
+source ~/.aliasrc
 
 # GCP
 # TODO: add auto-downloads for this:
@@ -236,31 +236,31 @@ done
 	grep -v "[?*]" | cut -d " " -f2 | \
 	tr ' ' '\n')" scp sftp ssh
 
-# Cowthink
-animals="
-bud-frogs
-default
-elephant
-flaming-sheep
-kitty
-koala
-moofasa
-moose
-satanic
-sheep
-skeleton
-small
-three-eyes
-tux
-udder
-vader
-$HOME/.misc/hypno.cow
-"
-animal="$(echo "$animals" | sed '/^$/d' | sort -R | head -1)"
-method="$(echo cowthink cowsay | xargs | tr ' ' '\n' | sort -R | head -1)"
-# Only display cowthink every other login.
-if [ "$(shuf -i1-8 -n1)" -le "1" ]; then
-  $method -f $animal $(fortune -s)
-fi
+# # Cowthink
+# animals="
+# bud-frogs
+# default
+# elephant
+# flaming-sheep
+# kitty
+# koala
+# moofasa
+# moose
+# satanic
+# sheep
+# skeleton
+# small
+# three-eyes
+# tux
+# udder
+# vader
+# $HOME/.misc/hypno.cow
+# "
+# animal="$(echo "$animals" | sed '/^$/d' | sort -R | head -1)"
+# method="$(echo cowthink cowsay | xargs | tr ' ' '\n' | sort -R | head -1)"
+# # Only display cowthink every other login.
+# if [ "$(shuf -i1-8 -n1)" -le "1" ]; then
+#   $method -f $animal $(fortune -s)
+# fi
 
 complete -C /usr/local/bin/vault vault

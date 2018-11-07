@@ -6,33 +6,27 @@
 	default = simple
 
 [core]
-    editor = vim
-    # https://stackoverflow.com/a/11262153
-    excludesfile = ~/.gitignore_global
-    pager = diff-so-fancy | less --tabs=4 -RFX
+	editor = vim
+	# git-config does indeed ~ HOME expand: https://stackoverflow.com/a/11262153
+	excludesfile = ~/.gitignore_global
 
 [alias]
-    co = checkout
-
-[color "diff"]
-    frag = blue dim
-    meta = blue dim
-    commit = blue
+	b = branch
+	co = checkout
+	cm = commit -m
 
 [log]
-    graphColors = red
-    abbrevCommit = true
+	graphColors = red
+	abbrevCommit = true
 
-[filter "lfs"]
-	required = true
-	clean = git-lfs clean -- %f
-	smudge = git-lfs smudge -- %f
-	process = git-lfs filter-process
 [http]
 	cookiefile = /Users/henrywallace/.gitcookies
+
 [url "git@github.com:"]
 	insteadOf = https://github.com/
+
 [pull]
 	ff = only
+
 [rerere]
 	enabled = true
