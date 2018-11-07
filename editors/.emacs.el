@@ -151,6 +151,8 @@
 (show-paren-mode 1)
 (setq show-paren-delay 0)
 
+(load-theme 'dracula t)
+
 ;; ;; ivy for the win
 ;; (ivy-mode 1)
 ;; (setq enable-recursive-minibuffers t)

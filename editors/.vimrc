@@ -104,11 +104,12 @@ nnoremap <c-k> <c-w><up>
 
 " Mappings for fzf.
 nnoremap <c-g> :Rg<cr>
-nnoremap <c-f> :GFiles<cr>
+nnoremap <c-f> :Files<cr>
 nnoremap <c-p> :BLines<cr>
 nnoremap <c-x> :Commands<cr>
 nnoremap <c-b> :Buffers<cr>
 nnoremap <c-r> :History<cr>
+nnoremap <c-c> :BCommits<cr>
 
 " Navigation
 nnoremap <s-j> 8j
@@ -129,17 +130,14 @@ nnoremap <leader>a :ArgWrap<cr>
 
 " Fun times with buffers.
 nnoremap <leader>b :bp<cr>
-nnoremap <leader>q :bd<cr>
+nnoremap <c-\> :vsplit<cr><c-w>w
+inoremap <c-\> :vsplit<cr><c-w>w
+" nnoremap <c-m> :split<cr><c-w>w
+" inoremap <c-m> :split<cr><c-w>w
 
 " Easier saving. Note that :update differs from :w in that we only write if
 " the file has in fact changed.
 nnoremap <c-u> :update<cr>
-
-nnoremap <leader>c gcc
-vnoremap <leader>c gc
-
-nnoremap <m-q> gwip
-inoremap <m-q> <c-o>gwip
 
 
 "" Hooks
@@ -150,11 +148,11 @@ autocmd! BufWritePost $MYVIMRC source $MYVIMRC
 " Strip whitespaces on save: https://unix.stackexchange.com/a/75431/162041.
 autocmd BufWritePre * :%s/\s\+$//e
 
-" Highlight long lines: https://stackoverflow.com/a/10993757/2601179.
-augroup vimrc_autocmds
-  autocmd BufEnter * highlight OverLength ctermbg=Red ctermfg=Black
-  autocmd BufEnter * match OverLength /\%101v.*/
-augroup END
+" " Highlight long lines: https://stackoverflow.com/a/10993757/2601179.
+" augroup vimrc_autocmds
+"   autocmd BufEnter * highlight OverLength ctermbg=Red ctermfg=Black
+"   autocmd BufEnter * match OverLength /\%101v.*/
+" augroup END
 
 
 "" Misc
@@ -166,7 +164,7 @@ set showcmd
 set nofoldenable
 
 " use par for formatting paragraph.
-set equalprg=par
+" set equalprg=par
 
 " Show all matched highlights: http://vim.wikia.com/wiki/Highlight_all_search_pattern_matches.
 set hlsearch
@@ -198,10 +196,8 @@ set termguicolors
 " No wrapping of lines.
 set wrap!
 
-" Always keep gutter open to avoid bouncing.
+let g:ale_lint_on_enter = 0
 let g:ale_sign_column_always = 1
-" Ale in status line.
-let g:airline#extensions#ale#enabled = 1
 let g:ale_lint_delay = 500
 
 let g:go_fmt_command = 'goimports'
@@ -209,8 +205,25 @@ let g:go_fmt_command = 'goimports'
 " Add trailing comma during argument rewrapping.
 let g:argwrap_tail_comma = 1
 
+" [Buffers] Jump to the existing window if possible
+let g:fzf_buffers_jump = 1
 " Decrease the height of the fzf search box.
 let g:fzf_layout = { 'down': '~20%' }
+" Customize fzf colors to match color scheme.
+let g:fzf_colors =
+\ { 'fg':      ['fg', 'Normal'],
+  \ 'bg':      ['bg', 'Normal'],
+  \ 'hl':      ['fg', 'Comment'],
+  \ 'fg+':     ['fg', 'CursorLine', 'CursorColumn', 'Normal'],
+  \ 'bg+':     ['bg', 'CursorLine', 'CursorColumn'],
+  \ 'hl+':     ['fg', 'Statement'],
+  \ 'info':    ['fg', 'PreProc'],
+  \ 'border':  ['fg', 'Ignore'],
+  \ 'prompt':  ['fg', 'Conditional'],
+  \ 'pointer': ['fg', 'Exception'],
+  \ 'marker':  ['fg', 'Keyword'],
+  \ 'spinner': ['fg', 'Label'],
+  \ 'header':  ['fg', 'Comment'] }
 
 " Markdown code fence highlighting.
 let g:markdown_fenced_languages = ['go', 'sh', 'python']
@@ -225,6 +238,11 @@ nnoremap <leader>sv :source $MYVIMRC<cr>
 " hidden characters
 nmap <leader>l :set list!<CR>
 
+" close popup window after completion
+" https://github.com/Shougo/deoplete.nvim/issues/115#issuecomment-170237485
+autocmd InsertLeave,CompleteDone * if pumvisible() == 0 | pclose | endif
+
+call deoplete#custom#option('auto_complete_delay', 1000)
 
 " Use deoplete for auto-completion.
 let g:deoplete#enable_at_startup = 1
@@ -234,8 +252,6 @@ let g:deoplete#enable_smart_case = 1
 inoremap <silent><expr><tab> pumvisible() ? "\<c-n>" : "\<tab>"
 " use tab to backward cycle
 inoremap <silent><expr><s-tab> pumvisible() ? "\<c-p>" : "\<s-tab>"
-" deoplete Go customizations, boosting rank
-call deoplete#custom#source('go', 'rank', 1000)
 " JS Customizations
 let g:deoplete#sources#ternjs#types = 1
 
