@@ -1,20 +1,46 @@
 #
+# basics
+#
+alias ...='cd ../..'
+alias ..='cd ..'
+alias cp='cp -i'
+alias e='emacs -nw'
+alias exa='exa --group-directories-first'
+alias j='jobs -l'
+alias l='ls'
+alias ll='ls -la'
+alias mv='mv -i'
+alias rm='rm -i'
+alias sudo='sudo '  # allow for sudo completion
+alias t='tmux'
+alias ta='tmux attach'
+alias v=vim
+alias vb='v ~/.bashrc'
+alias vrc='v ~/.vimrc'
+alias vz='v ~/.zshrc'
+alias watch='watch --color ' # allow watch completion with leading space https://unix.stackexchange.com/a/25329/162041
+if command -v exa > /dev/null; then
+  alias ls='exa -F --group-directories-first'
+  alias lst='ls -T -L2'
+else
+  alias lst='tree -L 2'
+fi
+
+#
 # misc
 #
 alias bup='brew upgrade && brew cleanup'
 alias cv='command -V'
-alias div='tput setaf 4; tput bold; printf "%$(tput cols)s\n" | tr " " =; tput sgr0'
-alias exa='exa --group-directories-first'
-alias gup='sudo gcloud components update'
+div() {
+  tput setaf 4
+  tput bold
+  printf "%$(tput cols)s\n" | tr " " =
+  tput sgr0
+}
 alias kr="jobs -l | grep '+' | awk '{print $2}' | xargs kill -SIGKILL"
 alias path="echo $PATH | tr ':' '\n' | sort"
 alias rg='rg -M 512 --no-heading'
 alias shellcheck='shellcheck --color=always'
-alias sudo='sudo '  # allow for sudo completion
-alias t='tmux'
-alias ta='tmux attach'
-alias vrc='v ~/.vimrc'
-alias watch='watch --color ' # allow watch completion with leading space https://unix.stackexchange.com/a/25329/162041
 ports() {
   lsof -iTCP -sTCP:LISTEN -n -P
 }
@@ -42,8 +68,9 @@ function serve() {
 
 
 #
-# k8s
+# k8s + gcloud
 #
+alias gup='sudo gcloud components update'
 alias k='kubectl'
 alias kn='kubectl get no'
 alias kpa='kp -a'
@@ -78,37 +105,11 @@ function kd() {
     echo kubectl get deploy --all-namespaces | rg -N --color=always "$pat"
   fi
 }
+# watch deployments
 function wd() {
   export -f kd
   watch kd "$@"
 }
-
-#
-# essentials
-#
-alias cp='cp -i'
-alias mv='mv -i'
-alias rm='rm -i'
-alias j='jobs -l'
-alias t="exa -TL2 -F"
-alias ..='cd ..'
-alias ...='cd ../..'
-alias tm='tmux'
-alias l='ls'
-alias ll='ls -la'
-if command -v exa > /dev/null; then
-  alias ls='exa -F --group-directories-first'
-  alias lst='ls -T -L2'
-else
-  alias lst='tree -L 2'
-fi
-
-#
-# editors
-#
-alias e='emacs -nw'
-alias v=vim
-alias m=micro
 
 #
 # golang
@@ -126,31 +127,31 @@ alias cup='rustup update && cargo install-update -a'
 # git
 #
 alias cleanup='git branch --merge master | grep -v master | xargs git branch -d 2> /dev/null || echo "no branches to cleanup"'
-alias conflicts="rg '<<<<<<<'"
-alias gbranch='git diff --name-only $(git merge-base master HEAD)'
-alias gdd='git diff --stat $(git merge-base master HEAD)'
+alias conflicts="git ls-tree -r master --name-only | rg '<<<<<<<'"
 alias g-='git checkout -'
 alias ga='git add -u'
 alias gap='ga -p'
 alias gd='git diff'
-alias gds='echo; git diff --stat; echo'
 alias gdc='git diff --cached'
+alias gdd='git diff --stat $(git merge-base master HEAD)'
+alias gds='echo; git diff --stat; echo'
+alias gf='git diff --name-only $(git merge-base master HEAD)'
 alias gl='git log --stat master..HEAD'
-alias gr='git rebase master'
 alias gm='git checkout master'
 alias gmp='git checkout master && git pull && cleanup'
 alias gn='git checkout -b'
 alias gp='git pull --rebase'
+alias gr='git rebase master'
 alias gs='git status'
 alias lg='git log --oneline master..HEAD --color=always'
 alias lgp='git log -p master..HEAD'
 alias llg='git log --graph --oneline'
+alias lr='git show HEAD --stat'
 alias lrp='git show HEAD'
 alias lrq='echo; git log HEAD~..HEAD; echo'
-alias lr='git show HEAD --stat'
+alias p='git stash show -p'
 alias rc='git rebase --continue'
 alias review='git log --stat --reverse master..HEAD'
-alias p='git stash show -p'
 alias st='git stash --keep-index'
 alias stl='git stash list'
 alias stp='git stash pop'

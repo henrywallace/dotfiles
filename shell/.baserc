@@ -1,0 +1,17 @@
+#!/bin/sh
+
+. ~/.pathrc
+. ~/.aliasrc
+
+# Start ssh-agent if not running.
+# https://unix.stackexchange.com/a/90869/162041
+if [ -z "$SSH_AUTH_SOCK" ]; then
+  eval $(ssh-agent -s)
+  ssh-add
+fi
+
+# fzf
+case "$SHELL" in
+  *zsh) test -f ~/.fzf.zsh && . ~/.fzf.zsh;;
+esac
+export FZF_DEFAULT_OPTS='--height 6 --reverse --border'

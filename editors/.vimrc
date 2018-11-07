@@ -9,6 +9,8 @@ nnoremap <space> <nop>
 call plug#begin('~/.vim/plugged')
 
 "" Misc
+" Heuristically set buffer options
+Plug 'tpope/vim-sleuth'
 " Set paste off when pasting (typing at inhuman speeds).
 Plug 'roxma/vim-paste-easy'
 " Sensible defaults for Vim.
