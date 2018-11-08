@@ -13,7 +13,7 @@
 [alias]
 	b = branch
 	co = checkout
-	cm = commit -m
+	cm = commit --allow-empty -m
 
 [log]
 	graphColors = red

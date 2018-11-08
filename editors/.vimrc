@@ -113,15 +113,13 @@ nnoremap <c-b> :Buffers<cr>
 nnoremap <c-r> :History<cr>
 nnoremap <c-c> :BCommits<cr>
 
-" Navigation
-nnoremap <s-j> 8j
-nnoremap <s-k> 8k
-
 " Move line(s) up or down.
 nnoremap <c-down> :m +1<cr>
 nnoremap <c-up> :m -2<cr>
 vnoremap <c-down>:m '>+1<cr>gv
 vnoremap <c-up> :m '<-2<cr>gv
+
+inoremap <c-k> <esc>Dai
 
 " Search for errors from ALE.
 nnoremap <leader>n :ALENextWrap<cr>zz
@@ -133,13 +131,14 @@ nnoremap <leader>a :ArgWrap<cr>
 " Fun times with buffers.
 nnoremap <leader>b :bp<cr>
 nnoremap <c-\> :vsplit<cr><c-w>w
-inoremap <c-\> :vsplit<cr><c-w>w
-" nnoremap <c-m> :split<cr><c-w>w
-" inoremap <c-m> :split<cr><c-w>w
+inoremap <c-\> <esc>:vsplit<cr><c-w>w
+nnoremap <c-i> :split<cr><c-w>w
+inoremap <c-i> <esc>:split<cr><c-w>w
 
 " Easier saving. Note that :update differs from :w in that we only write if
 " the file has in fact changed.
-nnoremap <c-u> :update<cr>
+nnoremap <c-s> :update<cr>
+inoremap <c-s> <esc>:update
 
 
 "" Hooks
@@ -198,8 +197,8 @@ set termguicolors
 " No wrapping of lines.
 set wrap!
 
-let g:ale_lint_on_enter = 0
-let g:ale_sign_column_always = 1
+let g:ale_lint_on_enter = 1
+let g:ale_sign_column_always = 0
 let g:ale_lint_delay = 500
 
 let g:go_fmt_command = 'goimports'
@@ -244,7 +243,7 @@ nmap <leader>l :set list!<CR>
 " https://github.com/Shougo/deoplete.nvim/issues/115#issuecomment-170237485
 autocmd InsertLeave,CompleteDone * if pumvisible() == 0 | pclose | endif
 
-call deoplete#custom#option('auto_complete_delay', 1000)
+call deoplete#custom#option('auto_complete_delay', 512)
 
 " Use deoplete for auto-completion.
 let g:deoplete#enable_at_startup = 1

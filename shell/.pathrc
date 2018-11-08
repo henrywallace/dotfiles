@@ -2,6 +2,21 @@
 PATH="$HOME/.cargo/bin:$PATH"
 
 # golang
-export GOPATH=$HOME/go
+GOPATH=$HOME/go
 PATH=$GOPATH/bin:$PATH
-export PATH=$PATH:/usr/local/go/bin
+PATH=$PATH:/usr/local/go/bin
+
+# personal scripts
+PATH=$HOME/bin:$PATH
+
+# homebrew
+if [[ "$(uname -s)" == "Darwin" ]]; then
+  PATH=$HOME/.cask/bin:$PATH
+fi
+
+# gcloud
+if [[ "$(uname -s)" == "Linux" ]]; then
+  PATH=$PATH:/usr/share/google-cloud-sdk/bin
+else
+  PATH=$PATH:/usr/local/google-cloud-sdk/bin
+fi

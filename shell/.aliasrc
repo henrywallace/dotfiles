@@ -11,6 +11,7 @@ alias l='ls'
 alias ll='ls -la'
 alias mv='mv -i'
 alias rm='rm -i'
+alias celar='clear'  # oh the struggles of life
 alias sudo='sudo '  # allow for sudo completion
 alias t='tmux'
 alias ta='tmux attach'
@@ -18,7 +19,10 @@ alias v=vim
 alias vb='v ~/.bashrc'
 alias vrc='v ~/.vimrc'
 alias vz='v ~/.zshrc'
-alias watch='watch --color ' # allow watch completion with leading space https://unix.stackexchange.com/a/25329/162041
+# Allow watch and xargs alias completion with space.
+# https://unix.stackexchange.com/a/25329/162041
+alias watch='watch --color -d'
+alias xargs='xargs '
 if command -v exa > /dev/null; then
   alias ls='exa -F --group-directories-first'
   alias lst='ls -T -L2'
@@ -29,7 +33,17 @@ fi
 #
 # misc
 #
-alias bup='brew upgrade && brew cleanup'
+alias bat='bat --paging=always -p'
+bup() {
+  set -x
+  brew upgrade
+  brew cleanup
+}
+cup() {
+  set -x
+  rustup update
+  cargo install-update -a
+}
 alias cv='command -V'
 div() {
   tput setaf 4
@@ -37,8 +51,7 @@ div() {
   printf "%$(tput cols)s\n" | tr " " =
   tput sgr0
 }
-alias kr="jobs -l | grep '+' | awk '{print $2}' | xargs kill -SIGKILL"
-alias path="echo $PATH | tr ':' '\n' | sort"
+alias path="echo $PATH | tr ':' '\n'"
 alias rg='rg -M 512 --no-heading'
 alias shellcheck='shellcheck --color=always'
 ports() {
@@ -58,12 +71,9 @@ function ra() {
 }
 # simple and quick HTTP server
 function serve() {
-  if [ -z "$1" ]; then
-    echo http://localhost:8000
-  else
-    echo "http://localhost:$1"
-  fi
-  python3 -m http.server "$1" --bind 127.0.0.1
+  local PORT="${1:-8000}"
+  echo "http://localhost:$PORT"
+  python3 -m http.server "$PORT" --bind 127.0.0.1
 }
 
 
@@ -78,14 +88,14 @@ alias mkl='minikube service list'
 alias wpa='wp -a'
 # search for k8s pods
 function kp() {
-  if [ -z "$1" ]; then
+  if [[ -z "$1" ]]; then
     kubectl get pods
-  elif [ "$1" == '-a' ]; then
+  elif [[ "$1" = '-a' ]]; then
     kubectl get pods --all-namespaces
   else
-    pat="$(echo "$@" | tr -s ' ' '|')"
-    header="$(kubectl get pods --all-namespaces | head -1)"
-    echo "$header"; kubectl get pods --all-namespaces | rg -N --color=always "$pat"
+    local PAT="$(echo "$@" | tr -s ' ' '|')"
+    HEADER=kubectl get pods --all-namespaces | head -1
+    kubectl get pods --all-namespaces | rg -N --color=always "$PAT"
   fi
 }
 # watch k8s pods
@@ -95,14 +105,14 @@ function wp() {
 }
 # like kp but for deployments
 function kd() {
-  if [ -z "$1" ]; then
+  if [[ -z "$1" ]]; then
     kubectl get deploy
-  elif [ "$1" == '-a' ]; then
+  elif [[ "$1" = '-a' ]]; then
     kubectl get deploy --all-namespaces {
   else
-    pat="$(echo "$@" | tr -s ' ' '|')"
-    # header="$(kubectl get deploy --all-namespaces | head -1)"
-    echo kubectl get deploy --all-namespaces | rg -N --color=always "$pat"
+    local PAT="$(echo "$@" | tr -s ' ' '|')"
+    kubectl get deploy --all-namespaces | head -1
+    kubectl get deploy --all-namespaces | rg -N --color=always "$PAT"
   fi
 }
 # watch deployments
@@ -111,85 +121,81 @@ function wd() {
   watch kd "$@"
 }
 
-#
-# golang
-#
-alias goi='go install -v ./...'
-alias gome='cd $FIRSTGOPATH/src/github.com/henrywallace'
-alias gdoc='echo http://localhost:6060; godoc -play -notes="TODO|HELP|QUESTION" -http :6060'
+##
+## golang
+##
+#alias goi='go install -v ./...'
+#alias gome='cd $FIRSTGOPATH/src/github.com/henrywallace'
+#gdoc() {
+#  echo http://localhost:6060
+#  godoc -play -notes="TODO|HELP|QUESTION" -http :6060
+#}
 
-#
-# rustlang
-#
-alias cup='rustup update && cargo install-update -a'
-
-#
-# git
-#
-alias cleanup='git branch --merge master | grep -v master | xargs git branch -d 2> /dev/null || echo "no branches to cleanup"'
-alias conflicts="git ls-tree -r master --name-only | rg '<<<<<<<'"
-alias g-='git checkout -'
-alias ga='git add -u'
-alias gap='ga -p'
-alias gd='git diff'
-alias gdc='git diff --cached'
-alias gdd='git diff --stat $(git merge-base master HEAD)'
-alias gds='echo; git diff --stat; echo'
-alias gf='git diff --name-only $(git merge-base master HEAD)'
-alias gl='git log --stat master..HEAD'
-alias gm='git checkout master'
-alias gmp='git checkout master && git pull && cleanup'
-alias gn='git checkout -b'
-alias gp='git pull --rebase'
-alias gr='git rebase master'
-alias gs='git status'
-alias lg='git log --oneline master..HEAD --color=always'
-alias lgp='git log -p master..HEAD'
-alias llg='git log --graph --oneline'
-alias lr='git show HEAD --stat'
-alias lrp='git show HEAD'
-alias lrq='echo; git log HEAD~..HEAD; echo'
-alias p='git stash show -p'
-alias rc='git rebase --continue'
-alias review='git log --stat --reverse master..HEAD'
-alias st='git stash --keep-index'
-alias stl='git stash list'
-alias stp='git stash pop'
-# rebase master or rebase back $1 commits
-function rb () {
-  if [ -z "$1" ]; then
-    git rebase -i master
-  elif [[ "$1" =~ -[[:digit:]]+ ]]; then
-    echo git rebase -i "HEAD~$1"
-    git rebase -i "HEAD~$1"
-  else
-    echo git rebase -i "$1"
-    git rebase -i "$1"
-  fi
-}
-# git commit amend, with quick option for no-edit
-function gca() {
-  if test "$1" = "-"; then
-    git commit --amend --no-edit
-  else
-    git commit --amend
-  fi
-}
-# pretty git branches
-function gb() {
-  git rev-parse --is-inside-work-tree > /dev/null || return
-  branches="$(git for-each-ref --color=always --sort=-committerdate refs/heads/ --format='%(HEAD)|%(color:green)%(committerdate:relative)%(color:reset)|%(color:blue)%(refname:short)%(color:reset)|%(contents:subject)')"
-  echo "num branches: $(echo "$branches" | wc -l | xargs)"
-  echo "num stash:    $(git stash list | wc -l | xargs)"
-  if [[ -z "$1" ]]; then
-    echo "$(echo "$branches" | column -t -s '|')"
-  elif [[ "$1" =~ -[[:digit:]]+ ]]; then
-    echo "$(echo "$branches" | head "$1" | column -t -s '|')"
-  elif [[ "$1" == "-" ]]; then
-    echo "$(echo "$branches" | column -t -s '|')"
-  else
-    echo "$(echo "$branches" | rg -N "$1" | column -t -s '|')"
-  fi
-}
+##
+## git
+##
+#alias gprune='git branch --merge master | grep -v master | xargs git branch -d 2> /dev/null || echo "no branches to prune"'
+## alias conflicts='git ls-tree -r master --name-only | rg \'<<<<<<<\''
+#alias g-='git checkout -'
+#alias ga='git add -u'
+#alias gd='git diff'
+#alias gdd='git diff --stat $(git merge-base master HEAD)'
+#alias gds='echo; git diff --stat; echo'
+#alias gf='git diff --name-only $(git merge-base master HEAD)'
+#alias gl='git log --stat master..HEAD'
+#alias gm='git checkout master'
+#alias gmp='git checkout master && git pull && gprune'
+#alias gn='git checkout -b'
+#alias gp='git pull --rebase'
+#alias gr='git rebase master'
+#alias gs='git status'
+#alias lg='git log --oneline master..HEAD --color=always'
+#alias lgp='git log -p master..HEAD'
+#alias llg='git log --graph --oneline'
+#alias lr='git show HEAD --stat'
+#alias lrp='git show HEAD'
+#alias p='git stash show -p'
+#alias rc='git rebase --continue'
+#alias review='git log --stat --reverse master..HEAD'
+#alias st='git stash --keep-index'
+#alias stl='git stash list'
+#alias stp='git stash pop'
+## rebase master or rebase back $1 commits
+#rb () {
+#  if [[ -z "$1" ]]; then
+#    git rebase -i master
+#  elif [[ "$1" =~ -[[:digit:]]+ ]]; then
+#    echo git rebase -i "HEAD~$1"
+#    git rebase -i "HEAD~$1"
+#  else
+#    echo git rebase -i "$1"
+#    git rebase -i "$1"
+#  fi
+#}
+## git commit amend, with quick option for no-edit
+#gca() {
+#  if [[ "$1" = "-" ]]; then
+#    git commit --amend --no-edit
+#  else
+#    git commit --amend
+#  fi
+#}
+## pretty git branches
+#gb() {
+#  # TODO: It would be clearly if this was not written in shell.
+#  git rev-parse --is-inside-work-tree > /dev/null || return
+#  branches="$(git for-each-ref --color=always --sort=-committerdate refs/heads/ --format='%(HEAD)|%(color:green)%(committerdate:relative)%(color:reset)|%(color:blue)%(refname:short)%(color:reset)|%(contents:subject)')"
+#  echo "num branches: $(echo "$branches" | wc -l | xargs)"
+#  echo "num stash:    $(git stash list | wc -l | xargs)"
+#  if [[ -z "$1" ]]; then
+#    echo "$(echo "$branches" | column -t -s '|')"
+#  elif [[ "$1" =~ -[[:digit:]]+ ]]; then
+#    echo "$(echo "$branches" | head "$1" | column -t -s '|')"
+#  elif [[ "$1" == "-" ]]; then
+#    echo "$(echo "$branches" | column -t -s '|')"
+#  else
+#    echo "$(echo "$branches" | rg -N "$1" | column -t -s '|')"
+#  fi
+#}
 
 
