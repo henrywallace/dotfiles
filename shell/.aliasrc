@@ -121,81 +121,81 @@ function wd() {
   watch kd "$@"
 }
 
-##
-## golang
-##
-#alias goi='go install -v ./...'
-#alias gome='cd $FIRSTGOPATH/src/github.com/henrywallace'
-#gdoc() {
-#  echo http://localhost:6060
-#  godoc -play -notes="TODO|HELP|QUESTION" -http :6060
-#}
+#
+# golang
+#
+alias goi='go install -v ./...'
+alias gome='cd $FIRSTGOPATH/src/github.com/henrywallace'
+gdoc() {
+  echo http://localhost:6060
+  godoc -play -notes="TODO|HELP|QUESTION" -http :6060
+}
 
-##
-## git
-##
-#alias gprune='git branch --merge master | grep -v master | xargs git branch -d 2> /dev/null || echo "no branches to prune"'
-## alias conflicts='git ls-tree -r master --name-only | rg \'<<<<<<<\''
-#alias g-='git checkout -'
-#alias ga='git add -u'
-#alias gd='git diff'
-#alias gdd='git diff --stat $(git merge-base master HEAD)'
-#alias gds='echo; git diff --stat; echo'
-#alias gf='git diff --name-only $(git merge-base master HEAD)'
-#alias gl='git log --stat master..HEAD'
-#alias gm='git checkout master'
-#alias gmp='git checkout master && git pull && gprune'
-#alias gn='git checkout -b'
-#alias gp='git pull --rebase'
-#alias gr='git rebase master'
-#alias gs='git status'
-#alias lg='git log --oneline master..HEAD --color=always'
-#alias lgp='git log -p master..HEAD'
-#alias llg='git log --graph --oneline'
-#alias lr='git show HEAD --stat'
-#alias lrp='git show HEAD'
-#alias p='git stash show -p'
-#alias rc='git rebase --continue'
-#alias review='git log --stat --reverse master..HEAD'
-#alias st='git stash --keep-index'
-#alias stl='git stash list'
-#alias stp='git stash pop'
-## rebase master or rebase back $1 commits
-#rb () {
-#  if [[ -z "$1" ]]; then
-#    git rebase -i master
-#  elif [[ "$1" =~ -[[:digit:]]+ ]]; then
-#    echo git rebase -i "HEAD~$1"
-#    git rebase -i "HEAD~$1"
-#  else
-#    echo git rebase -i "$1"
-#    git rebase -i "$1"
-#  fi
-#}
-## git commit amend, with quick option for no-edit
-#gca() {
-#  if [[ "$1" = "-" ]]; then
-#    git commit --amend --no-edit
-#  else
-#    git commit --amend
-#  fi
-#}
-## pretty git branches
-#gb() {
-#  # TODO: It would be clearly if this was not written in shell.
-#  git rev-parse --is-inside-work-tree > /dev/null || return
-#  branches="$(git for-each-ref --color=always --sort=-committerdate refs/heads/ --format='%(HEAD)|%(color:green)%(committerdate:relative)%(color:reset)|%(color:blue)%(refname:short)%(color:reset)|%(contents:subject)')"
-#  echo "num branches: $(echo "$branches" | wc -l | xargs)"
-#  echo "num stash:    $(git stash list | wc -l | xargs)"
-#  if [[ -z "$1" ]]; then
-#    echo "$(echo "$branches" | column -t -s '|')"
-#  elif [[ "$1" =~ -[[:digit:]]+ ]]; then
-#    echo "$(echo "$branches" | head "$1" | column -t -s '|')"
-#  elif [[ "$1" == "-" ]]; then
-#    echo "$(echo "$branches" | column -t -s '|')"
-#  else
-#    echo "$(echo "$branches" | rg -N "$1" | column -t -s '|')"
-#  fi
-#}
+#
+# git
+#
+alias gprune='git branch --merge master | grep -v master | xargs git branch -d 2> /dev/null || echo "no branches to prune"'
+# alias conflicts='git ls-tree -r master --name-only | rg \'<<<<<<<\''
+alias g-='git checkout -'
+alias ga='git add -u'
+alias gd='git diff'
+alias gdd='git diff --stat $(git merge-base master HEAD)'
+alias gds='echo; git diff --stat; echo'
+alias gf='git diff --name-only $(git merge-base master HEAD)'
+alias gl='git log --stat master..HEAD'
+alias gm='git checkout master'
+alias gmp='git checkout master && git pull && gprune'
+alias gn='git checkout -b'
+alias gp='git pull --rebase'
+alias gr='git rebase master'
+alias gs='git status'
+alias lg='git log --oneline master..HEAD --color=always'
+alias lgp='git log -p master..HEAD'
+alias llg='git log --graph --oneline'
+alias lr='git show HEAD --stat'
+alias lrp='git show HEAD'
+alias p='git stash show -p'
+alias rc='git rebase --continue'
+alias review='git log --stat --reverse master..HEAD'
+alias st='git stash --keep-index'
+alias stl='git stash list'
+alias stp='git stash pop'
+# rebase master or rebase back $1 commits
+rb () {
+  if [[ -z "$1" ]]; then
+    git rebase -i master
+  elif [[ "$1" =~ -[[:digit:]]+ ]]; then
+    echo git rebase -i "HEAD~$1"
+    git rebase -i "HEAD~$1"
+  else
+    echo git rebase -i "$1"
+    git rebase -i "$1"
+  fi
+}
+# git commit amend, with quick option for no-edit
+gca() {
+  if [[ "$1" = "-" ]]; then
+    git commit --amend --no-edit
+  else
+    git commit --amend
+  fi
+}
+# pretty git branches
+gb() {
+  # TODO: It would be clearly if this was not written in shell.
+  git rev-parse --is-inside-work-tree > /dev/null || return
+  branches="$(git for-each-ref --color=always --sort=-committerdate refs/heads/ --format='%(HEAD)|%(color:green)%(committerdate:relative)%(color:reset)|%(color:blue)%(refname:short)%(color:reset)|%(contents:subject)')"
+  echo "num branches: $(echo "$branches" | wc -l | xargs)"
+  echo "num stash:    $(git stash list | wc -l | xargs)"
+  if [[ -z "$1" ]]; then
+    echo "$(echo "$branches" | column -t -s '|')"
+  elif [[ "$1" =~ -[[:digit:]]+ ]]; then
+    echo "$(echo "$branches" | head "$1" | column -t -s '|')"
+  elif [[ "$1" == "-" ]]; then
+    echo "$(echo "$branches" | column -t -s '|')"
+  else
+    echo "$(echo "$branches" | rg -N "$1" | column -t -s '|')"
+  fi
+}
 
 

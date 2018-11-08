@@ -7,7 +7,8 @@
 
 [core]
 	editor = vim
-	# git-config does indeed ~ HOME expand: https://stackoverflow.com/a/11262153
+	# git-config does indeed expand ~
+	# https://stackoverflow.com/a/11262153
 	excludesfile = ~/.gitignore_global
 
 [alias]
@@ -19,11 +20,8 @@
 	graphColors = red
 	abbrevCommit = true
 
-[http]
-	cookiefile = /Users/henrywallace/.gitcookies
-
-[url "git@github.com:"]
-	insteadOf = https://github.com/
+; [url "git@github.com:"]
+; 	insteadOf = https://github.com/
 
 [pull]
 	ff = only
