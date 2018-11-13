@@ -3,4 +3,4 @@ os:
   - osx
 
 install:
-  - ./install.sh
+  - ./stow.sh
