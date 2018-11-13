@@ -137,8 +137,7 @@ inoremap <c-i> <esc>:split<cr><c-w>w
 
 " Easier saving. Note that :update differs from :w in that we only write if
 " the file has in fact changed.
-nnoremap <c-s> :update<cr>
-inoremap <c-s> <esc>:update
+nnoremap <leader>s :update<cr>
 
 
 "" Hooks
@@ -197,6 +196,7 @@ set termguicolors
 " No wrapping of lines.
 set wrap!
 
+let g:ale_open_list = 0
 let g:ale_lint_on_enter = 1
 let g:ale_sign_column_always = 0
 let g:ale_lint_delay = 500
