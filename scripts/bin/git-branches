@@ -1,0 +1,30 @@
+#!/bin/bash
+
+BLUE="$(tput setaf 4)"
+RED="$(tput setaf 1)"
+GREEN="$(tput setaf 2)"
+BOLD="$(tput bold)"
+NC="$(tput sgr0)"
+
+diffstat() {
+  branch="$1"
+  diff="$(git diff --shortstat "$(git merge-base master "$branch")".."$branch")"
+  changed="$(echo "$diff" | rg '(\d+) files? changed' -or '$1')"
+  insertions="$(echo "$diff" | rg '(\d+) insertions?' -or '$1')"
+  deletions="$(echo "$diff" | rg '(\d+) deletions?' -or '$1')"
+  sep="%%"
+  summary=""
+  [[ -z "$changed" ]] || summary+="${BLUE}*${changed}${NC}${sep}"
+  [[ -z "$insertions" ]] || summary+="${GREEN}+${insertions}${NC}${sep}"
+  [[ -z "$deletions" ]] || summary+="${RED}-${deletions}${NC}"
+  echo "$summary"
+}
+
+lastactive() {
+  branch="$1"
+  echo "$(git log --abbrev-commit -1 --date=relative "$branch"  | rg 'Date:\s+(.*)' -or '$1')"
+}
+
+for b in $(git branch | sed 's/\* //'); do
+  echo "${b}%%$(lastactive "$b")%%$(diffstat "$b")" &
+done | column -t -s'%%'
