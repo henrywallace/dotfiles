@@ -8,9 +8,9 @@ zstyle ':completion:*' list-colors "${(@s.:.)LS_COLORS}"
 # Completion.
 autoload -Uz compinit; compinit
 
-# Allow delete back part, not full word, like bash.
-# https://unix.stackexchange.com/a/258661/162041
-autoload -U select-word-style; select-word-style bash
+# # Allow delete back part, not full word, like bash.
+# # https://unix.stackexchange.com/a/258661/162041
+# autoload -U select-word-style; select-word-style bash
 
 # Highlight tab completion selection.
 # https://stackoverflow.com/a/29197217/2601179
@@ -23,7 +23,20 @@ bindkey '^[[Z' reverse-menu-complete
 # Prompt.
 autoload -Uz promptinit; promptinit
 # https://github.com/sindresorhus/pure
-prompt pure
+
+# https://github.com/zsh-users/zsh-autosuggestions#key-bindings
+bindkey '^ ' autosuggest-accept
+
+# https://vi.stackexchange.com/a/10142
+set formatoptions+=r
+# set comments-=mb:*
+# set comments+=fb:*
+
+. ~/.zsh/prompt/prompt.zsh
+AGKOZAK_COLORS_USER_HOST=cyan
+AGKOZAK_COLORS_PATH=black
+AGKOZAK_COLORS_BRANCH_STATUS=black
+AGKOZAK_PROMPT_DIRTRIM=3
 
 # Don't add anything to $PATH if it's there already.
 # https://wiki.archlinux.org/index.php/zsh
@@ -36,9 +49,13 @@ zstyle ':completion::complete:*' gain-privileges 1
 
 # # Fish-like syntax hlghlighting.
 # # https://github.com/zsh-users/zsh-syntax-highlighting
-# if test -f /usr/share/zsh-syntax-highlighting/zsh-syntax-highlighting.zsh; then
+# if [[ -f /usr/share/zsh-syntax-highlighting/zsh-syntax-highlighting.zsh ]]; then
 #   . /usr/share/zsh-syntax-highlighting/zsh-syntax-highlighting.zsh
 # fi
+
+if [[ -f ~/.zsh/zsh-autosuggestions/zsh-autosuggestions.zsh ]]; then
+  . ~/.zsh/zsh-autosuggestions/zsh-autosuggestions.zsh
+fi
 
 # Use emacs mode.
 bindkey -e
@@ -51,3 +68,5 @@ setopt APPEND_HISTORY     # append hist after each session
 setopt EXTENDED_HISTORY   # save timestamp
 setopt HIST_REDUCE_BLANKS # dont save blanks
 
+
+[ -f ~/.fzf.zsh ] && source ~/.fzf.zsh

@@ -40,7 +40,7 @@ fi
 #
 # misc
 #
-alias bat='bat --paging=always -p'
+alias bat='bat -p'
 bup() {
   set -x
   brew upgrade
@@ -72,12 +72,11 @@ rld() {
   esac
 }
 # search aliases, and print them out in columns
-function ra() {
-  args="$@"
-  alias | rg "$args" | rg "alias (\w+)='(.*)'" -r '$1%%$2' | column -t -s'%%'
+ra() {
+  alias | rg "$@" | rg "(\w+)='(.*)'" -r '$1%%$2' | column -t -s'%%'
 }
 # simple and quick HTTP server
-function serve() {
+serve() {
   local PORT="${1:-8000}"
   echo "http://localhost:$PORT"
   python3 -m http.server "$PORT" --bind 127.0.0.1
@@ -94,7 +93,7 @@ alias kpa='kp -a'
 alias mkl='minikube service list'
 alias wpa='wp -a'
 # search for k8s pods
-function kp() {
+kp() {
   if [[ -z "$1" ]]; then
     kubectl get pods
   elif [[ "$1" = '-a' ]]; then
@@ -106,12 +105,12 @@ function kp() {
   fi
 }
 # watch k8s pods
-function wp() {
+wp() {
   export -f kp
   watch kp "$@"
 }
 # like kp but for deployments
-function kd() {
+kd() {
   if [[ -z "$1" ]]; then
     kubectl get deploy
   elif [[ "$1" = '-a' ]]; then
@@ -135,14 +134,14 @@ alias goi='go install -v ./...'
 alias gome='cd $FIRSTGOPATH/src/github.com/henrywallace'
 gdoc() {
   echo http://localhost:6060
-  godoc -play -notes="TODO|HELP|QUESTION" -http :6060
+  godoc -play -notes="TODO|HELP|QUESTION|NOTE" -http :6060 -index
 }
 
 #
 # git
 #
 alias gprune='git branch --merge master | grep -v master | xargs git branch -d 2> /dev/null || echo "No branches to prune."'
-alias conflicts='git ls-tree -r master --name-only | rg "<<<<<<<"'
+alias conflicts='rg "<<<<<<" $(git ls-tree -r master --name-only)'
 alias g-='git checkout -'
 alias ga='git add -u'
 alias gd='git diff'
@@ -155,10 +154,16 @@ alias gm='git checkout master'
 alias gmp='git checkout master && git pull && gprune'
 alias gn='git checkout -b'
 alias gp='git pull --rebase'
-alias gr='git rebase master'
+alias grm='git rebase master'
 alias gs='git status'
 alias lg='git log --oneline master..HEAD --color=always'
-alias gk='git commit -m'
+gk() {
+  if [[ -z "$@" ]]; then
+    git commit
+  else
+    git commit -m "$@"
+  fi
+}
 alias lgp='git log -p master..HEAD'
 alias llg='git log --graph --oneline'
 alias lr='git show HEAD --stat'
@@ -191,9 +196,9 @@ gca() {
 }
 # pretty git branches
 gb() {
-  # TODO: It would be clearly if this was not written in shell.
   git rev-parse --is-inside-work-tree > /dev/null || return
-  branches="$(git for-each-ref --color=always --sort=-committerdate refs/heads/ --format='%(HEAD)|%(color:green)%(committerdate:relative)%(color:reset)|%(color:blue)%(refname:short)%(color:reset)|%(contents:subject)')"
+  fmt='%(HEAD)|%(color:green)%(committerdate:relative)%(color:reset)|%(color:blue)%(refname:short)%(color:reset)|%(contents:subject)'
+  branches="$(git for-each-ref --color=always --sort=-committerdate refs/heads/ --format=$fmt)"
   echo "num branches: $(echo "$branches" | wc -l | xargs)"
   echo "num stash:    $(git stash list | wc -l | xargs)"
   if [[ -z "$1" ]]; then
@@ -207,4 +212,18 @@ gb() {
   fi
 }
 
-
+gr() {
+  return
+  root="$(git rev-parse --show-toplevel)"
+  [[ -d "$root/.git/rebase-merge" ]] || [[ -d "$root/.git/rebase-apply" ]] || echo "Not rebasing" && return
+  rebase="$(basename "$(find $root/.git/ -name 'rebase*')")"
+  cat "$root/.git/$rebase/done" > /tmp/rebase-done
+  cat "$root/.git/$rebase/git-rebase-todo" | rg '^[^#]' | sed '/^\s*$/d' > /tmp/rebase-todo
+  num_done="$(wc -l /tmp/rebase-done | awk '{print $1}')"
+  num_todo="$(wc -l /tmp/rebase-todo | awk '{print $1}')"
+  echo "Branch: $(git branch | rg 'rebasing (.*)\)' -or '$1')"
+  echo "Progress: ($num_done/$((num_done + num_todo)))"
+  bat /tmp/rebase-done
+  conflicts && echo
+  bat /tmp/rebase-todo
+}

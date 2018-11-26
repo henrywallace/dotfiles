@@ -206,3 +206,5 @@ if [ "$(shuf -i1-8 -n1)" -le "1" ]; then
   $method -f $animal $(fortune -s)
 fi
 
+
+[ -f ~/.fzf.bash ] && source ~/.fzf.bash

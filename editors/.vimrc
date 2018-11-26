@@ -30,6 +30,8 @@ Plug 'terryma/vim-multiple-cursors'
 Plug 'tpope/vim-fugitive'
 " Helper for GitHub
 Plug 'tpope/vim-rhubarb'
+" Apiary blueprint
+Plug 'kylef/apiblueprint.vim'
 
 "" A e s t h e t i c s
 Plug 'crusoexia/vim-monokai'
@@ -207,7 +209,7 @@ let g:go_fmt_command = 'goimports'
 let g:argwrap_tail_comma = 1
 
 " [Buffers] Jump to the existing window if possible
-let g:fzf_buffers_jump = 1
+" let g:fzf_buffers_jump = 1
 " Decrease the height of the fzf search box.
 let g:fzf_layout = { 'down': '~20%' }
 " Customize fzf colors to match color scheme.
@@ -270,6 +272,6 @@ let g:ale_fix_on_save = 1
 let g:ale_javascript_prettier_use_local_config = 1
 let g:javascript_plugin_flow = 1
 let g:flow#enable = 0
-let g:flow#showquickfix = 0
+let g:flow#showquickfix = 1
 let g:ale_linters = {'javascript': ['eslint', 'flow']}
 
