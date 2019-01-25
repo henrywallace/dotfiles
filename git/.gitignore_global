@@ -10,9 +10,12 @@ Gopkg.lock
 Untitled.ipynb
 \#*\#
 __pycache__
-env*
+env
+ve36
 graveyard
-ve*
 vendor
 Untitled*.ipynb
 .*.ipynb
+*-bak
+*.bak
+

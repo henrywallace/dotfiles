@@ -15,7 +15,7 @@ case "$SHELL" in
   *zsh) [[ -f ~/.fzf.zsh ]] && . ~/.fzf.zsh;;
   *bash) [[ -f ~/.fzf.bash ]] && ~/.fzf.bash;;
 esac
-export FZF_DEFAULT_OPTS='--height 12 --reverse --border --inline-info'
+export FZF_DEFAULT_OPTS='--height 24 --reverse --border'
 
 # Make less more friendly for non-text input files, see lesspipe(1).
 [[ -x /usr/bin/lesspipe ]] && eval "$(SHELL=/bin/sh lesspipe)"
@@ -23,3 +23,7 @@ export FZF_DEFAULT_OPTS='--height 12 --reverse --border --inline-info'
 # Start emacs daemon automatically and idempotently with emacsclient.
 # https://stackoverflow.com/a/5578718
 export ALTERNATE_EDITOR=""
+
+# if command -v bat > /dev/null 2>&1; then
+#   export PAGER=bat
+# fi

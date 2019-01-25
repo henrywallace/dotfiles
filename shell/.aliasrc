@@ -7,6 +7,9 @@ alias cp='cp -i'
 alias e='emacs -nw'
 alias exa='exa --group-directories-first'
 alias j='jobs -l'
+alias c='bat -p'
+alias h='head'
+alias le='bat -p --paging=always'
 alias l='ls'
 alias ll='ls -la'
 alias mv='mv -i'
@@ -14,7 +17,9 @@ alias rm='rm -i'
 alias celar='clear'  # oh the struggles of life
 alias sudo='sudo '  # allow for sudo completion
 alias t='tmux'
+alias f='fg'
 alias tls='tmux ls'
+alias r='ranger'
 ta() {
   if [[ -z "$@" ]]; then
     tmux attach
@@ -23,9 +28,10 @@ ta() {
   fi
 }
 alias v=vim
-alias vb='v ~/.bashrc'
-alias vrc='v ~/.vimrc'
-alias vz='v ~/.zshrc'
+alias aa='v ~/.aliasrc'
+alias bb='v ~/.bashrc'
+alias vv='v ~/.vimrc'
+alias zz='v ~/.zshrc'
 # Allow watch and xargs alias completion with space.
 # https://unix.stackexchange.com/a/25329/162041
 alias watch='watch --color -d'
@@ -36,11 +42,18 @@ if command -v exa > /dev/null; then
 else
   alias lst='tree -L 2'
 fi
+# _j() {
+#   case "$SHELL" in
+#     *zsh) echo "%$1";;
+#     *bash) echo "$1";;
+#   esac
+# }
+# alias fg='fg $(_j $1)'
+# alias bg='bg $(_j $1)'
 
 #
 # misc
 #
-alias bat='bat -p'
 bup() {
   set -x
   brew upgrade
@@ -134,29 +147,44 @@ alias goi='go install -v ./...'
 alias gome='cd $FIRSTGOPATH/src/github.com/henrywallace'
 gdoc() {
   echo http://localhost:6060
-  godoc -play -notes="TODO|HELP|QUESTION|NOTE" -http :6060 -index
+  godoc -play -notes="TODO|HELP|QUESTION|NOTE" -http :6060
+}
+gimp() {
+  go list -f '{{ join .Imports "\n" }}' "$@" \
+    | sort \
+    | uniq -c \
+    | sort -nk1
 }
 
 #
 # git
 #
 alias gprune='git branch --merge master | grep -v master | xargs git branch -d 2> /dev/null || echo "No branches to prune."'
-alias conflicts='rg "<<<<<<" $(git ls-tree -r master --name-only)'
+alias conflicts='rg "<<<<<<<"'
 alias g-='git checkout -'
 alias ga='git add -u'
+alias a='git add -u'
+alias gp='git pull --rebase'
+alias fold='git stash --keep-index && git stash'
+
 alias gd='git diff'
 alias gdc='git diff --cached'
 alias gdd='git diff --stat $(git merge-base master HEAD)'
 alias gds='echo; git diff --stat; echo'
 alias gf='git diff --name-only $(git merge-base master HEAD)'
-alias gl='git log --stat master..HEAD'
+
 alias gm='git checkout master'
 alias gmp='git checkout master && git pull && gprune'
 alias gn='git checkout -b'
-alias gp='git pull --rebase'
-alias grm='git rebase master'
-alias gs='git status'
-alias lg='git log --oneline master..HEAD --color=always'
+
+alias gr='git rebase master'
+alias rc='git rebase --continue'
+
+alias pu='git push origin HEAD'
+alias fpu='git push -f origin HEAD'
+
+alias gs=~/bin/git-status
+alias s='~/bin/git-status'
 gk() {
   if [[ -z "$@" ]]; then
     git commit
@@ -164,13 +192,18 @@ gk() {
     git commit -m "$@"
   fi
 }
-alias lgp='git log -p master..HEAD'
+alias lg='git log --oneline $(git merge-base master HEAD)..HEAD --color=always'
+alias lgs='git log --oneline --stat $(git merge-base master HEAD)..HEAD'
+alias gl='git log $(git merge-base master HEAD)..HEAD'
+alias gls='git log --stat $(git merge-base master HEAD)..HEAD'
+alias lgp='git log -p $(git merge-base master HEAD)..HEAD'
 alias llg='git log --graph --oneline'
+
 alias lr='git show HEAD --stat'
 alias lrp='git show HEAD'
+
+
 alias p='git stash show -p'
-alias rc='git rebase --continue'
-alias review='git log --stat --reverse master..HEAD'
 alias st='git stash --keep-index'
 alias stl='git stash list'
 alias stp='git stash pop'
@@ -195,24 +228,26 @@ gca() {
   fi
 }
 # pretty git branches
-gb() {
-  git rev-parse --is-inside-work-tree > /dev/null || return
-  fmt='%(HEAD)|%(color:green)%(committerdate:relative)%(color:reset)|%(color:blue)%(refname:short)%(color:reset)|%(contents:subject)'
-  branches="$(git for-each-ref --color=always --sort=-committerdate refs/heads/ --format=$fmt)"
-  echo "num branches: $(echo "$branches" | wc -l | xargs)"
-  echo "num stash:    $(git stash list | wc -l | xargs)"
-  if [[ -z "$1" ]]; then
-    echo "$(echo "$branches" | column -t -s '|')"
-  elif [[ "$1" =~ -[[:digit:]]+ ]]; then
-    echo "$(echo "$branches" | head "$1" | column -t -s '|')"
-  elif [[ "$1" == "-" ]]; then
-    echo "$(echo "$branches" | column -t -s '|')"
-  else
-    echo "$(echo "$branches" | rg -N "$1" | column -t -s '|')"
-  fi
-}
+alias gb=~/bin/git-branches
+alias b=gb
+# gb() {
+#   git rev-parse --is-inside-work-tree > /dev/null || return
+#   fmt='%(HEAD)|%(color:green)%(committerdate:relative)%(color:reset)|%(color:blue)%(refname:short)%(color:reset)|%(contents:subject)'
+#   branches="$(git for-each-ref --color=always --sort=-committerdate refs/heads/ --format=$fmt)"
+#   echo "num branches: $(echo "$branches" | wc -l | xargs)"
+#   echo "num stash:    $(git stash list | wc -l | xargs)"
+#   if [[ -z "$1" ]]; then
+#     echo "$(echo "$branches" | column -t -s '|')"
+#   elif [[ "$1" =~ -[[:digit:]]+ ]]; then
+#     echo "$(echo "$branches" | head "$1" | column -t -s '|')"
+#   elif [[ "$1" == "-" ]]; then
+#     echo "$(echo "$branches" | column -t -s '|')"
+#   else
+#     echo "$(echo "$branches" | rg -N "$1" | column -t -s '|')"
+#   fi
+# }
 
-gr() {
+grb() {
   return
   root="$(git rev-parse --show-toplevel)"
   [[ -d "$root/.git/rebase-merge" ]] || [[ -d "$root/.git/rebase-apply" ]] || echo "Not rebasing" && return
@@ -226,4 +261,11 @@ gr() {
   bat /tmp/rebase-done
   conflicts && echo
   bat /tmp/rebase-todo
+}
+gbs() {
+  ref="$1"
+  if [[ -z "$ref" ]]; then
+    ref=HEAD
+  fi
+  git diff $(git merge-base master $ref)..$ref
 }

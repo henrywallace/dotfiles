@@ -22,16 +22,25 @@ Plug 'junegunn/fzf.vim'
 Plug 'editorconfig/editorconfig-vim'
 " Commenting
 Plug 'tpope/vim-commentary'
-" You are the code.
-Plug 'junegunn/goyo.vim'
+" " You are the code.
+" Plug 'junegunn/goyo.vim'
 " Sublime text had some great ideas.
 Plug 'terryma/vim-multiple-cursors'
 " Git wrapper
 Plug 'tpope/vim-fugitive'
 " Helper for GitHub
 Plug 'tpope/vim-rhubarb'
-" Apiary blueprint
-Plug 'kylef/apiblueprint.vim'
+" " Apiary blueprint
+" Plug 'kylef/apiblueprint.vim'
+" Ranger is the shit
+Plug 'francoiscabrol/ranger.vim'
+" Mini-map esque terminal compatible thing.
+Plug 'majutsushi/tagbar'
+" Common helpers
+Plug 'tpope/vim-eunuch'
+Plug 'ap/vim-buftabline'
+
+" Plug 'ambv/black'
 
 "" A e s t h e t i c s
 Plug 'crusoexia/vim-monokai'
@@ -48,14 +57,14 @@ Plug 'FooSoft/vim-argwrap'
 "" Linting
 Plug 'w0rp/ale'
 
-"" Autocomplete
-Plug 'Shougo/deoplete.nvim'
-Plug 'roxma/nvim-yarp'
-Plug 'roxma/vim-hug-neovim-rpc'
-Plug 'zchee/deoplete-go', { 'do': 'make' }
-Plug 'zchee/deoplete-jedi'
-Plug 'sebastianmarkow/deoplete-rust'
-Plug 'carlitux/deoplete-ternjs'
+" "" Autocomplete
+" Plug 'Shougo/deoplete.nvim'
+" Plug 'roxma/nvim-yarp'
+" Plug 'roxma/vim-hug-neovim-rpc'
+" Plug 'zchee/deoplete-go', { 'do': 'make' }
+" Plug 'zchee/deoplete-jedi'
+" Plug 'sebastianmarkow/deoplete-rust'
+" Plug 'carlitux/deoplete-ternjs'
 
 "" Syntax
 Plug 'cespare/vim-toml'
@@ -84,7 +93,7 @@ inoremap <c-e> <c-o><s-$>
 inoremap <c-a> <c-o><s-^>
 
 " Edit the word under the cursor.
-nnoremap e ciw
+" nnoremap e ciw
 
 nnoremap <leader>gd :vsplit<cr><c-w><c-w>:GoDef<cr>
 nnoremap gr :GoReferrers<cr>
@@ -108,12 +117,17 @@ nnoremap <c-k> <c-w><up>
 
 " Mappings for fzf.
 nnoremap <c-g> :Rg<cr>
-nnoremap <c-f> :Files<cr>
-nnoremap <c-p> :BLines<cr>
-nnoremap <c-x> :Commands<cr>
+nnoremap <c-f> :BLines<cr>
+nnoremap <c-p> :Files<cr>
+nnoremap <leader> :Commands<cr>
 nnoremap <c-b> :Buffers<cr>
-nnoremap <c-r> :History<cr>
+nnoremap <c-r> :History:<cr>
 nnoremap <c-c> :BCommits<cr>
+
+" https://stackoverflow.com/questions/4465095/vim-delete-buffer-without-losing-the-split-window
+" nnoremap <leader>q bp|bd #
+
+set formatoptions+=cro
 
 " Move line(s) up or down.
 nnoremap <c-down> :m +1<cr>
@@ -121,26 +135,35 @@ nnoremap <c-up> :m -2<cr>
 vnoremap <c-down>:m '>+1<cr>gv
 vnoremap <c-up> :m '<-2<cr>gv
 
-inoremap <c-k> <esc>Dai
-
 " Search for errors from ALE.
 nnoremap <leader>n :ALENextWrap<cr>zz
-nnoremap <leader>p :ALEPreviousWrap<cr>zz
+
+set re=1
+set ttyfast
+set lazyredraw
+set nocursorcolumn
+syntax sync minlines=256
+
+" nnoremap <leader>q gqq
 
 " Argument rewrapping.
 nnoremap <leader>a :ArgWrap<cr>
 
-" Fun times with buffers.
-nnoremap <leader>b :bp<cr>
+" " Fun times with buffers.
+" nnoremap <leader>b :bp<cr>
 nnoremap <c-\> :vsplit<cr><c-w>w
 inoremap <c-\> <esc>:vsplit<cr><c-w>w
-nnoremap <c-i> :split<cr><c-w>w
-inoremap <c-i> <esc>:split<cr><c-w>w
+" nnoremap <c-[> :split<cr><c-w>w
+" inoremap <c-[> <esc>:split<cr><c-w>w
 
 " Easier saving. Note that :update differs from :w in that we only write if
 " the file has in fact changed.
-nnoremap <leader>s :update<cr>
+nnoremap <leader>j :update<cr>
+" inoremap <c-j> <c-o>:update<cr>
 
+" Move cursor to bottom after yanking.
+" https://stackoverflow.com/a/3806683/2601179
+vmap y y`]
 
 "" Hooks
 
@@ -150,6 +173,8 @@ autocmd! BufWritePost $MYVIMRC source $MYVIMRC
 " Strip whitespaces on save: https://unix.stackexchange.com/a/75431/162041.
 autocmd BufWritePre * :%s/\s\+$//e
 
+" autocmd BufWritePost *.py execute ':Black'
+
 " " Highlight long lines: https://stackoverflow.com/a/10993757/2601179.
 " augroup vimrc_autocmds
 "   autocmd BufEnter * highlight OverLength ctermbg=Red ctermfg=Black
@@ -158,6 +183,15 @@ autocmd BufWritePre * :%s/\s\+$//e
 
 
 "" Misc
+
+" https://unix.stackexchange.com/a/223618/162041
+" set term=screen-256color
+
+" Because I like mouses.
+" set mouse=a
+
+" For long lines.
+set colorcolumn=79,99
 
 " Show commands that are typed.
 set showcmd
@@ -204,6 +238,7 @@ let g:ale_sign_column_always = 0
 let g:ale_lint_delay = 500
 
 let g:go_fmt_command = 'goimports'
+let g:go_fmt_fail_silently = 1
 
 " Add trailing comma during argument rewrapping.
 let g:argwrap_tail_comma = 1
@@ -211,7 +246,7 @@ let g:argwrap_tail_comma = 1
 " [Buffers] Jump to the existing window if possible
 " let g:fzf_buffers_jump = 1
 " Decrease the height of the fzf search box.
-let g:fzf_layout = { 'down': '~20%' }
+let g:fzf_layout = { 'down': '~24%' }
 " Customize fzf colors to match color scheme.
 let g:fzf_colors =
 \ { 'fg':      ['fg', 'Normal'],
@@ -234,36 +269,20 @@ let g:markdown_fenced_languages = ['go', 'sh', 'python']
 " Allow buffers with unsaved changes
 set hidden
 
+" nnoremap <c-p> :bnext<CR>
+nnoremap <c-i> :bprev<CR>
+
 " Edit this config file
-nnoremap <leader>ev :vsplit $MYVIMRC<cr>
+nnoremap <leader>ev :edit $MYVIMRC<cr>
 nnoremap <leader>sv :source $MYVIMRC<cr>
 
-" hidden characters
-nmap <leader>l :set list!<CR>
-
-" close popup window after completion
-" https://github.com/Shougo/deoplete.nvim/issues/115#issuecomment-170237485
-autocmd InsertLeave,CompleteDone * if pumvisible() == 0 | pclose | endif
-
-call deoplete#custom#option('auto_complete_delay', 512)
-
-" Use deoplete for auto-completion.
-let g:deoplete#enable_at_startup = 1
-" Use smartcase.
-let g:deoplete#enable_smart_case = 1
-" use tab to forward cycle
-inoremap <silent><expr><tab> pumvisible() ? "\<c-n>" : "\<tab>"
-" use tab to backward cycle
-inoremap <silent><expr><s-tab> pumvisible() ? "\<c-p>" : "\<s-tab>"
-" JS Customizations
-let g:deoplete#sources#ternjs#types = 1
+" " hidden characters
+" nmap <leader>l :set list!<CR>
 
 " Disable rope because it is so freaking slow; come on.
 let g:pymode_rope = 0
 let g:pymode_rope_autoimport = 0
 let g:pymode_rope_lookup_project = 0
-
-silent! py3 pass
 
 let g:ale_linters = {}
 let g:ale_fixers = {}
@@ -274,4 +293,3 @@ let g:javascript_plugin_flow = 1
 let g:flow#enable = 0
 let g:flow#showquickfix = 1
 let g:ale_linters = {'javascript': ['eslint', 'flow']}
-

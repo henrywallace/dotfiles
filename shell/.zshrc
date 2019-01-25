@@ -8,9 +8,9 @@ zstyle ':completion:*' list-colors "${(@s.:.)LS_COLORS}"
 # Completion.
 autoload -Uz compinit; compinit
 
-# # Allow delete back part, not full word, like bash.
-# # https://unix.stackexchange.com/a/258661/162041
-# autoload -U select-word-style; select-word-style bash
+# Allow delete back part, not full word, like bash.
+# https://unix.stackexchange.com/a/258661/162041
+autoload -U select-word-style; select-word-style bash
 
 # Highlight tab completion selection.
 # https://stackoverflow.com/a/29197217/2601179
@@ -49,12 +49,14 @@ zstyle ':completion::complete:*' gain-privileges 1
 
 # # Fish-like syntax hlghlighting.
 # # https://github.com/zsh-users/zsh-syntax-highlighting
-# if [[ -f /usr/share/zsh-syntax-highlighting/zsh-syntax-highlighting.zsh ]]; then
-#   . /usr/share/zsh-syntax-highlighting/zsh-syntax-highlighting.zsh
-# fi
+ZSH_SYNTAX_HIGHLIGHTING=~/.zsh/zsh-syntax-highlighting/zsh-syntax-highlighting.zsh
+if [[ -f "$ZSH_SYNTAX_HIGHLIGHTING" ]]; then
+  . "$ZSH_SYNTAX_HIGHLIGHTING"
+fi
 
-if [[ -f ~/.zsh/zsh-autosuggestions/zsh-autosuggestions.zsh ]]; then
-  . ~/.zsh/zsh-autosuggestions/zsh-autosuggestions.zsh
+ZSH_AUTOSUGGESTIONS=~/.zsh/zsh-autosuggestions/zsh-autosuggestions.zsh
+if [[ -f "$ZSH_AUTOSUGGESTIONS" ]]; then
+  . "$ZSH_AUTOSUGGESTIONS"
 fi
 
 # Use emacs mode.

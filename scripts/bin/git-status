@@ -1,17 +1,58 @@
 #!/bin/bash
 
-RED=$(tput setaf 1)
-GREEN=$(tput setaf 2)
-YELLOW=$(tput setaf 3)
-BLUE=$(tput setaf 4)
-BOLD=$(tput bold)
-NC=$(tput sgr0)
+set -e
 
-branch=$(git branch | grep '* ' | tr '*' ' ' | xargs)
-stash=$(git stash list | wc -l | xargs)
+git rev-parse --is-inside-work-tree > /dev/null
 
-echo ${GREEN}branch: $BOLD$branch$NC
-echo ${BLUE}stash: $BOLD$stash$NC
-echo $YELLOW$BOLD
-git status | rg -v 'On branch'
-echo $NC
+RED="$(tput setaf 1)"
+BOLD="$(tput bold)"
+NC="$(tput sgr0)"
+
+branch=$(git branch | rg '\* ' | tr '*' ' ' | xargs)
+stash="$(git stash list | wc -l | xargs)"
+base="$(git merge-base master HEAD)"
+
+diffstat() {
+  diff="$(git diff --shortstat $base..HEAD)"
+  changed="$(echo "$diff" | rg '(\d+) files? changed' -or '$1')"
+  insertions="$(echo "$diff" | rg '(\d+) insertions?' -or '$1')"
+  deletions="$(echo "$diff" | rg '(\d+) deletions?' -or '$1')"
+  sep=" "
+  summary=""
+  [[ -z "$changed" ]] || summary+="*${changed}${sep}"
+  [[ -z "$insertions" ]] || summary+="+${insertions}${sep}"
+  [[ -z "$deletions" ]] || summary+="-${deletions}"
+  echo "$summary"
+}
+
+if [[ "$stash" -gt 4 ]]; then
+  stash="${BOLD}${RED}${stash}${NC} 🥺"
+fi
+
+echo -e "branch:\t${BOLD}${branch}${NC}"
+if [[ "$stash" != 0 ]]; then
+  echo -e "stash:\t${stash}"
+fi
+diff=$(diffstat)
+if [[ ! -z $diff ]]; then
+  echo -e "stat:\t$(diffstat)"
+fi
+len="$(git rev-list --count $base..HEAD)"
+if [[ "$len" != 0 ]]; then
+  echo -e "len:\t$len"
+fi
+echo
+git status |
+  rg -v 'On branch' |
+  rg 'interactive rebase[^;]*' --passthru --color=always --colors=match:fg:red |
+  rg '^   edit .*' --passthru --color=always --colors=match:style:nobold --colors=match:fg:red |
+  rg 'new file:.*' --passthru --color=always --colors=match:fg:green --colors=match:style:nobold |
+  rg '\tmodified:.*' --passthru --color=always --colors=match:fg:blue --colors=match:style:nobold |
+  rg 'deleted:.*' --passthru --color=always --colors=match:fg:red --colors=match:style:nobold |
+  rg '\tboth modified:.*' --passthru --color=always --colors=match:fg:yellow |
+  rg 'nothing to commit.*' -r '$0 🌱' --passthru --color=always --colors=match:fg:white --colors=match:style:nobold |
+  rg -v '^  \(use' \
+  || true
+
+# git ls-files -u
+
