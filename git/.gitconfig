@@ -23,8 +23,8 @@
 ; [url "git@github.com:"]
 ; 	insteadOf = https://github.com/
 
-[pull]
-	ff = only
+; [pull]
+; 	ff = only
 
-[rerere]
-	enabled = true
+; [rerere]
+; 	enabled = true

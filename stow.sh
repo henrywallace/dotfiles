@@ -2,7 +2,7 @@
 
 set -e
 
-PKGS=$(echo */)
+PKGS="$(echo */) .debug .zsh"
 echo "stowing packages: $PKGS\n"
 if [[ -x "$(command -v tree)" ]]; then
   tree -a -I *~ $PKGS

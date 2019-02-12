@@ -2,7 +2,6 @@
 let mapleader = ' '
 nnoremap <space> <nop>
 
-
 "" Plugins
 
 " vim-plug: https://github.com/junegunn/vim-plug
@@ -39,6 +38,8 @@ Plug 'majutsushi/tagbar'
 " Common helpers
 Plug 'tpope/vim-eunuch'
 Plug 'ap/vim-buftabline'
+Plug 'qstrahl/vim-matchmaker'
+Plug 'zivyangll/git-blame.vim'
 
 " Plug 'ambv/black'
 
@@ -53,6 +54,10 @@ Plug 'vim-airline/vim-airline-themes'
 Plug 'airblade/vim-gitgutter'
 " folding arguments
 Plug 'FooSoft/vim-argwrap'
+Plug 'liuchengxu/space-vim-dark'
+Plug 'abnt713/vim-hashpunk'
+Plug 'treycucco/vim-monotonic'
+Plug 'wolverian/minimal'
 
 "" Linting
 Plug 'w0rp/ale'
@@ -111,21 +116,25 @@ inoremap <c-l> <c-o><c-w><right>
 inoremap <c-j> <c-o><c-w><down>
 inoremap <c-k> <c-o><c-w><up>
 
-nnoremap <c-l> <c-w><right>
-nnoremap <c-j> <c-w><down>
-nnoremap <c-k> <c-w><up>
-
 " Mappings for fzf.
 nnoremap <c-g> :Rg<cr>
 nnoremap <c-f> :BLines<cr>
 nnoremap <c-p> :Files<cr>
-nnoremap <leader> :Commands<cr>
+" nnoremap <c-m> :Commands<cr>
 nnoremap <c-b> :Buffers<cr>
 nnoremap <c-r> :History:<cr>
 nnoremap <c-c> :BCommits<cr>
 
+nnoremap f ciw
+nnoremap F BcE
+
+" reformat paragraph
+nnoremap Q <s-{><s-v><s-}>gq<c-o><c-o>
+" https://stackoverflow.com/a/22577860/2601179
+set fo+=n
+
 " https://stackoverflow.com/questions/4465095/vim-delete-buffer-without-losing-the-split-window
-" nnoremap <leader>q bp|bd #
+" nnoremap <leader>q bp\|bd #
 
 set formatoptions+=cro
 
@@ -173,6 +182,15 @@ autocmd! BufWritePost $MYVIMRC source $MYVIMRC
 " Strip whitespaces on save: https://unix.stackexchange.com/a/75431/162041.
 autocmd BufWritePre * :%s/\s\+$//e
 
+" Open a file in the same location as it was opened last time.
+" https://stackoverflow.com/a/774599/2601179
+if has("autocmd")
+  au BufReadPost * if line("'\"") > 0 && line("'\"") <= line("$")
+    \| exe "normal! g'\"" | endif
+endif
+
+" Ugh, why does python installations have to be so fragmented. And more
+" generally vim + python plugins have never gone smoothly.
 " autocmd BufWritePost *.py execute ':Black'
 
 " " Highlight long lines: https://stackoverflow.com/a/10993757/2601179.
@@ -191,7 +209,7 @@ autocmd BufWritePre * :%s/\s\+$//e
 " set mouse=a
 
 " For long lines.
-set colorcolumn=79,99
+set colorcolumn=80,100
 
 " Show commands that are typed.
 set showcmd
@@ -224,10 +242,17 @@ endif
 " https://stackoverflow.com/a/4760477/2528719
 set nojoinspaces
 
-" A nice color scheme.
-colorscheme gruvbox
-set background=dark
+" Color theme
 set termguicolors
+if $VIM_THEME == "LIGHT"
+  colorscheme minimal
+  let g:airline_theme='minimalist'
+  set background=light
+  hi ColorColumn ctermbg=2 guibg=#e2e2e2
+else
+  colorscheme dracula
+  set background=dark
+endif
 
 " No wrapping of lines.
 set wrap!
@@ -238,15 +263,18 @@ let g:ale_sign_column_always = 0
 let g:ale_lint_delay = 500
 
 let g:go_fmt_command = 'goimports'
+let g:go_def_mode = 'godef'  " godef is so much faster
 let g:go_fmt_fail_silently = 1
+" let g:go_auto_type_info = 1
+" set updatetime=500
 
 " Add trailing comma during argument rewrapping.
-let g:argwrap_tail_comma = 1
+let g:argwrap_tail_comma = 0
 
 " [Buffers] Jump to the existing window if possible
 " let g:fzf_buffers_jump = 1
 " Decrease the height of the fzf search box.
-let g:fzf_layout = { 'down': '~24%' }
+let g:fzf_layout = { 'down': '~36%' }
 " Customize fzf colors to match color scheme.
 let g:fzf_colors =
 \ { 'fg':      ['fg', 'Normal'],
@@ -264,7 +292,11 @@ let g:fzf_colors =
   \ 'header':  ['fg', 'Comment'] }
 
 " Markdown code fence highlighting.
-let g:markdown_fenced_languages = ['go', 'sh', 'python']
+let g:markdown_fenced_languages = ['go', 'sh', 'py=python']
+
+let g:rustfmt_autosave = 1
+
+let g:rustfmt_autosave = 1
 
 " Allow buffers with unsaved changes
 set hidden
@@ -278,6 +310,8 @@ nnoremap <leader>sv :source $MYVIMRC<cr>
 
 " " hidden characters
 " nmap <leader>l :set list!<CR>
+
+hi Matchmaker   ctermbg=138     guibg=#ffffff
 
 " Disable rope because it is so freaking slow; come on.
 let g:pymode_rope = 0

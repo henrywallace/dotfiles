@@ -1,3 +1,5 @@
+#!/bin/sh
+
 #
 # basics
 #
@@ -14,6 +16,7 @@ alias l='ls'
 alias ll='ls -la'
 alias mv='mv -i'
 alias rm='rm -i'
+alias ln='ln -i'
 alias celar='clear'  # oh the struggles of life
 alias sudo='sudo '  # allow for sudo completion
 alias t='tmux'
@@ -21,7 +24,7 @@ alias f='fg'
 alias tls='tmux ls'
 alias r='ranger'
 ta() {
-  if [[ -z "$@" ]]; then
+  if [ -z "$@" ]; then
     tmux attach
   else
     tmux attach -t "$@"
@@ -61,7 +64,7 @@ bup() {
 }
 cup() {
   set -x
-  rustup update
+  rustup update nightly
   cargo install-update -a
 }
 alias cv='command -V'
@@ -107,12 +110,13 @@ alias mkl='minikube service list'
 alias wpa='wp -a'
 # search for k8s pods
 kp() {
-  if [[ -z "$1" ]]; then
+  if [ -z "$1" ]; then
     kubectl get pods
-  elif [[ "$1" = '-a' ]]; then
+  elif [ "$1" = '-a' ]; then
     kubectl get pods --all-namespaces
   else
-    local PAT="$(echo "$@" | tr -s ' ' '|')"
+    local PAT
+    PAT="$(echo "$@" | tr -s ' ' '|')"
     HEADER=kubectl get pods --all-namespaces | head -1
     kubectl get pods --all-namespaces | rg -N --color=always "$PAT"
   fi
@@ -124,10 +128,10 @@ wp() {
 }
 # like kp but for deployments
 kd() {
-  if [[ -z "$1" ]]; then
+  if [ -z "$1" ]; then
     kubectl get deploy
-  elif [[ "$1" = '-a' ]]; then
-    kubectl get deploy --all-namespaces {
+  elif [ "$1" = '-a' ]; then
+    kubectl get deploy --all-namespaces
   else
     local PAT="$(echo "$@" | tr -s ' ' '|')"
     kubectl get deploy --all-namespaces | head -1
@@ -135,7 +139,7 @@ kd() {
   fi
 }
 # watch deployments
-function wd() {
+wd() {
   export -f kd
   watch kd "$@"
 }
@@ -159,13 +163,20 @@ gimp() {
 #
 # git
 #
-alias gprune='git branch --merge master | grep -v master | xargs git branch -d 2> /dev/null || echo "No branches to prune."'
-alias conflicts='rg "<<<<<<<"'
+gprune() {
+  # include latest tag
+  git branch --merge master \
+    | grep -v master \
+    | xargs git branch -d 2> /dev/null \
+  || echo "No branches to prune."
+}
+alias con='rg "<<<<<<<"'
 alias g-='git checkout -'
 alias ga='git add -u'
 alias a='git add -u'
 alias gp='git pull --rebase'
 alias fold='git stash --keep-index && git stash'
+alias gua='git reset --soft HEAD@{1} && git reset'
 
 alias gd='git diff'
 alias gdc='git diff --cached'
@@ -186,17 +197,18 @@ alias fpu='git push -f origin HEAD'
 alias gs=~/bin/git-status
 alias s='~/bin/git-status'
 gk() {
-  if [[ -z "$@" ]]; then
+  if [ -z "$@" ]; then
     git commit
   else
     git commit -m "$@"
   fi
 }
-alias lg='git log --oneline $(git merge-base master HEAD)..HEAD --color=always'
+alias lg='git log --reverse --oneline $(git merge-base master HEAD)..HEAD --color=always'
+alias clg='clear; lg'
 alias lgs='git log --oneline --stat $(git merge-base master HEAD)..HEAD'
 alias gl='git log $(git merge-base master HEAD)..HEAD'
 alias gls='git log --stat $(git merge-base master HEAD)..HEAD'
-alias lgp='git log -p $(git merge-base master HEAD)..HEAD'
+alias lgp='git log --relative -p $(git merge-base master HEAD)..HEAD'
 alias llg='git log --graph --oneline'
 
 alias lr='git show HEAD --stat'
@@ -209,8 +221,8 @@ alias stl='git stash list'
 alias stp='git stash pop'
 # rebase master or rebase back $1 commits
 rb () {
-  if [[ -z "$1" ]]; then
-    git rebase -i master
+  if [ -z "$1" ]; then
+    git rebase -i "$(git merge-base master HEAD)"
   elif [[ "$1" =~ -[[:digit:]]+ ]]; then
     echo git rebase -i "HEAD~$1"
     git rebase -i "HEAD~$1"
@@ -221,10 +233,10 @@ rb () {
 }
 # git commit amend, with quick option for no-edit
 gca() {
-  if [[ "$1" = "-" ]]; then
-    git commit --amend --no-edit
+  if [ "$1" = "-" ]; then
+    git commit --amend --no-edit --allow-empty
   else
-    git commit --amend
+    git commit --amend --allow-empty
   fi
 }
 # pretty git branches
