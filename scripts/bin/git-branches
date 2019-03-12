@@ -10,7 +10,7 @@ scale() {
   # n=$(bc -l <<< "scale=0; l($2)/1")
   # n=1
   # printf -- "$1%.0s" $(seq 1 $n)
-  printf ""
+  echo ""
 }
 
 diffstat() {

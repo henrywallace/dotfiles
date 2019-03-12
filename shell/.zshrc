@@ -8,6 +8,9 @@ zstyle ':completion:*' list-colors "${(@s.:.)LS_COLORS}"
 # Completion.
 autoload -Uz compinit; compinit
 
+# Allow completing inside of words.
+setopt completeinword
+
 # Allow delete back part, not full word, like bash.
 # https://unix.stackexchange.com/a/258661/162041
 autoload -U select-word-style; select-word-style bash

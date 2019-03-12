@@ -170,7 +170,7 @@ gprune() {
     | xargs git branch -d 2> /dev/null \
   || echo "No branches to prune."
 }
-alias con='rg "<<<<<<<"'
+alias con='rg "<<<<<<<" $(git rev-parse --show-toplevel)'
 alias g-='git checkout -'
 alias ga='git add -u'
 alias a='git add -u'
@@ -184,7 +184,7 @@ alias gdd='git diff --stat $(git merge-base master HEAD)'
 alias gds='echo; git diff --stat; echo'
 alias gf='git diff --name-only $(git merge-base master HEAD)'
 
-alias gm='git checkout master'
+alias gm='git branch -m'
 alias gmp='git checkout master && git pull && gprune'
 alias gn='git checkout -b'
 
@@ -258,6 +258,14 @@ alias b=gb
 #     echo "$(echo "$branches" | rg -N "$1" | column -t -s '|')"
 #   fi
 # }
+
+grst() {
+  remote="$REMOTE"
+  if [ -z "$remote" ]; then
+    remote=origin
+  fi
+  git fetch "$remote" && git reset --hard "$remote/$(git branch | rg '\* (.*)' -or '$1')"
+}
 
 grb() {
   return
