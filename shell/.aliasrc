@@ -76,7 +76,6 @@ div() {
 }
 alias path="echo $PATH | tr ':' '\n'"
 alias rg='rg -M 512 --no-heading'
-alias shellcheck='shellcheck --color=always'
 ports() {
   lsof -iTCP -sTCP:LISTEN -n -P
 }
@@ -96,6 +95,13 @@ serve() {
   local PORT="${1:-8000}"
   echo "http://localhost:$PORT"
   python3 -m http.server "$PORT" --bind 127.0.0.1
+}
+
+# Show what an alias or function is.
+wh() {
+  out=$(command -V $1)
+  echo $out
+  echo $out | grep -q 'is a shell function' && declare -f $1
 }
 
 
