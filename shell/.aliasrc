@@ -21,6 +21,7 @@ alias celar='clear'  # oh the struggles of life
 alias sudo='sudo '  # allow for sudo completion
 alias t='tmux'
 alias f='fg'
+alias utc='TZ=":UTC" date'
 alias tls='tmux ls'
 alias r='ranger'
 ta() {
@@ -102,6 +103,12 @@ wh() {
   out=$(command -V $1)
   echo $out
   echo $out | grep -q 'is a shell function' && declare -f $1
+}
+
+lab() {
+  cd ~/g/drive/notebooks || return
+  . ./env/bin/activate
+  jupyter notebook
 }
 
 

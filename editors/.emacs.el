@@ -222,7 +222,7 @@
  '(git-commit-summary-max-length 50)
  '(package-selected-packages
    (quote
-    (toml-mode toml multiple-cursors editorconfig drag-stuff vim-empty-lines-mode smart-mode-line esup pymacs flycheck-gometalinter evil ace-window counsel yaml-mode swiper smooth-scrolling smex python-mode python-docstring py-isort markdown-mode json-snatcher json-reformat go-guru go-autocomplete git-auto-commit-mode flycheck flx dracula-theme auto-package-update)))
+    (proof-general toml-mode toml multiple-cursors editorconfig drag-stuff vim-empty-lines-mode smart-mode-line esup pymacs flycheck-gometalinter evil ace-window counsel yaml-mode swiper smooth-scrolling smex python-mode python-docstring py-isort markdown-mode json-snatcher json-reformat go-guru go-autocomplete git-auto-commit-mode flycheck flx dracula-theme auto-package-update)))
  '(safe-local-variable-values
    (quote
     ((encoding . utf-8)

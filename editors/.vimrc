@@ -61,6 +61,8 @@ Plug 'pangloss/vim-javascript'
 Plug 'rust-lang/rust.vim'
 Plug 'tpope/vim-markdown'
 
+Plug 'the-lambda-church/coquille'
+
 call plug#end()
 
 " Color theme. We define this earlier on so that we can more freely customize
