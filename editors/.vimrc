@@ -1,4 +1,5 @@
 " Remap leader first, in case loading plugins defines using the leader.
+"
 let mapleader = ' '
 nnoremap <space> <nop>
 
@@ -22,6 +23,10 @@ Plug 'tpope/vim-sleuth'               " heuristically set buffer options
 Plug 'w0rp/ale'                       " linting
 Plug 'zivyangll/git-blame.vim'        " unintrusive git blame line
 
+Plug 'SirVer/ultisnips'
+Plug 'honza/vim-snippets'
+
+
 " Auto format
 Plug 'google/vim-codefmt'
 Plug 'google/vim-maktaba'
@@ -39,10 +44,11 @@ Plug 'liuchengxu/space-vim-dark'
 Plug 'morhetz/gruvbox'
 Plug 'treycucco/vim-monotonic'
 Plug 'wolverian/minimal'
+Plug 'pgdouyon/vim-yin-yang'
 
-" improved status line
-Plug 'vim-airline/vim-airline'
-Plug 'vim-airline/vim-airline-themes'
+" " improved status line
+" Plug 'vim-airline/vim-airline'
+" Plug 'vim-airline/vim-airline-themes'
 
 "" Syntax
 Plug 'cespare/vim-toml'
@@ -62,13 +68,30 @@ call plug#end()
 set termguicolors
 if $VIM_THEME == "LIGHT"
   colorscheme minimal
-  let g:airline_theme='minimalist'
+  " let g:airline_theme='minimalist'
   set background=light
   hi ColorColumn ctermbg=2 guibg=#e2e2e2
 else
-  colorscheme gruvbox
-  set background=dark
+  " colorscheme gruvbox
+  " set background=dark
+
+  colorscheme space-vim-dark
+  " colorscheme yin
+  " " yin customizations
+  hi MatchParen guifg=White guibg=Black cterm=bold
+  hi Comment cterm=NONE guifg=#776587 guibg=NONE
+  hi Search  cterm=bold  guifg=Pink guibg=Black
+  hi GitGutterAdd  guibg=#212026
+  hi GitGutterChange guibg=#212026
+  hi GitGutterDelete guibg=#212026
+  hi GitGutterChangeDelete guibg=#212026
+  hi SignColumn guibg=#212026
+  hi Boolean guifg=#c2bff2
+  hi Todo cterm=bold guifg=#fdffbc
+  " hi IncSearch  guifg=Black guibg=Red
+  " hi Search     guifg=Orange guibg=Black
 endif
+
 
 " Allow SIGTSTP from within non-normal modes.
 inoremap <c-z> <c-o><c-z>
@@ -80,6 +103,7 @@ inoremap <c-a> <c-o><s-^>
 
 " Open godef into adjacent window.
 nnoremap <leader>gd :vsplit<cr><c-w><c-w>:GoDef<cr>
+
 
 " Move between windows like hjkl, but with ctrl modifier.
 nnoremap <c-h> <c-w><left>
@@ -105,7 +129,8 @@ nnoremap <c-f> :BLines<cr>
 nnoremap <c-p> :Files<cr>
 nnoremap <c-b> :Buffers<cr>
 nnoremap <c-r> :History:<cr>
-nnoremap <c-c> :BCommits<cr>
+nnoremap <c-c> :Commands<cr>
+" nnoremap <c-g> :BCommits<cr>
 
 " Edit arg or word under cursor.
 nnoremap f ciw
@@ -214,8 +239,11 @@ augroup autoformat_settings
   autocmd FileType java AutoFormatBuffer google-java-format
 augroup END
 
-let g:go_def_mode = 'godef'         " godef is so much faster
+let g:go_def_mode='gopls'
+" let g:go_def_mode = 'godef'         " godef is so much faster
 let g:go_fmt_command = 'goimports'  " https://github.com/sqs/goreturns
+let g:go_fmt_fail_silently = 1
+let g:ale_go_bingo_executable = 'gopls'
 
 " Make vim-go faster.
 set re=1
@@ -253,4 +281,6 @@ nnoremap <c-i> :bprev<CR>
 nmap <leader>l :set list!<CR>
 
 
-
+let g:UltiSnipsExpandTrigger = '<tab>'
+let g:UltiSnipsJumpForwardTrigger = '<c-b>'
+let g:UltiSnipsJumpBackwardTrigger = '<c-z>'

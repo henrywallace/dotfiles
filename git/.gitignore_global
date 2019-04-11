@@ -17,5 +17,5 @@ vendor
 Untitled*.ipynb
 .*.ipynb
 *-bak
-*.bak
+*.bak*
 *.hdf5
