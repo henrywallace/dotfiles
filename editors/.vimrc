@@ -127,8 +127,8 @@ nnoremap <leader>b :GitBlame<cr>
 
 " fzf mappings
 nnoremap <c-g> :Rg<cr>
-nnoremap <c-f> :BLines<cr>
-nnoremap <c-p> :Files<cr>
+nnoremap <c-p> :BLines<cr>
+nnoremap <c-f> :Files<cr>
 nnoremap <c-b> :Buffers<cr>
 nnoremap <c-r> :History:<cr>
 nnoremap <c-c> :Commands<cr>

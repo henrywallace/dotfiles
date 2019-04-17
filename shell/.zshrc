@@ -36,10 +36,11 @@ set formatoptions+=r
 # set comments+=fb:*
 
 . ~/.zsh/prompt/prompt.zsh
-AGKOZAK_COLORS_USER_HOST=cyan
-AGKOZAK_COLORS_PATH=black
-AGKOZAK_COLORS_BRANCH_STATUS=black
-AGKOZAK_PROMPT_DIRTRIM=3
+AGKOZAK_COLORS_USER_HOST=white
+AGKOZAK_COLORS_PATH=white
+AGKOZAK_COLORS_BRANCH_STATUS=white
+AGKOZAK_PROMPT_DIRTRIM=2
+AGKOZAK_COLORS_EXIT_STATUS=white
 
 # Don't add anything to $PATH if it's there already.
 # https://wiki.archlinux.org/index.php/zsh
