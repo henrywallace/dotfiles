@@ -3,15 +3,15 @@
 #
 # basics
 #
-alias ...='cd ../..'
-alias ..='cd ..'
 alias cp='cp -i'
 alias e='emacs -nw'
-alias exa='exa --group-directories-first'
+# alias exa='exa --group-directories-first'
 alias j='jobs -l'
-alias c='bat -p'
+alias k='bat -p'
 alias h='head'
-alias le='bat -p --paging=always'
+alias jql='jq . -C | le'
+alias v=vim
+alias ls='ls -F --color'
 alias l='ls'
 alias ll='ls -la'
 alias mv='mv -i'
@@ -24,6 +24,13 @@ alias f='fg'
 alias utc='TZ=":UTC" date'
 alias tls='tmux ls'
 alias r='ranger'
+alias yup='yay -Syu'
+alias y='yay'
+if hash bat &> /dev/null; then
+  alias le='bat -p --paging=always'
+else
+  alias le='less -R'
+fi
 ta() {
   if [ -z "$@" ]; then
     tmux attach
@@ -31,7 +38,6 @@ ta() {
     tmux attach -t "$@"
   fi
 }
-alias v=vim
 alias aa='v ~/.aliasrc'
 alias bb='v ~/.bashrc'
 alias vv='v ~/.vimrc'
@@ -40,12 +46,12 @@ alias zz='v ~/.zshrc'
 # https://unix.stackexchange.com/a/25329/162041
 alias watch='watch --color -d'
 alias xargs='xargs '
-if command -v exa > /dev/null; then
-  alias ls='exa -F --group-directories-first'
-  alias lst='ls -T -L2'
-else
-  alias lst='tree -L 2'
-fi
+# if command -v exa > /dev/null; then
+#   alias ls='exa -F --group-directories-first'
+#   alias lst='ls -T -L2'
+# else
+#   alias lst='tree -L 2'
+# fi
 # _j() {
 #   case "$SHELL" in
 #     *zsh) echo "%$1";;
@@ -54,6 +60,32 @@ fi
 # }
 # alias fg='fg $(_j $1)'
 # alias bg='bg $(_j $1)'
+
+# 1password
+ops() {
+  eval $(op signin my)
+}
+opf() {
+  SMARTCASE=
+  if $(echo $@ | rg -q '^\s*(\p{Ll}\w*($|\s+))+'); then
+    SMARTCASE='-i'
+  fi
+  op list items \
+    | jq '.[] | .overview.title + "##" + .uuid' -r \
+    | rg --color=always $SMARTCASE $@ \
+    | column -t -s'##' \
+    | sort
+}
+opx() {
+  op get item $1 \
+    | jq -r '.details.fields | map(select(.name=="password")) | first | .value' \
+    | xclip -i -sel clip
+  {
+    echo clearing clipboard in 60s
+    sleep 60
+    echo | xclip -i -sel clip
+  } &
+}
 
 #
 # misc
@@ -65,7 +97,7 @@ bup() {
 }
 cup() {
   set -x
-  rustup update nightly
+  rustup update
   cargo install-update -a
 }
 alias cv='command -V'
@@ -116,7 +148,7 @@ lab() {
 # k8s + gcloud
 #
 alias gup='sudo gcloud components update'
-alias k='kubectl'
+# alias k='kubectl'
 alias kn='kubectl get no'
 alias kpa='kp -a'
 alias mkl='minikube service list'
