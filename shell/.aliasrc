@@ -5,9 +5,8 @@
 #
 alias cp='cp -i'
 alias e='emacs -nw'
-# alias exa='exa --group-directories-first'
 alias j='jobs -l'
-alias k='bat -p'
+alias c='bat -p'
 alias h='head'
 alias jql='jq . -C | le'
 alias v=vim
@@ -20,12 +19,22 @@ alias ln='ln -i'
 alias celar='clear'  # oh the struggles of life
 alias sudo='sudo '  # allow for sudo completion
 alias t='tmux'
-alias f='fg'
 alias utc='TZ=":UTC" date'
 alias tls='tmux ls'
-alias r='ranger'
 alias yup='yay -Syu'
 alias y='yay'
+u() {
+  yup && echo
+  rup && echo
+  vim +PlugUpgrade +PlugUpdate +PlugClean +qall
+}
+f() {
+  date && echo
+  cal && echo
+  acpi && echo
+  ip link show wlp2s0 && echo
+  iw dev wlp2s0 info
+}
 if hash bat &> /dev/null; then
   alias le='bat -p --paging=always'
 else
@@ -95,10 +104,10 @@ bup() {
   brew upgrade
   brew cleanup
 }
-cup() {
+rup() {
   set -x
-  rustup update
-  cargo install-update -a
+  rustup update nightly
+  cargo +nightly install-update -a
 }
 alias cv='command -V'
 div() {
@@ -205,6 +214,22 @@ gimp() {
     | sort -nk1
 }
 
+# Activate, and deactivate python virtualenvs, if applicable.
+pe() {
+  if [ ! -z "$VIRTUAL_ENV" ]; then
+    deactivate
+  fi
+  . "$(find -- */bin/activate | head -1)"
+}
+de() {
+  deactivate &> /dev/null
+}
+# Start a jupyter notebook if applicable.
+pj() {
+  pe
+  jupyter notebook
+}
+
 #
 # git
 #
@@ -288,22 +313,6 @@ gca() {
 # pretty git branches
 alias gb=~/bin/git-branches
 alias b=gb
-# gb() {
-#   git rev-parse --is-inside-work-tree > /dev/null || return
-#   fmt='%(HEAD)|%(color:green)%(committerdate:relative)%(color:reset)|%(color:blue)%(refname:short)%(color:reset)|%(contents:subject)'
-#   branches="$(git for-each-ref --color=always --sort=-committerdate refs/heads/ --format=$fmt)"
-#   echo "num branches: $(echo "$branches" | wc -l | xargs)"
-#   echo "num stash:    $(git stash list | wc -l | xargs)"
-#   if [[ -z "$1" ]]; then
-#     echo "$(echo "$branches" | column -t -s '|')"
-#   elif [[ "$1" =~ -[[:digit:]]+ ]]; then
-#     echo "$(echo "$branches" | head "$1" | column -t -s '|')"
-#   elif [[ "$1" == "-" ]]; then
-#     echo "$(echo "$branches" | column -t -s '|')"
-#   else
-#     echo "$(echo "$branches" | rg -N "$1" | column -t -s '|')"
-#   fi
-# }
 
 grst() {
   remote="$REMOTE"
