@@ -26,15 +26,18 @@ alias y='yay'
 u() {
   yup && echo
   rup && echo
+  vup
+}
+vup() {
   vim +PlugUpgrade +PlugUpdate +PlugClean +qall
 }
-f() {
-  date && echo
-  cal && echo
-  acpi && echo
-  ip link show wlp2s0 && echo
-  iw dev wlp2s0 info
-}
+# f() {
+#   date && echo
+#   cal && echo
+#   acpi && echo
+#   ip link show wlp2s0 && echo
+#   iw dev wlp2s0 info
+# }
 if hash bat &> /dev/null; then
   alias le='bat -p --paging=always'
 else
