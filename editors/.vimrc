@@ -67,35 +67,44 @@ Plug 'the-lambda-church/coquille'
 
 call plug#end()
 
-colorscheme Blaaark
-" " Color theme. We define this earlier on so that we can more freely customize
-" " colors later on.
-" set termguicolors
-" if $VIM_THEME == "LIGHT"
-"   colorscheme minimal
-"   " let g:airline_theme='minimalist'
-"   set background=light
-"   hi ColorColumn ctermbg=2 guibg=white
-" else
-"   " colorscheme gruvbox
-"   " set background=dark
+" Color theme. We define this earlier on so that we can more freely customize
+" colors later on.
+set termguicolors
+if $VIM_THEME == "LIGHT"
+  colorscheme minimal
+  " let g:airline_theme='minimalist'
+  set background=light
+  hi ColorColumn ctermbg=2 guibg=white
+  hi StatusLine cterm=bold guifg=black guibg=lightcyan
+  hi SignColumn none
+  hi IncSearch cterm=bold guibg=blue guifg=white
+  hi Search cterm=none guibg=yellow guifg=black
+  hi String guifg=darkblue
+  hi rustFuncName cterm=bold guifg=darkblue
+  hi Todo cterm=bold,italic guibg=NONE
+  hi Error guifg=red guibg=NONE cterm=bold
+  hi StatusLineNC none
+  " hi IncSearch  guifg=Black guibg=Red
+else
+  " colorscheme gruvbox
+  " set background=dark
 
-"   colorscheme space-vim-dark
-"   " colorscheme yin
-"   " " yin customizations
-"   hi MatchParen guifg=White guibg=Black cterm=bold
-"   hi Comment cterm=NONE guifg=#776587 guibg=NONE
-"   hi Search  cterm=bold  guifg=Pink guibg=Black
-"   hi GitGutterAdd  guibg=#212026
-"   hi GitGutterChange guibg=#212026
-"   hi GitGutterDelete guibg=#212026
-"   hi GitGutterChangeDelete guibg=#212026
-"   hi SignColumn guibg=#212026
-"   hi Boolean guifg=#c2bff2
-"   hi Todo cterm=bold guifg=#fdffbc
-"   " hi IncSearch  guifg=Black guibg=Red
-"   " hi Search     guifg=Orange guibg=Black
-" endif
+  colorscheme space-vim-dark
+  " colorscheme yin
+  " " yin customizations
+  hi MatchParen guifg=White guibg=Black cterm=bold
+  hi Comment cterm=NONE guifg=#776587 guibg=NONE
+  hi Search  cterm=bold  guifg=Pink guibg=Black
+  hi GitGutterAdd  guibg=#212026
+  hi GitGutterChange guibg=#212026
+  hi GitGutterDelete guibg=#212026
+  hi GitGutterChangeDelete guibg=#212026
+  hi SignColumn guibg=#212026
+  hi Boolean guifg=#c2bff2
+  hi Todo cterm=bold guifg=#fdffbc
+  " hi IncSearch  guifg=Black guibg=Red
+  " hi Search     guifg=Orange guibg=Black
+endif
 
 let g:rustfmt_autosave = 1
 
@@ -258,21 +267,21 @@ set lazyredraw
 set nocursorcolumn
 syntax sync minlines=256
 
-" change fzf colors to match color scheme.
-let g:fzf_colors =
-\ { 'fg':      ['fg', 'Normal'],
-  \ 'bg':      ['bg', 'Normal'],
-  \ 'hl':      ['fg', 'Comment'],
-  \ 'fg+':     ['fg', 'CursorLine', 'CursorColumn', 'Normal'],
-  \ 'bg+':     ['bg', 'CursorLine', 'CursorColumn'],
-  \ 'hl+':     ['fg', 'Statement'],
-  \ 'info':    ['fg', 'PreProc'],
-  \ 'border':  ['fg', 'Ignore'],
-  \ 'prompt':  ['fg', 'Conditional'],
-  \ 'pointer': ['fg', 'Exception'],
-  \ 'marker':  ['fg', 'Keyword'],
-  \ 'spinner': ['fg', 'Label'],
-  \ 'header':  ['fg', 'Comment'] }
+" " " change fzf colors to match color scheme.
+" let g:fzf_colors =
+"  \ { 'fg':      ['fg', 'Normal'],
+"   \ 'bg':      ['bg', 'Normal'],
+"   \ 'hl':      ['fg', 'Comment'],
+"   \ 'fg+':     ['fg', 'CursorLine', 'CursorColumn', 'Normal'],
+"   \ 'bg+':     ['bg', 'CursorLine', 'CursorColumn'],
+"   \ 'hl+':     ['fg', 'Statement'],
+"   \ 'info':    ['fg', 'PreProc'],
+"   \ 'border':  ['fg', 'Ignore'],
+"   \ 'prompt':  ['fg', 'Conditional'],
+"   \ 'pointer': ['fg', 'Exception'],
+"   \ 'marker':  ['fg', 'Keyword'],
+"   \ 'spinner': ['fg', 'Label'],
+"   \ 'header':  ['fg', 'Comment'] }
 
 " Markdown code fence syntax highlighting.
 let g:markdown_fenced_languages = ['go', 'sh', 'py=python']

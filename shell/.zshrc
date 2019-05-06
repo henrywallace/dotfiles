@@ -76,3 +76,4 @@ setopt HIST_REDUCE_BLANKS # dont save blanks
 
 
 [ -f ~/.fzf.zsh ] && source ~/.fzf.zsh
+

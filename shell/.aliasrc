@@ -23,13 +23,27 @@ alias utc='TZ=":UTC" date'
 alias tls='tmux ls'
 alias yup='yay -Syu'
 alias y='yay'
+nv() {
+  virtualenv -p "$(command -v python3)" venv &&
+    . venv/bin/activate &&
+    pip install pip-tools
+}
 u() {
   yup && echo
   rup && echo
-  vup
 }
 vup() {
   vim +PlugUpgrade +PlugUpdate +PlugClean +qall
+}
+vup() {
+  vim +PlugUpgrade +PlugUpdate +PlugClean +qall
+}
+f() {
+  date && echo
+  cal && echo
+  acpi && echo
+  # ip link show wlp2s0 && echo
+  # iw dev wlp2s0 info
 }
 # f() {
 #   date && echo
@@ -219,16 +233,27 @@ gimp() {
 
 # Activate, and deactivate python virtualenvs, if applicable.
 pe() {
-  if [ ! -z "$VIRTUAL_ENV" ]; then
+  if [ -n "$VIRTUAL_ENV" ]; then
     deactivate
   fi
-  . "$(find -- */bin/activate | head -1)"
+  . "$(find . -wholename '*/bin/activate' | head -1)"
 }
 de() {
   deactivate &> /dev/null
 }
+pi() {
+  TRAPEXIT() {
+    deactivate
+  }
+  pe
+  ipython
+}
 # Start a jupyter notebook if applicable.
 pj() {
+  # TODO: Can we figure out how to get this to
+  TRAPEXIT() {
+    deactivate
+  }
   pe
   jupyter notebook
 }
@@ -297,7 +322,7 @@ alias stp='git stash pop'
 rb () {
   if [ -z "$1" ]; then
     git rebase -i "$(git merge-base master HEAD)"
-  elif [[ "$1" =~ -[[:digit:]]+ ]]; then
+  elif echo "$1" | grep -Eq '^[0-9]+$'; then
     echo git rebase -i "HEAD~$1"
     git rebase -i "HEAD~$1"
   else
