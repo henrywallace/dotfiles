@@ -83,7 +83,8 @@ if $VIM_THEME == "LIGHT"
   hi rustFuncName cterm=bold guifg=darkblue
   hi Todo cterm=bold,italic guibg=NONE
   hi Error guifg=red guibg=NONE cterm=bold
-  hi StatusLineNC none
+  hi StatusLineNC guibg=bg
+  hi VertSplit guifg=bg
   " hi IncSearch  guifg=Black guibg=Red
 else
   " colorscheme gruvbox
