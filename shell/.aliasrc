@@ -30,13 +30,23 @@ alias utc='TZ=":UTC" date'
 alias tls='tmux ls'
 alias yup='yay -Syu'
 alias y='yay'
+case "$SHELL" in
+  *zsh)
+    alias fg='\fg %'
+    alias bg='\bg %'
+    ;;
+  *bash)
+    ;;
+esac
 nv() {
   virtualenv -p "$(command -v python3)" venv &&
     . venv/bin/activate &&
     pip install pip-tools
 }
 u() {
-  yup && echo
+  if command yup &> /dev/null; then
+    yup && echo
+  fi
   rup && echo
   "$HOME/.zsh/update.sh" && echo
 }
@@ -47,9 +57,6 @@ vup() {
     +PlugClean \
     +GoUpdateBinaries \
     +qall
-}
-vup() {
-  vim +PlugUpgrade +PlugUpdate +PlugClean +qall
 }
 f() {
   date && echo
@@ -281,7 +288,7 @@ gprune() {
     | xargs git branch -d 2> /dev/null \
   || echo "No branches to prune."
 }
-alias con='rg "<<<<<<<" $(git rev-parse --show-toplevel)'
+alias con='rg "<<<<<<<" $(git ls-files)'
 alias g-='git checkout -'
 alias ga='git add -u'
 alias a='git add -u'
@@ -323,8 +330,8 @@ alias gls='git log --stat $(git merge-base master HEAD)..HEAD'
 alias lgp='git log --relative -p $(git merge-base master HEAD)..HEAD'
 alias llg='git log --graph --oneline'
 
-alias lr='git show HEAD --stat'
-alias lrp='git show HEAD'
+alias lr='git show HEAD --stat --relative'
+alias lrp='git show HEAD --relative'
 
 
 alias p='git stash show -p'
@@ -354,7 +361,6 @@ gca() {
 # pretty git branches
 alias gb=~/bin/git-branches
 alias b=gb
-
 grst() {
   remote="$REMOTE"
   if [ -z "$remote" ]; then
@@ -362,7 +368,6 @@ grst() {
   fi
   git fetch "$remote" && git reset --hard "$remote/$(git branch | rg '\* (.*)' -or '$1')"
 }
-
 grb() {
   return
   root="$(git rev-parse --show-toplevel)"

@@ -21,6 +21,10 @@ Plug 'w0rp/ale'                       " linting
 Plug 'zivyangll/git-blame.vim'        " unintrusive git blame line
 Plug 'wagnerf42/vim-clippy'
 Plug 'the-lambda-church/coquille'
+Plug 'wellle/targets.vim'
+
+Plug 'SirVer/ultisnips'
+Plug 'honza/vim-snippets'
 
 " Auto format
 Plug 'google/vim-codefmt'
@@ -68,20 +72,22 @@ if $EDITOR_THEME == "LIGHT"
   hi IncSearch cterm=bold guibg=blue guifg=white
   hi Search cterm=none guibg=yellow guifg=black
   hi String guifg=darkblue
-  hi rustFuncName cterm=bold guifg=darkblue
+  " hi rustFuncName cterm=bold guifg=darkblue
+  hi Function cterm=bold guifg=darkblue
   hi Todo cterm=bold,italic guibg=NONE
   hi Error guifg=red guibg=NONE cterm=bold
   hi LineNr guifg=lightgray
   hi LineNr guifg=lightgray
   hi StatusLineNC guibg=bg
   hi VertSplit guifg=bg
-  hi SpellCap guibg=lightcyan
-  hi MatchParen guibg=lightcyan
+  " hi MatchParen guibg=lightcyan
+  hi MatchParen guibg=yellow
+  hi LineNr guifg=lightgray
   " hi IncSearch  guifg=Black guibg=Red
 else
-  " colorscheme gruvbox
-  " set background=dark
-  colorscheme space-vim-dark
+  colorscheme Blaaark
+  set background=dark
+  " colorscheme space-vim-dark
   " colorscheme yin
   " " yin customizations
   hi MatchParen guifg=White guibg=Black cterm=bold
@@ -110,6 +116,7 @@ inoremap <c-a> <c-o><s-^>
 
 " Open godef into adjacent window.
 nnoremap <leader>gd :vsplit<cr><c-w><c-w>:GoDef<cr>
+nnoremap gr :GoReferrers<cr>
 
 
 " Move between windows like hjkl, but with ctrl modifier.
