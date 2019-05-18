@@ -10,5 +10,5 @@ fi
 
 stow $PKGS && echo 'success!' || echo 'failed to stow'
 
-ln -sfn .zsh/update.sh ~/.zsh
+ln -sfn "$(realpath .zsh/update.sh)" ~/.zsh
 
