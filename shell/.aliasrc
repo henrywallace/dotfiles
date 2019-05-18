@@ -1,5 +1,12 @@
 #!/bin/sh
 
+HOUR=$(date +%H)
+if [ 6 -le "$HOUR" ] && [ "$HOUR" -le 19 ]; then
+  export EDITOR_THEME=LIGHT
+else
+  export EDITOR_THEME=DARK
+fi
+
 #
 # basics
 #
@@ -31,9 +38,15 @@ nv() {
 u() {
   yup && echo
   rup && echo
+  "$HOME/.zsh/update.sh" && echo
 }
 vup() {
-  vim +PlugUpgrade +PlugUpdate +PlugClean +qall
+  vim \
+    +PlugUpgrade \
+    +PlugUpdate \
+    +PlugClean \
+    +GoUpdateBinaries \
+    +qall
 }
 vup() {
   vim +PlugUpgrade +PlugUpdate +PlugClean +qall

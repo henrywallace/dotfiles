@@ -9,24 +9,18 @@ call plug#begin('~/.vim/plugged')
 Plug 'FooSoft/vim-argwrap'            " fold arguments
 Plug 'airblade/vim-gitgutter'         " git diff gutter
 Plug 'editorconfig/editorconfig-vim'  " configure vim based on the project
-Plug 'francoiscabrol/ranger.vim'      " ranger is the shit
-Plug 'junegunn/goyo.vim'              " you are the code
 Plug 'majutsushi/tagbar'              " ctags sidebar
 Plug 'roxma/vim-paste-easy'           " set paste off when pasting (typing at inhuman speeds).
 Plug 'terryma/vim-multiple-cursors'   " multi-cursor ftw
 Plug 'tpope/vim-commentary'           " toggle comment lines
 Plug 'tpope/vim-eunuch'               " sudo write, rename file, mkdir, etc.
 Plug 'tpope/vim-fugitive'             " git wrapper
-Plug 'tpope/vim-rhubarb'              " helper for GitHub
 Plug 'tpope/vim-sensible'             " sensible defaults for Vim.
 Plug 'tpope/vim-sleuth'               " heuristically set buffer options
 Plug 'w0rp/ale'                       " linting
 Plug 'zivyangll/git-blame.vim'        " unintrusive git blame line
-Plug '/wagnerf42/vim-clippy'
-
-Plug 'SirVer/ultisnips'
-Plug 'honza/vim-snippets'
-
+Plug 'wagnerf42/vim-clippy'
+Plug 'the-lambda-church/coquille'
 
 " Auto format
 Plug 'google/vim-codefmt'
@@ -43,14 +37,10 @@ Plug 'crusoexia/vim-monokai'
 Plug 'dracula/vim', { 'as': 'dracula'}
 Plug 'liuchengxu/space-vim-dark'
 Plug 'morhetz/gruvbox'
+Plug 'neutaaaaan/blaaark'
+Plug 'pgdouyon/vim-yin-yang'
 Plug 'treycucco/vim-monotonic'
 Plug 'wolverian/minimal'
-Plug 'pgdouyon/vim-yin-yang'
-Plug 'neutaaaaan/blaaark'
-
-" " improved status line
-" Plug 'vim-airline/vim-airline'
-" Plug 'vim-airline/vim-airline-themes'
 
 "" Syntax
 Plug 'cespare/vim-toml'
@@ -63,14 +53,12 @@ Plug 'pangloss/vim-javascript'
 Plug 'rust-lang/rust.vim'
 Plug 'tpope/vim-markdown'
 
-Plug 'the-lambda-church/coquille'
-
 call plug#end()
 
 " Color theme. We define this earlier on so that we can more freely customize
 " colors later on.
 set termguicolors
-if $VIM_THEME == "LIGHT"
+if $EDITOR_THEME == "LIGHT"
   colorscheme minimal
   " let g:airline_theme='minimalist'
   set background=light
@@ -83,13 +71,16 @@ if $VIM_THEME == "LIGHT"
   hi rustFuncName cterm=bold guifg=darkblue
   hi Todo cterm=bold,italic guibg=NONE
   hi Error guifg=red guibg=NONE cterm=bold
+  hi LineNr guifg=lightgray
+  hi LineNr guifg=lightgray
   hi StatusLineNC guibg=bg
   hi VertSplit guifg=bg
+  hi SpellCap guibg=lightcyan
+  hi MatchParen guibg=lightcyan
   " hi IncSearch  guifg=Black guibg=Red
 else
   " colorscheme gruvbox
   " set background=dark
-
   colorscheme space-vim-dark
   " colorscheme yin
   " " yin customizations
@@ -262,11 +253,11 @@ let g:go_fmt_fail_silently = 1
 let g:ale_go_bingo_executable = 'gopls'
 
 " Make vim-go faster.
-set re=1
-set ttyfast
-set lazyredraw
-set nocursorcolumn
-syntax sync minlines=256
+" set re=1
+" set ttyfast
+" set lazyredraw
+" set nocursorcolumn
+" syntax sync minlines=256
 
 " " " change fzf colors to match color scheme.
 " let g:fzf_colors =
