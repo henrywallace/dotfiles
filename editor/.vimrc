@@ -76,13 +76,14 @@ if $EDITOR_THEME == "LIGHT"
   hi Function cterm=bold guifg=darkblue
   hi Todo cterm=bold,italic guibg=NONE
   hi Error guifg=red guibg=NONE cterm=bold
-  hi LineNr guifg=lightgray
-  hi LineNr guifg=lightgray
+  hi LineNr guifg=ivory
   hi StatusLineNC guibg=bg
   hi VertSplit guifg=bg
   " hi MatchParen guibg=lightcyan
   hi MatchParen guibg=yellow
-  hi LineNr guifg=lightgray
+  hi LineNr guifg=wheat2
+  hi Normal guibg=white
+  hi Comment guifg=seagreen
   " hi IncSearch  guifg=Black guibg=Red
 else
   colorscheme Blaaark

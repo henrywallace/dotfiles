@@ -19,7 +19,7 @@ alias jql='jq . -C | le'
 alias v=vim
 alias ls='ls -F --color'
 alias l='ls'
-alias ll='ls -la'
+alias ll='ls -lah'
 alias mv='mv -i'
 alias rm='rm -i'
 alias ln='ln -i'
@@ -44,10 +44,9 @@ nv() {
     pip install pip-tools
 }
 u() {
-  if command yup &> /dev/null; then
+  if command -v yup &> /dev/null; then
     yup && echo
   fi
-  rup && echo
   "$HOME/.zsh/update.sh" && echo
 }
 vup() {
@@ -147,13 +146,19 @@ rup() {
   cargo +nightly install-update -a
 }
 alias cv='command -V'
+
+# Print out a line that spans the current width of the terminal. Takes no
+# arguments.
 div() {
   tput setaf 4
   tput bold
   printf "%$(tput cols)s\n" | tr " " =
   tput sgr0
 }
+
+
 alias path="echo $PATH | tr ':' '\n'"
+
 alias rg='rg -M 512 --no-heading'
 ports() {
   lsof -iTCP -sTCP:LISTEN -n -P

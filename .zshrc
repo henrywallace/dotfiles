@@ -1,6 +1,8 @@
 # Base shell-agnostic rc.
 . ~/.corerc
 
+fpath=( "$HOME/.zfunctions" $fpath )
+
 # Tab complete dir colors.
 # https://github.com/robbyrussell/oh-my-zsh/issues/1563#issuecomment-26591369.
 zstyle ':completion:*' list-colors "${(@s.:.)LS_COLORS}"
@@ -25,7 +27,6 @@ bindkey '^[[Z' reverse-menu-complete
 
 # Prompt.
 autoload -Uz promptinit; promptinit
-# https://github.com/sindresorhus/pure
 
 # https://github.com/zsh-users/zsh-autosuggestions#key-bindings
 bindkey '^ ' autosuggest-accept
@@ -35,12 +36,9 @@ set formatoptions+=r
 # set comments-=mb:*
 # set comments+=fb:*
 
-. ~/.zsh/prompt/prompt.zsh
-AGKOZAK_COLORS_USER_HOST=white
-AGKOZAK_COLORS_PATH=white
-AGKOZAK_COLORS_BRANCH_STATUS=white
-AGKOZAK_PROMPT_DIRTRIM=2
-AGKOZAK_COLORS_EXIT_STATUS=white
+
+prompt pure
+PURE_CMD_MAX_EXEC_TIME=2
 
 # Don't add anything to $PATH if it's there already.
 # https://wiki.archlinux.org/index.php/zsh
