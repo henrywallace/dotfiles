@@ -81,7 +81,7 @@ if $EDITOR_THEME == "LIGHT"
   hi VertSplit guifg=bg
   " hi MatchParen guibg=lightcyan
   hi MatchParen guibg=yellow
-  hi LineNr guifg=wheat2
+  hi LineNr guifg=lightgray
   hi Normal guibg=white
   hi Comment guifg=seagreen
   " hi IncSearch  guifg=Black guibg=Red
@@ -143,7 +143,7 @@ nnoremap <c-g> :Rg<cr>
 nnoremap <c-f> :BLines<cr>
 nnoremap <c-p> :Files<cr>
 nnoremap <c-b> :Buffers<cr>
-nnoremap <c-r> :History:<cr>
+nnoremap <c-r> :History<cr>
 nnoremap <c-c> :Commands<cr>
 " nnoremap <c-g> :BCommits<cr>
 

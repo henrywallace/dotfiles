@@ -39,6 +39,7 @@ set formatoptions+=r
 
 prompt pure
 PURE_CMD_MAX_EXEC_TIME=2
+PURE_PROMPT_SYMBOL='%%'
 
 # Don't add anything to $PATH if it's there already.
 # https://wiki.archlinux.org/index.php/zsh

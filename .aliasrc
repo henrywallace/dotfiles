@@ -1,6 +1,6 @@
 #!/bin/sh
 
-HOUR=$(date +%H)
+HOUR=$(TZ=America/New_York date +%H)
 if [ 6 -le "$HOUR" ] && [ "$HOUR" -le 19 ]; then
   export EDITOR_THEME=LIGHT
 else

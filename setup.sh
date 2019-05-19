@@ -12,6 +12,7 @@ echo "
 .envrc          $HOME
 .inputrc        $HOME
 .pathrc         $HOME
+.zshrc          $HOME
 
 .tmux.conf      $HOME
 .zsh/update.sh  $HOME/.zsh
@@ -23,7 +24,7 @@ git             $HOME
   while read -r src dst; do
     if [ -z "$src$dst" ]; then continue; fi
     # If it's a directory, then symlink everything in it.
-    if [ ! -d "$src" ]; then
+    if [ -d "$src" ]; then
       for subsrc in $(find "$src" -path "$src/*"); do
         ln -nsf "$(realpath "$subsrc")" "$dst"
       done
