@@ -309,7 +309,7 @@ gprune() {
     | xargs git branch -d 2> /dev/null \
   || echo "No branches to prune."
 }
-alias con='rg "<<<<<<<" $(git ls-files)'
+alias con='rg "<<<<<<<" $(git ls-files | sort -u)'
 alias g-='git checkout -'
 alias ga='git add -u'
 alias a='git add -u'
