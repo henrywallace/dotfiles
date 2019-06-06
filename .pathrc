@@ -9,6 +9,11 @@ PATH=$PATH:/usr/local/go/bin
 # personal scripts
 PATH=$HOME/bin:$PATH
 
+# ruby
+if [[ "$(uname -s)" == "Darwin" ]]; then
+  PATH=/usr/local/lib/ruby/gems/2.6.0/bin:$PATH
+fi
+
 # homebrew
 if [[ "$(uname -s)" == "Darwin" ]]; then
   PATH=$HOME/.cask/bin:$PATH

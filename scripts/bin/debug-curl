@@ -1,0 +1,11 @@
+#!/bin/sh
+
+# Allow using large curl commands, copied from browser debuggers.
+# The motivation here, is that very large copied curl commands will error
+
+path=/tmp/req.sh
+echo '#!/bin/sh' > $path
+pbpaste >> $path
+chmod +x $path
+echo $path
+

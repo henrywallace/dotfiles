@@ -17,7 +17,11 @@ alias c='bat -p'
 alias h='head'
 alias jql='jq . -C | le'
 alias v=vim
-alias ls='ls -F --color'
+if [[ "$(uname -s)" == "Linux" ]]; then
+  alias ls='ls -F --color'
+elif [[ "$(uname -s)" == "Darwin" ]]; then
+  alias ls='ls -FG'
+fi
 alias l='ls'
 alias ll='ls -lah'
 alias mv='mv -i'
@@ -346,13 +350,13 @@ alias stp='git stash pop'
 # rebase master or rebase back $1 commits
 rb () {
   if [ -z "$1" ]; then
-    git rebase -i "$(git merge-base master HEAD)"
+    git rebase --keep-empty -i "$(git merge-base master HEAD)"
   elif echo "$1" | grep -Eq '^[0-9]+$'; then
     echo git rebase -i "HEAD~$1"
-    git rebase -i "HEAD~$1"
+    git rebase --keep-empty -i "HEAD~$1"
   else
     echo git rebase -i "$1"
-    git rebase -i "$1"
+    git rebase --keep-empty -i "$1"
   fi
 }
 # git commit amend, with quick option for no-edit

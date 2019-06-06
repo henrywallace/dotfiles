@@ -76,3 +76,6 @@ setopt HIST_REDUCE_BLANKS # dont save blanks
 
 [ -f ~/.fzf.zsh ] && source ~/.fzf.zsh
 
+if [[ "$(uname -s)" == "Darwin" ]]; then
+  export PATH="/usr/local/opt/node@10/bin:$PATH"
+fi
