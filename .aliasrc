@@ -34,6 +34,18 @@ alias utc='TZ=":UTC" date'
 alias tls='tmux ls'
 alias yup='yay -Syu'
 alias y='yay'
+cu() {
+  curl -s "$1" | jql
+}
+man() {
+  LESS_TERMCAP_md=$'\e[01;31m' \
+  LESS_TERMCAP_me=$'\e[0m' \
+  LESS_TERMCAP_se=$'\e[0m' \
+  LESS_TERMCAP_so=$'\e[01;44;33m' \
+  LESS_TERMCAP_ue=$'\e[0m' \
+  LESS_TERMCAP_us=$'\e[01;32m' \
+  MANWIDTH=128 command man "$@"
+}
 case "$SHELL" in
   *zsh)
     alias fg='\fg %'
@@ -48,7 +60,7 @@ nv() {
     pip install pip-tools
 }
 u() {
-  if command -v yup &> /dev/null; then
+  if command -v yay &> /dev/null; then
     yup && echo
   fi
   "$HOME/.zsh/update.sh" && echo
@@ -75,10 +87,10 @@ f() {
 #   ip link show wlp2s0 && echo
 #   iw dev wlp2s0 info
 # }
-if hash bat &> /dev/null; then
-  alias le='bat -p --paging=always'
+if command -v bat &> /dev/null; then
+  alias le='bat -p'
 else
-  alias le='less -R'
+  alias le='less -FXR'
 fi
 ta() {
   if [ -z "$@" ]; then
@@ -163,7 +175,7 @@ div() {
 
 alias path="echo $PATH | tr ':' '\n'"
 
-alias rg='rg -M 512 --no-heading'
+alias rg='rg -M 512 --no-heading --sort path'
 ports() {
   lsof -iTCP -sTCP:LISTEN -n -P
 }

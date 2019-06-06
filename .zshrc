@@ -50,15 +50,14 @@ typeset -gU path
 # sudo prefixed.
 zstyle ':completion::complete:*' gain-privileges 1
 
-# # Fish-like syntax hlghlighting.
-# # https://github.com/zsh-users/zsh-syntax-highlighting
-ZSH_SYNTAX_HIGHLIGHTING=~/.zsh/zsh-syntax-highlighting/zsh-syntax-highlighting.zsh
-if [[ -f "$ZSH_SYNTAX_HIGHLIGHTING" ]]; then
+# Fish-like syntax hlghlighting.
+ZSH_SYNTAX_HIGHLIGHTING=~/.zsh/fast-syntax-highlighting/fast-syntax-highlighting.plugin.zsh
+if [ -f "$ZSH_SYNTAX_HIGHLIGHTING" ]; then
   . "$ZSH_SYNTAX_HIGHLIGHTING"
 fi
 
 ZSH_AUTOSUGGESTIONS=~/.zsh/zsh-autosuggestions/zsh-autosuggestions.zsh
-if [[ -f "$ZSH_AUTOSUGGESTIONS" ]]; then
+if [ -f "$ZSH_AUTOSUGGESTIONS" ]; then
   . "$ZSH_AUTOSUGGESTIONS"
 fi
 

@@ -22,6 +22,7 @@ Plug 'zivyangll/git-blame.vim'        " unintrusive git blame line
 Plug 'wagnerf42/vim-clippy'
 Plug 'the-lambda-church/coquille'
 Plug 'wellle/targets.vim'
+Plug 'google/vim-searchindex'
 
 Plug 'SirVer/ultisnips'
 Plug 'honza/vim-snippets'
@@ -64,36 +65,38 @@ call plug#end()
 set termguicolors
 if $EDITOR_THEME == "LIGHT"
   colorscheme minimal
-  " let g:airline_theme='minimalist'
   set background=light
-  hi ColorColumn ctermbg=2 guibg=white
-  hi StatusLine cterm=bold guifg=black guibg=lightcyan
+  hi StatusLine cterm=bold guifg=black guibg=Aquamarine1
+  hi StatusLineNC cterm=bold guifg=black guibg=lightcyan
   hi SignColumn none
   hi IncSearch cterm=bold guibg=blue guifg=white
-  hi Search cterm=none guibg=yellow guifg=black
-  hi String guifg=darkblue
-  " hi rustFuncName cterm=bold guifg=darkblue
+  " hi Search cterm=none guibg=yellow guifg=black
+  hi Search cterm=bold guibg=blue guifg=yellow
+  " hi String guifg=darkblue
+  hi String guifg=NavyBlue
   hi Function cterm=bold guifg=darkblue
   hi Todo cterm=bold,italic guibg=NONE
   hi Error guifg=red guibg=NONE cterm=bold
   hi LineNr guifg=ivory
-  hi StatusLineNC guibg=bg
   hi VertSplit guifg=bg
-  " hi MatchParen guibg=lightcyan
   hi MatchParen guibg=yellow
-  hi LineNr guifg=lightgray
-  hi Normal guibg=white
-  hi Comment guifg=seagreen
-  " hi IncSearch  guifg=Black guibg=Red
+  hi LineNr guifg=seashell2
+  " hi Normal guibg=white
+  " hi Comment guifg=seagreen
+  hi Comment guifg=seashell4
+  hi ColorColumn ctermbg=2 guibg=snow1
+  hi GitGutterAddDefault guifg=green4
+  hi GitGutterRemoveDefault guifg=darkred
+  hi GitGutterChangeDefault guifg=gold
 else
   colorscheme Blaaark
   set background=dark
   " colorscheme space-vim-dark
   " colorscheme yin
   " " yin customizations
-  hi MatchParen guifg=White guibg=Black cterm=bold
+  hi MatchParen guifg=Yellow guibg=Blue cterm=bold
   hi Comment cterm=NONE guifg=#776587 guibg=NONE
-  hi Search  cterm=bold  guifg=Pink guibg=Black
+  hi Search  cterm=bold  guifg=white guibg=blue
   hi GitGutterAdd  guibg=#212026
   hi GitGutterChange guibg=#212026
   hi GitGutterDelete guibg=#212026

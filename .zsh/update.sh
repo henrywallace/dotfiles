@@ -4,6 +4,7 @@ echo "
 https://github.com/zsh-users/zsh-autosuggestions
 https://github.com/zsh-users/zsh-syntax-highlighting
 https://github.com/sindresorhus/pure
+https://github.com/zdharma/fast-syntax-highlighting
 " |
 {
   while read -r repo; do

@@ -24,12 +24,16 @@ git             $HOME
   while read -r src dst; do
     if [ -z "$src$dst" ]; then continue; fi
     # If it's a directory, then symlink everything in it.
+    # if [ -e "$dst" ]; then
+    #   echo "Destination $dst already exists, skipping."
+    #   continue
+    # fi
     if [ -d "$src" ]; then
       for subsrc in $(find "$src" -path "$src/*"); do
-        ln -nsf "$(realpath "$subsrc")" "$dst"
+        ln -s "$(realpath "$subsrc")" "$dst" || continue
       done
     else
-      ln -nsf "$(realpath "$src")" "$dst"
+      ln -s "$(realpath "$src")" "$dst" || continue
     fi
   done
 }
