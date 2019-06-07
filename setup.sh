@@ -4,6 +4,24 @@ set -e
 
 mkdir -p ~/.zsh
 
+# Maybe link a src file to a dst. If the src is not a file, then this returns a
+# non-zero value. If dst is a directory, then the src is attempted to be linked
+# into that directory. This returns a non-zero value if symbolic linking fails.
+maybelink() {
+  local src=$1
+  local dst=$2
+  if [ -d "$src" ]; then
+    return 1
+  fi
+  if [ -d "$dst" ]; then
+    dst=$dst/$(basename "$src")
+  fi
+  if [ -L "$dst" ] && [ "$(realpath "$src")" == "$(realpath "$dst")" ]; then
+    return 0
+  fi
+  ln -s "$(realpath "$src")" "$dst"
+}
+
 echo "
 .aliasrc        $HOME
 .bashrc         $HOME
@@ -12,29 +30,26 @@ echo "
 .envrc          $HOME
 .inputrc        $HOME
 .pathrc         $HOME
-.zshrc          $HOME
-
 .tmux.conf      $HOME
 .zsh/update.sh  $HOME/.zsh
-
+.zshrc          $HOME
+bin             $HOME/bin
 editor          $HOME
 git             $HOME
 " |
 {
   while read -r src dst; do
-    if [ -z "$src$dst" ]; then continue; fi
+    # Skip if it's a blank line or starts with a commment.
+    if [ -z "$src$dst" ] || echo "$src" | grep -q '^#'; then
+      continue
+    fi
     # If it's a directory, then symlink everything in it.
-    # if [ -e "$dst" ]; then
-    #   echo "Destination $dst already exists, skipping."
-    #   continue
-    # fi
     if [ -d "$src" ]; then
       for subsrc in $(find "$src" -path "$src/*"); do
-        ln -s "$(realpath "$subsrc")" "$dst" || continue
+        maybelink "$subsrc" "$dst" || continue
       done
     else
-      ln -s "$(realpath "$src")" "$dst" || continue
+      maybelink "$src" "$dst" || continue
     fi
   done
 }
-

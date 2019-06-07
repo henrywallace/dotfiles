@@ -5,12 +5,15 @@ set -eux
 iface=wlp2s0
 wpa_conf=/etc/wpa_supplicant/home.conf
 
+rfkill unblock all
 sudo killall dhcpcd || true
 sudo killall wpa_supplicant || true
 sudo ip link set $iface up
 ip link
 sleep 2
 sudo wpa_supplicant -B -i $iface -D wext -c $wpa_conf -dd
+# TODO: What state can we query to figure out when it's appropriate to spawn
+# dhcpcd?
 sleep 2
 sudo dhcpcd $iface
-ping -c archlinux.org
+ping -w 16 archlinux.org

@@ -65,6 +65,11 @@ u() {
   fi
   "$HOME/.zsh/update.sh" && echo
 }
+uu() {
+  u
+  rup && echo
+  vup
+}
 vup() {
   vim \
     +PlugUpgrade \
