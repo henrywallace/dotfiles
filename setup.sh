@@ -19,7 +19,12 @@ maybelink() {
   if [ -L "$dst" ] && [ "$(realpath "$src")" == "$(realpath "$dst")" ]; then
     return 0
   fi
-  ln -s "$(realpath "$src")" "$dst"
+  if [ ! -e "$dst" ]; then
+    # If it's a broken symlink then force the linking.
+    ln -sf "$(realpath "$src")" "$dst"
+  else
+    ln -s "$(realpath "$src")" "$dst"
+  fi
 }
 
 echo "
