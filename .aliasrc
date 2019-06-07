@@ -32,6 +32,7 @@ alias sudo='sudo '  # allow for sudo completion
 alias t='tmux'
 alias utc='TZ=":UTC" date'
 alias tls='tmux ls'
+alias k='kubectl'
 alias yup='yay -Syu'
 alias y='yay'
 cu() {
