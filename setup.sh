@@ -3,6 +3,7 @@
 set -e
 
 mkdir -p ~/.zsh
+mkdir -p ~/bin
 
 # Maybe link a src file to a dst. If the src is not a file, then this returns a
 # non-zero value. If dst is a directory, then the src is attempted to be linked
@@ -50,6 +51,10 @@ git             $HOME
     fi
     # If it's a directory, then symlink everything in it.
     if [ -d "$src" ]; then
+      if [ -e "$dst" ] && [ ! -d "$dst" ]; then
+        echo "dst can't be a file for directory src, src=$src/, dst=$dst"
+        continue
+      fi
       for subsrc in $(find "$src" -path "$src/*"); do
         maybelink "$subsrc" "$dst" || continue
       done
