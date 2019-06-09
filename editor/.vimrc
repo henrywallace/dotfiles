@@ -60,6 +60,13 @@ Plug 'tpope/vim-markdown'
 
 call plug#end()
 
+" https://superuser.com/a/588243/577047
+if &term =~ '256color'
+    " Disable Background Color Erase (BCE) so that color schemes
+    " work properly when Vim is used inside tmux and GNU screen.
+    set t_ut=
+endif
+
 " Color theme. We define this earlier on so that we can more freely customize
 " colors later on.
 set termguicolors
