@@ -67,53 +67,6 @@ if &term =~ '256color'
     set t_ut=
 endif
 
-" Color theme. We define this earlier on so that we can more freely customize
-" colors later on.
-set termguicolors
-if $EDITOR_THEME == "LIGHT"
-  colorscheme minimal
-  set background=light
-  hi StatusLine cterm=bold guifg=black guibg=Aquamarine1
-  hi StatusLineNC cterm=bold guifg=black guibg=lightcyan
-  hi SignColumn none
-  hi IncSearch cterm=bold guibg=blue guifg=white
-  " hi Search cterm=none guibg=yellow guifg=black
-  hi Search cterm=bold guibg=blue guifg=yellow
-  " hi String guifg=darkblue
-  hi String guifg=NavyBlue
-  hi Function cterm=bold guifg=darkblue
-  hi Todo cterm=bold,italic guibg=NONE
-  hi Error guifg=red guibg=NONE cterm=bold
-  hi LineNr guifg=ivory
-  hi VertSplit guifg=bg
-  hi MatchParen guibg=yellow
-  hi LineNr guifg=seashell2
-  " hi Normal guibg=white
-  " hi Comment guifg=seagreen
-  hi Comment guifg=seashell4
-  hi ColorColumn ctermbg=2 guibg=snow1
-  hi GitGutterAddDefault guifg=green4
-  hi GitGutterRemoveDefault guifg=darkred
-  hi GitGutterChangeDefault guifg=gold
-else
-  colorscheme Blaaark
-  set background=dark
-  " colorscheme space-vim-dark
-  " colorscheme yin
-  " " yin customizations
-  hi MatchParen guifg=Yellow guibg=Blue cterm=bold
-  hi Comment cterm=NONE guifg=#776587 guibg=NONE
-  hi Search  cterm=bold  guifg=white guibg=blue
-  hi GitGutterAdd  guibg=#212026
-  hi GitGutterChange guibg=#212026
-  hi GitGutterDelete guibg=#212026
-  hi GitGutterChangeDelete guibg=#212026
-  hi SignColumn guibg=#212026
-  hi Boolean guifg=#c2bff2
-  hi Todo cterm=bold guifg=#fdffbc
-  " hi IncSearch  guifg=Black guibg=Red
-  " hi Search     guifg=Orange guibg=Black
-endif
 
 let g:rustfmt_autosave = 1
 
@@ -269,6 +222,8 @@ let g:go_def_mode='gopls'
 let g:go_fmt_command = 'goimports'  " https://github.com/sqs/goreturns
 let g:go_fmt_fail_silently = 1
 let g:ale_go_bingo_executable = 'gopls'
+" https://github.com/fatih/vim-go/issues/1659
+let g:go_gocode_autobuild = 0
 
 " Make vim-go faster.
 " set re=1
@@ -305,7 +260,55 @@ nnoremap <c-i> :bprev<CR>
 " hidden characters
 nmap <leader>l :set list!<CR>
 
-
 let g:UltiSnipsExpandTrigger = '<tab>'
 let g:UltiSnipsJumpForwardTrigger = '<c-b>'
 let g:UltiSnipsJumpBackwardTrigger = '<c-z>'
+
+" Color theme. We define this earlier on so that we can more freely customize
+" colors later on.
+set termguicolors
+if $EDITOR_THEME == "LIGHT"
+  colorscheme minimal
+  set background=light
+  hi StatusLine cterm=bold guifg=black guibg=Aquamarine1
+  hi StatusLineNC cterm=bold guifg=black guibg=lightcyan
+  hi SignColumn none
+  hi IncSearch cterm=bold guibg=blue guifg=white
+  " hi Search cterm=none guibg=yellow guifg=black
+  hi Search cterm=bold guibg=blue guifg=yellow
+  " hi String guifg=darkblue
+  hi String guifg=NavyBlue
+  hi Function cterm=bold guifg=darkblue
+  hi Todo cterm=bold,italic guibg=NONE
+  hi Error guifg=red guibg=NONE cterm=bold
+  hi LineNr guifg=ivory
+  hi VertSplit guifg=bg
+  hi MatchParen guibg=yellow
+  hi LineNr guifg=seashell2
+  " hi Normal guibg=white
+  " hi Comment guifg=seagreen
+  hi Comment guifg=seashell4
+  hi ColorColumn ctermbg=2 guibg=snow1
+  hi GitGutterAddDefault guifg=green4
+  hi GitGutterRemoveDefault guifg=darkred
+  hi GitGutterChangeDefault guifg=gold
+  hi Visual guifg=black guibg=aquamarine1
+else
+  colorscheme Blaaark
+  set background=dark
+  " colorscheme space-vim-dark
+  " colorscheme yin
+  " " yin customizations
+  hi MatchParen guifg=Yellow guibg=Blue cterm=bold
+  hi Comment cterm=NONE guifg=#776587 guibg=NONE
+  hi Search  cterm=bold  guifg=white guibg=blue
+  hi GitGutterAdd  guibg=#212026
+  hi GitGutterChange guibg=#212026
+  hi GitGutterDelete guibg=#212026
+  hi GitGutterChangeDelete guibg=#212026
+  hi SignColumn guibg=#212026
+  hi Boolean guifg=#c2bff2
+  hi Todo cterm=bold guifg=#fdffbc
+  " hi IncSearch  guifg=Black guibg=Red
+  " hi Search     guifg=Orange guibg=Black
+endif

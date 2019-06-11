@@ -37,15 +37,15 @@ alias y='yay'
 cu() {
   curl -s "$1" | jql
 }
-man() {
-  LESS_TERMCAP_md=$'\e[01;31m' \
-  LESS_TERMCAP_me=$'\e[0m' \
-  LESS_TERMCAP_se=$'\e[0m' \
-  LESS_TERMCAP_so=$'\e[01;44;33m' \
-  LESS_TERMCAP_ue=$'\e[0m' \
-  LESS_TERMCAP_us=$'\e[01;32m' \
-  MANWIDTH=128 command man "$@"
-}
+# man() {
+#   LESS_TERMCAP_md=$'\e[01;31m' \
+#   LESS_TERMCAP_me=$'\e[0m' \
+#   LESS_TERMCAP_se=$'\e[0m' \
+#   LESS_TERMCAP_so=$'\e[01;44;33m' \
+#   LESS_TERMCAP_ue=$'\e[0m' \
+#   LESS_TERMCAP_us=$'\e[01;32m' \
+#   MANWIDTH=128 command man "$@"
+# }
 case "$SHELL" in
   *zsh)
     alias fg='\fg %'
@@ -321,6 +321,7 @@ alias a='git add -u'
 alias gp='git pull --rebase'
 alias fold='git stash --keep-index && git stash'
 alias gua='git reset --soft HEAD@{1} && git reset'
+alias re='git reset'
 
 alias gd='git diff'
 alias gdc='git diff --cached'
