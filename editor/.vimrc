@@ -23,6 +23,7 @@ Plug 'wagnerf42/vim-clippy'
 Plug 'the-lambda-church/coquille'
 Plug 'wellle/targets.vim'
 Plug 'google/vim-searchindex'
+Plug 'github.com/ajh17/VimCompletesMe'
 
 Plug 'SirVer/ultisnips'
 Plug 'honza/vim-snippets'
@@ -169,6 +170,8 @@ endif
 
 " Visual rulers, depending on the filetype.
 autocmd FileType go set colorcolumn=80,100
+
+autocmd FileType go let b:vcm_tab_complete = 'tags'
 
 " Show commands that are typed.
 set showcmd

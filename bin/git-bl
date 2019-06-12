@@ -1,0 +1,8 @@
+#!/bin/sh
+
+set -e
+
+line=$(sk --height '40%' --ansi --layout=reverse -i -c 'rg --color=always --line-number "{}"')
+path=$(echo "$line" | cut -d':' -f1)
+line=$(echo "$line" | cut -d':' -f2)
+git log -u -L "$line:$path" -n1

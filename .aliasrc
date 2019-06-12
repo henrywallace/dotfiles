@@ -340,8 +340,6 @@ alias pu='git push origin HEAD'
 alias fpu='git push -f origin HEAD'
 
 alias gs=~/bin/git-status
-alias g=~/bin/git-status
-alias s='~/bin/git-status'
 gk() {
   if [ -z "$@" ]; then
     git commit
