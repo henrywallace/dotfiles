@@ -296,7 +296,8 @@ if $EDITOR_THEME == "LIGHT"
   hi GitGutterRemoveDefault guifg=darkred
   hi GitGutterChangeDefault guifg=gold
   hi Visual guifg=black guibg=aquamarine1
-  hi VertSplit guifg=gray
+  " hi VertSplit guifg=gray
+  hi VertSplit guifg=#aaaaff
 else
   colorscheme Blaaark
   set background=dark

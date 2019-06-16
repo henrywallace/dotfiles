@@ -64,11 +64,7 @@ u() {
     yup && echo
   fi
   "$HOME/.zsh/update.sh" && echo
-}
-uu() {
-  u
-  rup && echo
-  vup
+  rup
 }
 vup() {
   vim \
