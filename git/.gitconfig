@@ -12,8 +12,8 @@
 	excludesfile = ~/.gitignore_global
 
 [alias]
-	b = branch
 	co = checkout
+	cp = cherry-pick
 	cm = commit --allow-empty -m
 
 [log]
