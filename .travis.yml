@@ -5,4 +5,4 @@ os:
   - osx
 
 install:
-  - ./stow.sh
+  - ./setup.sh

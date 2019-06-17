@@ -10,6 +10,7 @@ fi
 #
 # basics
 #
+alias dfs='cd ~/dotfiles'
 alias cp='cp -i'
 alias e='emacs -nw'
 alias j='jobs -l'
