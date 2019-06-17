@@ -64,6 +64,12 @@ u() {
   if command -v yay &> /dev/null; then
     yup && echo
   fi
+  if command -v brew &> /dev/null; then
+    bup && echo
+  fi
+  if [ "$(uname -s)" = "Linux" ] && command -v apt &> /dev/null; then
+    sudo apt upgrade
+  fi
   "$HOME/.zsh/update.sh" && echo
   rup
 }
