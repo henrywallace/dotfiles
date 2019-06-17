@@ -353,7 +353,7 @@ alias lgp='git log --relative -p $(git merge-base master HEAD)..HEAD'
 alias llg='git log --graph --oneline'
 
 alias lr='git show HEAD --stat --relative'
-alias lrp='git show HEAD --relative'
+alias lrp='git show HEAD --relative -- . ":(exclude)*_easyjson.go"'
 
 
 alias p='git stash show -p'
