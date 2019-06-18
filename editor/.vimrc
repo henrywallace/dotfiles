@@ -287,7 +287,8 @@ if $EDITOR_THEME == "LIGHT"
   hi LineNr guifg=ivory
   hi VertSplit guifg=bg
   hi MatchParen guibg=yellow
-  hi LineNr guifg=snow1
+  " hi LineNr guifg=snow1
+  hi LineNr guifg=#aaaaff
   " hi Normal guibg=white
   " hi Comment guifg=seagreen
   hi Comment guifg=seashell4
@@ -296,8 +297,8 @@ if $EDITOR_THEME == "LIGHT"
   hi GitGutterRemoveDefault guifg=darkred
   hi GitGutterChangeDefault guifg=gold
   hi Visual guifg=black guibg=aquamarine1
-  " hi VertSplit guifg=gray
-  hi VertSplit guifg=#aaaaff
+  hi VertSplit guifg=lightgray
+  " hi VertSplit guifg=#aaaaff
 else
   colorscheme Blaaark
   set background=dark
