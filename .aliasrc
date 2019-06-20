@@ -68,7 +68,7 @@ u() {
     bup && echo
   fi
   if [ "$(uname -s)" = "Linux" ] && command -v apt &> /dev/null; then
-    sudo apt upgrade
+    sudo apt update && sudo apt upgrade
   fi
   "$HOME/.zsh/update.sh" && echo
   rup
