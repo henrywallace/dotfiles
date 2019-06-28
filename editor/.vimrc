@@ -19,11 +19,9 @@ Plug 'tpope/vim-sensible'             " sensible defaults for Vim.
 Plug 'tpope/vim-sleuth'               " heuristically set buffer options
 Plug 'w0rp/ale'                       " linting
 Plug 'zivyangll/git-blame.vim'        " unintrusive git blame line
-Plug 'wagnerf42/vim-clippy'
-Plug 'the-lambda-church/coquille'
+Plug 'the-lambda-church/coquille'     " like emacs proof general
 Plug 'wellle/targets.vim'
-Plug 'google/vim-searchindex'
-Plug 'github.com/ajh17/VimCompletesMe'
+Plug 'google/vim-searchindex'         " show which search match number out of
 
 Plug 'SirVer/ultisnips'
 Plug 'honza/vim-snippets'
