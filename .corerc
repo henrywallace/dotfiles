@@ -1,6 +1,7 @@
 #!/bin/sh
 
 . ~/.pathrc
+. ~/.envrc
 . ~/.aliasrc
 
 # Start ssh-agent if not running.

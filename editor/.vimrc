@@ -161,15 +161,29 @@ autocmd BufWritePre * :%s/\s\+$//e
 
 " Open a file in the same location as it was opened last time.
 " https://stackoverflow.com/a/774599/2601179
-if has("autocmd")
+if has("autocmd") && &filetype != 'gitcommit'
   au BufReadPost * if line("'\"") > 0 && line("'\"") <= line("$")
     \| exe "normal! g'\"" | endif
 endif
+
+"" Allow spell check under current cursor, even if spell isn't set, which is
+"" probably the case when editing code. This is useful for check spelling of
+"" words within documentation.
+""
+"" https://stackoverflow.com/a/22182089/2601179
+"function! s:spell_check_current()
+"  setlocal spell
+"  normal z=
+"  setlocal nospell
+"endfunction
+"nnoremap <c-s> :call <SID>spell_check_current()<CR>
 
 " Visual rulers, depending on the filetype.
 autocmd FileType go set colorcolumn=80,100
 
 autocmd FileType go let b:vcm_tab_complete = 'tags'
+
+autocmd Filetype yaml set cursorcolumn
 
 " Show commands that are typed.
 set showcmd
@@ -255,6 +269,8 @@ let g:markdown_fenced_languages = ['go', 'sh', 'py=python']
 " Allow buffers with unsaved changes
 set hidden
 
+set nofoldenable
+
 " nnoremap <c-p> :bnext<CR>
 nnoremap <c-i> :bprev<CR>
 
@@ -291,7 +307,7 @@ if $EDITOR_THEME == "LIGHT"
   " hi Comment guifg=seagreen
   hi Comment guifg=seashell4
   hi ColorColumn ctermbg=2 guibg=snow1
-  hi GitGutterAddDefault guifg=green4
+  hi GitGutterAddDefault guifg=green3
   hi GitGutterRemoveDefault guifg=darkred
   hi GitGutterChangeDefault guifg=gold
   hi Visual guifg=black guibg=aquamarine1
@@ -316,3 +332,4 @@ else
   " hi IncSearch  guifg=Black guibg=Red
   " hi Search     guifg=Orange guibg=Black
 endif
+
