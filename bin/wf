@@ -8,13 +8,21 @@ wpa_conf=/etc/wpa_supplicant/${WIFI:-home}.conf
 rfkill unblock all
 sudo killall dhcpcd || true
 sudo killall wpa_supplicant || true
+sudo dhcpcd -k $iface || true
+
+sudo ip link set $iface down
+sudo iwconfig wlp2s0 channel auto
 sudo ip link set $iface up
 ip link
 sleep 2
+
 sudo wpa_supplicant -B -i $iface -D wext -c "$wpa_conf" -dd
 # TODO: What state can we query to figure out when it's appropriate to spawn
 # dhcpcd?
 sleep 2
+
+# sudo dhcpcd -t 0 -d -K $iface
 sudo dhcpcd $iface
 sleep 2
+
 ping -w 2 archlinux.org

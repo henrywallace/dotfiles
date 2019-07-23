@@ -64,6 +64,10 @@ fi
 # Use emacs mode.
 bindkey -e
 
+# https://github.com/jwilm/alacritty/issues/1408#issuecomment-467970836
+bindkey "^[[1;5C" forward-word
+bindkey "^[[1;5D" backward-word
+
 # History.
 HISTFILE=~/.zsh_history
 HISTSIZE=10000000  # 10^7

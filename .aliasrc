@@ -1,5 +1,7 @@
 #!/bin/sh
 
+. ~/.colors
+
 HOUR=$(TZ=America/New_York date +%H)
 if [ 6 -le "$HOUR" ] && [ "$HOUR" -le 19 ]; then
   export EDITOR_THEME=LIGHT
@@ -28,13 +30,26 @@ alias ll='ls -lah'
 alias mv='mv -i'
 alias rm='rm -i'
 alias ln='ln -i'
-alias celar='clear'  # oh the struggles of life
 alias sudo='sudo '  # allow for sudo completion
 alias t='tmux'
 alias utc='TZ=":UTC" date'
+alias ts='date +%s'
+when() {
+  echo """
+${BOLD}Los Angeles$NC %% $BLUE$(TZ=America/Los_Angeles date +"%H:%M %z")$NC
+${BOLD}New York$NC %% $BLUE$(TZ=America/New_York date +"%H:%M %z")$NC
+${BOLD}UTC$NC %% $BLUE$(TZ=UTC date +"%H:%M %z")$NC
+""" | column -t -s '%%'
+}
 alias tls='tmux ls'
 alias yup='yay -Syu'
 alias y='yay'
+sc() {
+  rg -U "Host $1\w*?\n(?s:.)*?\n\n" ~/.ssh/config -N --color=never
+}
+scip() {
+  sc "$1" | rg Hostname | awk '{print $2}'
+}
 cu() {
   curl -s "$1" | jql
 }
@@ -47,19 +62,20 @@ cu() {
 #   LESS_TERMCAP_us=$'\e[01;32m' \
 #   MANWIDTH=128 command man "$@"
 # }
-case "$SHELL" in
-  *zsh)
-    alias fg='\fg %'
-    alias bg='\bg %'
-    ;;
-  *bash)
-    ;;
-esac
+# case "$SHELL" in
+#   *zsh)
+#     alias fg='\fg %'
+#     alias bg='\bg %'
+#     ;;
+#   *bash)
+#     ;;
+# esac
 nv() {
   virtualenv -p "$(command -v python3)" venv &&
     . venv/bin/activate &&
     pip install pip-tools
 }
+
 u() {
   if command -v yay &> /dev/null; then
     yup && echo
@@ -70,9 +86,8 @@ u() {
   if [ "$(uname -s)" = "Linux" ] && command -v apt &> /dev/null; then
     sudo apt update && sudo apt upgrade
   fi
-  "$HOME/.zsh/update.sh" && echo
-  rup
 }
+
 vup() {
   vim \
     +PlugUpgrade \
@@ -81,6 +96,7 @@ vup() {
     +GoUpdateBinaries \
     +qall
 }
+
 f() {
   date && echo
   cal && echo
@@ -88,6 +104,7 @@ f() {
   # ip link show wlp2s0 && echo
   # iw dev wlp2s0 info
 }
+
 # f() {
 #   date && echo
 #   cal && echo
@@ -102,7 +119,7 @@ else
 fi
 ta() {
   if [ -z "$@" ]; then
-    tmux attach
+    tmux attach || tmux
   else
     tmux attach -t "$@"
   fi
@@ -285,17 +302,35 @@ pe() {
   if [ -n "$VIRTUAL_ENV" ]; then
     deactivate
   fi
-  . "$(find . -wholename '*/bin/activate' | head -1)"
+  local virtualenvs=$(fd -p '.*/bin/activate$')
+  local num=$(echo "$virtualenvs" | wc -l)
+  if [ "$num" -gt 1 ]; then
+    echo "${YELLOW}Warning, $num virtualenvs found, using first:"
+    echo -n "$RED$BOLD> $NC"
+    echo $virtualenvs
+  fi
+  . $(echo $virtualenvs | head -1)
 }
 de() {
   deactivate &> /dev/null
 }
-pi() {
+pp() {
   TRAPEXIT() {
-    deactivate
+    deactivate &> /dev/null
   }
   pe
-  ipython
+  if [ -n "$*" ]; then
+    eval python -c "'$*'"
+  else
+    ipython
+  fi
+}
+pi() {
+  local addr="$ADDR"
+  [ -z "$addr" ] && addr="1.1.1.1"
+  ping -c 2 -w 2 "$addr" \
+    && echo "$BLUE${BOLD}Connected to the internet!$NC" \
+    || echo "$YELLOW${BOLD}Not connected to the internet.$NC"
 }
 # Start a jupyter notebook if applicable.
 pj() {
