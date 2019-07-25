@@ -2,7 +2,7 @@
 
 . ~/.colors
 
-HOUR=$(TZ=America/New_York date +%H)
+local HOUR=$(TZ=America/New_York date +%H)
 if [ 6 -le "$HOUR" ] && [ "$HOUR" -le 19 ]; then
   export EDITOR_THEME=LIGHT
 else
@@ -20,9 +20,9 @@ alias c='bat -p'
 alias h='head'
 alias jql='jq . -C | le'
 alias v=vim
-if [[ "$(uname -s)" == "Linux" ]]; then
+if [ "$(uname -s)" = Linux ]; then
   alias ls='ls -F --color'
-elif [[ "$(uname -s)" == "Darwin" ]]; then
+elif [ "$(uname -s)" = Darwin ]; then
   alias ls='ls -FG'
 fi
 alias l='ls'
@@ -36,9 +36,9 @@ alias utc='TZ=":UTC" date'
 alias ts='date +%s'
 when() {
   echo """
-${BOLD}Los Angeles$NC %% $BLUE$(TZ=America/Los_Angeles date +"%H:%M %z")$NC
-${BOLD}New York$NC %% $BLUE$(TZ=America/New_York date +"%H:%M %z")$NC
-${BOLD}UTC$NC %% $BLUE$(TZ=UTC date +"%H:%M %z")$NC
+${BOLD}Los Angeles$NC %% $(TZ=America/Los_Angeles date +"%H:%M %z")
+${BOLD}New York$NC %% $(TZ=America/New_York date +"%H:%M %z")
+${BOLD}UTC$NC %% $(TZ=UTC date +"%H:%M %z")
 """ | column -t -s '%%'
 }
 alias tls='tmux ls'

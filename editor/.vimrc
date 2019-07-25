@@ -183,7 +183,7 @@ autocmd FileType go set colorcolumn=80,100
 
 autocmd FileType go let b:vcm_tab_complete = 'tags'
 
-autocmd Filetype yaml set cursorcolumn
+" autocmd Filetype yaml set cursorcolumn
 
 " Show commands that are typed.
 set showcmd
@@ -287,12 +287,14 @@ set termguicolors
 if $EDITOR_THEME == "LIGHT"
   colorscheme minimal
   set background=light
-  hi StatusLine cterm=bold guifg=black guibg=Aquamarine1
+  " hi StatusLine cterm=bold guifg=black guibg=Aquamarine1
+  hi StatusLine cterm=bold guifg=black guibg=#ccccff
   hi StatusLineNC cterm=bold guifg=black guibg=lightcyan
   hi SignColumn none
   hi IncSearch cterm=bold guibg=blue guifg=white
   " hi Search cterm=none guibg=yellow guifg=black
-  hi Search cterm=bold guibg=blue guifg=yellow
+  " hi Search cterm=bold guibg=blue guifg=yellow
+  hi Search cterm=none guibg=mistyrose guifg=red
   " hi String guifg=darkblue
   hi String guifg=NavyBlue
   hi Function cterm=bold guifg=darkblue
@@ -310,7 +312,7 @@ if $EDITOR_THEME == "LIGHT"
   hi GitGutterAddDefault guifg=green3
   hi GitGutterRemoveDefault guifg=darkred
   hi GitGutterChangeDefault guifg=gold
-  hi Visual guifg=black guibg=aquamarine1
+  hi Visual guifg=red guibg=mistyrose
   hi VertSplit guifg=lightgray
   " hi VertSplit guifg=#aaaaff
 else
