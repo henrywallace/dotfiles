@@ -309,6 +309,7 @@ pe() {
     echo -n "$RED$BOLD> $NC"
     echo $virtualenvs
   fi
+  echo VIRTUAL ENVS $virtualenvs
   . $(echo $virtualenvs | head -1)
 }
 de() {

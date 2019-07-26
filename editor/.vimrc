@@ -294,7 +294,8 @@ if $EDITOR_THEME == "LIGHT"
   hi IncSearch cterm=bold guibg=blue guifg=white
   " hi Search cterm=none guibg=yellow guifg=black
   " hi Search cterm=bold guibg=blue guifg=yellow
-  hi Search cterm=none guibg=mistyrose guifg=red
+  " hi Search cterm=none guibg=mistyrose guifg=red
+  hi Search cterm=none guibg=lightcyan1 guifg=blue
   " hi String guifg=darkblue
   hi String guifg=NavyBlue
   hi Function cterm=bold guifg=darkblue
