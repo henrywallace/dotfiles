@@ -9,17 +9,20 @@ https://github.com/zdharma/fast-syntax-highlighting
 {
   while read -r repo; do
     [ -z "$repo" ] && continue
+    echo REPO $repo
     tput setaf 4; echo "$repo"; tput sgr0
     DST="$HOME/.zsh/$(basename "$repo")"
     [ -d "$DST" ] || git clone "$repo" "$DST"
     git -C "$DST" fetch
     diff=$(git -C "$DST" diff master origin/master)
     if [ -n "$diff" ]; then
-      echo -n "Pull these changes? (Y/n)"
-      read -r answer
-      if [ -z "$answer" ] || rg -iq "^y"; then
-        git -C "$DST" pull
-      fi
+      echo hello
+      # echo -n "Pull these changes? (Y/n)"
+      # read -r answer
+      # if [ -z "$answer" ] || rg -iq "^y"; then
+      #   git -C "$DST" pull
+      # fi
+      git -C "$DST" pull
     fi
   done
 }

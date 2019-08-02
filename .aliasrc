@@ -1,37 +1,75 @@
 #!/bin/sh
 
-. ~/.colors
+. "$HOME/.colors"
 
-local HOUR=$(TZ=America/New_York date +%H)
-if [ 6 -le "$HOUR" ] && [ "$HOUR" -le 19 ]; then
+# Quick access to editing config files.
+alias aa='v ~/.aliasrc'
+alias bb='v ~/.bashrc'
+alias vv='v ~/.vimrc'
+alias zz='v ~/.zshrc'
+
+# Set a custom env EDITOR_THEME to light or dark depending on the time of day,
+# assuming a static time-zone. Editors are responsible for respecting this env
+# in their own config.
+hour=$(TZ=America/New_York date +%H)
+if [ 6 -le "$hour" ] && [ "$hour" -le 19 ]; then
   export EDITOR_THEME=LIGHT
 else
   export EDITOR_THEME=DARK
 fi
 
-#
-# basics
-#
-alias dfs='cd ~/dotfiles'
+if command -v systemctl >/dev/null 2>&1; then
+  alias s=systemctl
+fi
+
 alias cp='cp -i'
-alias e='emacs -nw'
-alias j='jobs -l'
-alias c='bat -p'
-alias h='head'
-alias jql='jq . -C | le'
+alias mv='mv -i'
+alias rm='rm -i'
+alias ln='ln -i'
+
 alias v=vim
+alias e='emacs -nw'  # always prefer terminal emacs: "no window"
+
+alias j='jobs -l'
+alias l='ls'
+alias ll='ls -lah'
 if [ "$(uname -s)" = Linux ]; then
   alias ls='ls -F --color'
 elif [ "$(uname -s)" = Darwin ]; then
   alias ls='ls -FG'
 fi
-alias l='ls'
-alias ll='ls -lah'
-alias mv='mv -i'
-alias rm='rm -i'
-alias ln='ln -i'
-alias sudo='sudo '  # allow for sudo completion
+
 alias t='tmux'
+alias tls='tmux ls'
+# Attach to most recent tmux session, or one specified at $1, or create a new
+# one otherwise.
+ta() {
+  if [ -z "$*" ]; then
+    tmux attach || tmux
+  else
+    tmux attach -t "$@"
+  fi
+}
+alias jql='jq . -C | le'
+# Curl in site, and stream through jq.
+cu() {
+  curl -s "$1" | jql
+}
+# Define a nice pager.
+if command -v bat >/dev/null 2>&1; then
+  alias le='bat -p'
+else
+  alias le='less -FXR'
+fi
+
+alias dfs='cd ~/dotfiles'
+
+# Trailing space allows alias substitution [1] [2].
+# [1] https://wiki.archlinux.org/index.php/Sudo#Passing_aliases
+# [2] http://www.linuxcommand.org/lc3_man_pages/aliash.html
+alias sudo='sudo '
+
+# Time, status, and weather.
 alias utc='TZ=":UTC" date'
 alias ts='date +%s'
 when() {
@@ -41,18 +79,18 @@ ${BOLD}New York$NC %% $(TZ=America/New_York date +"%H:%M %z")
 ${BOLD}UTC$NC %% $(TZ=UTC date +"%H:%M %z")
 """ | column -t -s '%%'
 }
-alias tls='tmux ls'
-alias yup='yay -Syu'
-alias y='yay'
+
+
+# Search for stanza in ssh config whose Host name has a prefix $1.
 sc() {
   rg -U "Host $1\w*?\n(?s:.)*?\n\n" ~/.ssh/config -N --color=never
 }
+# Similar to sc, but just print the ip address.
 scip() {
   sc "$1" | rg Hostname | awk '{print $2}'
 }
-cu() {
-  curl -s "$1" | jql
-}
+
+# Style man pages like in the arch install. I really dig it.
 # man() {
 #   LESS_TERMCAP_md=$'\e[01;31m' \
 #   LESS_TERMCAP_me=$'\e[0m' \
@@ -62,6 +100,7 @@ cu() {
 #   LESS_TERMCAP_us=$'\e[01;32m' \
 #   MANWIDTH=128 command man "$@"
 # }
+
 # case "$SHELL" in
 #   *zsh)
 #     alias fg='\fg %'
@@ -70,24 +109,34 @@ cu() {
 #   *bash)
 #     ;;
 # esac
+
+# Initialize a new python virtualenv.
 nv() {
-  virtualenv -p "$(command -v python3)" venv &&
-    . venv/bin/activate &&
-    pip install pip-tools
+  virtualenv -p "$(command -v python3)" venv
+  . venv/bin/activate && pip install pip-tools
 }
 
+if command -v yay >/dev/null 2>&1; then
+  alias y='yay'
+  alias yup='yay -Syu'
+fi
+alias p=yay
+
+# Update things.
+#
+# common things, based on machine type
 u() {
-  if command -v yay &> /dev/null; then
+  if command -v yay >/dev/null 2>&1; then
     yup && echo
   fi
-  if command -v brew &> /dev/null; then
+  if command -v brew >/dev/null 2>&1; then
     bup && echo
   fi
-  if [ "$(uname -s)" = "Linux" ] && command -v apt &> /dev/null; then
+  if [ "$(uname -s)" = "Linux" ] && command -v apt >/dev/null 2>&1; then
     sudo apt update && sudo apt upgrade
   fi
 }
-
+# vim update
 vup() {
   vim \
     +PlugUpgrade \
@@ -96,8 +145,13 @@ vup() {
     +GoUpdateBinaries \
     +qall
 }
+zup() {
+  ~/.zsh/update.sh
+}
 
-f() {
+# Show info about the date, calendar, battery, and eventually other useful
+# "dashboard" like things.
+d() {
   date && echo
   cal && echo
   acpi && echo
@@ -105,33 +159,11 @@ f() {
   # iw dev wlp2s0 info
 }
 
-# f() {
-#   date && echo
-#   cal && echo
-#   acpi && echo
-#   ip link show wlp2s0 && echo
-#   iw dev wlp2s0 info
-# }
-if command -v bat &> /dev/null; then
-  alias le='bat -p'
-else
-  alias le='less -FXR'
-fi
-ta() {
-  if [ -z "$@" ]; then
-    tmux attach || tmux
-  else
-    tmux attach -t "$@"
-  fi
-}
-alias aa='v ~/.aliasrc'
-alias bb='v ~/.bashrc'
-alias vv='v ~/.vimrc'
-alias zz='v ~/.zshrc'
 # Allow watch and xargs alias completion with space.
 # https://unix.stackexchange.com/a/25329/162041
-alias watch='watch --color -d'
+alias watch='watch --color -d '
 alias xargs='xargs '
+
 # if command -v exa > /dev/null; then
 #   alias ls='exa -F --group-directories-first'
 #   alias lst='ls -T -L2'
@@ -149,11 +181,11 @@ alias xargs='xargs '
 
 # 1password
 ops() {
-  eval $(op signin my)
+  eval "$(op signin my)"
 }
 opf() {
   SMARTCASE=
-  if $(echo $@ | rg -q '^\s*(\p{Ll}\w*($|\s+))+'); then
+  if echo $@ | rg -q '^\s*(\p{Ll}\w*($|\s+))+'; then
     SMARTCASE='-i'
   fi
   op list items \
@@ -163,7 +195,7 @@ opf() {
     | sort
 }
 opx() {
-  op get item $1 \
+  op get item "$1" \
     | jq -r '.details.fields | map(select(.name=="password")) | first | .value' \
     | xclip -i -sel clip
   {
@@ -181,12 +213,11 @@ bup() {
   brew upgrade
   brew cleanup
 }
-rup() {
+cup() {
   set -x
   rustup update nightly
   cargo +nightly install-update -a
 }
-alias cv='command -V'
 
 # Print out a line that spans the current width of the terminal. Takes no
 # arguments.
@@ -316,10 +347,10 @@ de() {
   deactivate &> /dev/null
 }
 pp() {
-  TRAPEXIT() {
-    deactivate &> /dev/null
-  }
-  pe
+  # TRAPEXIT() {
+  #   deactivate &> /dev/null
+  # }
+  # pe
   if [ -n "$*" ]; then
     eval python -c "'$*'"
   else
@@ -329,9 +360,14 @@ pp() {
 pi() {
   local addr="$ADDR"
   [ -z "$addr" ] && addr="1.1.1.1"
-  ping -c 2 -w 2 "$addr" \
-    && echo "$BLUE${BOLD}Connected to the internet!$NC" \
-    || echo "$YELLOW${BOLD}Not connected to the internet.$NC"
+  if ping -c 2 -w 2 "$addr"; then
+    echo "$BLUE${BOLD}Connected to the internet!$NC"
+    echo $DIM
+    iw dev wlp2s0 info
+    echo "$NC"
+  else
+    echo "$YELLOW${BOLD}Not connected to the internet.$NC"
+  fi
 }
 # Start a jupyter notebook if applicable.
 pj() {
@@ -395,16 +431,13 @@ alias gls='git log --stat $(git merge-base master HEAD)..HEAD'
 alias lgp='git log --relative -p $(git merge-base master HEAD)..HEAD'
 alias llg='git log --graph --oneline'
 alias gap='git add -p'
-
 alias lr='git show HEAD --stat --relative'
 alias lrp='git show HEAD --relative -- . ":(exclude)*_easyjson.go"'
-
-
-alias p='git stash show -p'
+alias sp='git stash show -p'
 alias st='git stash --keep-index'
 alias stl='git stash list'
 alias stp='git stash pop'
-# rebase master or rebase back $1 commits
+# Rebase master or rebase back $1 commits.
 rb () {
   if [ -z "$1" ]; then
     git rebase --keep-empty -i "$(git merge-base master HEAD)"
@@ -426,7 +459,6 @@ gca() {
 }
 # pretty git branches
 alias gb=~/bin/git-branches
-alias b=gb
 grst() {
   remote="$REMOTE"
   if [ -z "$remote" ]; then
@@ -449,10 +481,11 @@ grb() {
   conflicts && echo
   bat /tmp/rebase-todo
 }
+#
 gbs() {
   ref="$1"
-  if [[ -z "$ref" ]]; then
+  if [ -z "$ref" ]; then
     ref=HEAD
   fi
-  git diff $(git merge-base master $ref)..$ref
+  git diff "$(git merge-base master $ref)..$ref"
 }

@@ -36,7 +36,6 @@ set formatoptions+=r
 # set comments-=mb:*
 # set comments+=fb:*
 
-
 prompt pure
 PURE_CMD_MAX_EXEC_TIME=2
 PURE_PROMPT_SYMBOL='%%'
@@ -65,6 +64,8 @@ fi
 bindkey -e
 
 # https://github.com/jwilm/alacritty/issues/1408#issuecomment-467970836
+bindkey "^[[1;3C" forward-word
+bindkey "^[[1;3D" backward-word
 bindkey "^[[1;5C" forward-word
 bindkey "^[[1;5D" backward-word
 
