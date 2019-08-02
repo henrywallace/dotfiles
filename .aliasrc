@@ -302,14 +302,14 @@ pe() {
   if [ -n "$VIRTUAL_ENV" ]; then
     deactivate
   fi
-  local virtualenvs=$(fd -p '.*/bin/activate$')
+  local virtualenvs=$(fd -I -p '^.*/bin/activate$')
   local num=$(echo "$virtualenvs" | wc -l)
+  head=$(echo $virtualenvs | head -n 1)
+  tail=$(echo $virtualenvs | tail -n +2)
   if [ "$num" -gt 1 ]; then
-    echo "${YELLOW}Warning, $num virtualenvs found, using first:"
-    echo -n "$RED$BOLD> $NC"
-    echo $virtualenvs
+    echo "${YELLOW}Warning, $num virtualenvs found, using first:$NC"
+    echo "$BOLD$head$NC $DIM$tail$NC"
   fi
-  echo VIRTUAL ENVS $virtualenvs
   . $(echo $virtualenvs | head -1)
 }
 de() {

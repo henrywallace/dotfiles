@@ -181,6 +181,8 @@ endif
 " Visual rulers, depending on the filetype.
 autocmd FileType go set colorcolumn=80,100
 
+autocmd FileType python set colorcolumn=80,100
+
 autocmd FileType go let b:vcm_tab_complete = 'tags'
 
 " autocmd Filetype yaml set cursorcolumn
@@ -313,7 +315,8 @@ if $EDITOR_THEME == "LIGHT"
   hi GitGutterAddDefault guifg=green3
   hi GitGutterRemoveDefault guifg=darkred
   hi GitGutterChangeDefault guifg=gold
-  hi Visual guifg=red guibg=mistyrose
+  " hi Visual guifg=red guibg=mistyrose
+  hi Visual guibg=lightcyan1 guifg=blue
   hi VertSplit guifg=lightgray
   " hi VertSplit guifg=#aaaaff
 else
