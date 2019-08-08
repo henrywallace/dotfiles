@@ -305,7 +305,8 @@ if $EDITOR_THEME == "LIGHT"
   hi Error guifg=red guibg=NONE cterm=bold
   hi LineNr guifg=ivory
   hi VertSplit guifg=bg
-  hi MatchParen guibg=yellow
+  " hi MatchParen guibg=yellow
+  hi MatchParen guibg=lightcyan1 guifg=blue
   " hi LineNr guifg=snow1
   hi LineNr guifg=#aaaaff
   " hi Normal guibg=white

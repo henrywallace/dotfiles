@@ -1,0 +1,18 @@
+#!/bin/sh
+
+set -e
+
+# Checkout out a git branch using skim fuzzy find.
+
+# List out local git branches.
+#
+# TODO: Consider searching over non-local branches as well. Perhaps with an
+# additional flag to this script.
+branches=$(git branch | sed -r 's/^\*?\s*//')
+
+opts=
+if [ -n "$1" ]; then
+  opts="-q $1"
+fi
+line=$(echo "$branches" | sk --layout=reverse --height='20%' $opts)
+git checkout "$line"

@@ -333,7 +333,7 @@ pe() {
   if [ -n "$VIRTUAL_ENV" ]; then
     deactivate
   fi
-  local virtualenvs=$(fd -I -p '^.*/bin/activate$')
+  local virtualenvs=$(fd -I -d 3 -p '^.*/bin/activate$')
   local num=$(echo "$virtualenvs" | wc -l)
   head=$(echo $virtualenvs | head -n 1)
   tail=$(echo $virtualenvs | tail -n +2)
@@ -393,7 +393,7 @@ alias con='rg "<<<<<<<" $(git ls-files | sort -u)'
 alias g-='git checkout -'
 alias ga='git add -u'
 alias a='git add -u'
-alias gp='git pull --rebase'
+# alias gp='git pull --rebase'
 alias fold='git stash --keep-index && git stash'
 alias gua='git reset --soft HEAD@{1} && git reset'
 alias re='git reset'
@@ -416,13 +416,14 @@ alias fpu='git push -f origin HEAD'
 
 # alias gs=~/bin/git-status
 alias gs='git status'
-gk() {
-  if [ -z "$@" ]; then
-    git commit
-  else
-    git commit -m "$@"
-  fi
-}
+# gk() {
+#   if [ -z "$@" ]; then
+#     git commit
+#   else
+#     git commit -m "$@"
+#   fi
+# }
+alias gk='git ck'
 alias lg='git log --reverse --oneline $(git merge-base master HEAD)..HEAD --color=always'
 alias clg='clear; lg'
 alias lgs='git log --oneline --stat $(git merge-base master HEAD)..HEAD'
