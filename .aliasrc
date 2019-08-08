@@ -8,6 +8,13 @@ alias bb='v ~/.bashrc'
 alias vv='v ~/.vimrc'
 alias zz='v ~/.zshrc'
 
+# Prevent offering of all keys in ssh-agent [1]. If server is malicious then
+# private keys can be snatched [2].
+#
+# [1] https://serverfault.com/a/515214/430816
+# [2] https://krypt.co/docs/security/threat-model.html
+alias ssh='ssh -o IdentitiesOnly=yes '
+
 # Set a custom env EDITOR_THEME to light or dark depending on the time of day,
 # assuming a static time-zone. Editors are responsible for respecting this env
 # in their own config.
@@ -328,6 +335,17 @@ gimp() {
     | sort -nk1
 }
 
+blinks() {
+  if [ -n "$1" ]; then
+    levels="$1"
+  else
+    levels="2"
+  fi
+  for fn in $(find . -maxdepth $levels -xtype l); do
+    test -e $fn || echo "$fn##$DIM$(stat -c %z $fn | awk '{print $1}')$NC"
+  done | column -t -s'##'
+}
+
 # Activate, and deactivate python virtualenvs, if applicable.
 pe() {
   if [ -n "$VIRTUAL_ENV" ]; then
@@ -339,7 +357,7 @@ pe() {
   tail=$(echo $virtualenvs | tail -n +2)
   if [ "$num" -gt 1 ]; then
     echo "${YELLOW}Warning, $num virtualenvs found, using first:$NC"
-    echo "$BOLD$head$NC $DIM$tail$NC"
+    echo -e "$BOLD$head$NC\n$DIM$tail$NC"
   fi
   . $(echo $virtualenvs | head -1)
 }

@@ -3,7 +3,12 @@
 set -ex
 
 iface=wlp2s0
-wpa_conf=/etc/wpa_supplicant/${WIFI:-home}.conf
+wpa_conf=/etc/wpa_supplicant/${1:-home}.conf
+
+if [ ! -f "$wpa_conf" ]; then
+  echo "conf $wpa_conf doesn't exist"
+  exit 1
+fi
 
 rfkill unblock all
 sudo killall dhcpcd || true
@@ -16,7 +21,9 @@ sudo ip link set $iface up
 ip link
 sleep 2
 
-sudo wpa_supplicant -B -i $iface -D wext -c "$wpa_conf" -dd
+opts="-D wext"
+echo "$wpa_conf" | grep home || opts=""  # home is special
+sudo wpa_supplicant -B -i $iface $opts -c "$wpa_conf" -dd
 # TODO: What state can we query to figure out when it's appropriate to spawn
 # dhcpcd?
 sleep 2

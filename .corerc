@@ -4,22 +4,25 @@
 . ~/.envrc
 . ~/.aliasrc
 
-# Start ssh-agent if not running.
-# https://unix.stackexchange.com/a/90869/162041
-if [ -z "$SSH_AUTH_SOCK" ]; then
-  eval $(ssh-agent)
-  ssh-add
-fi
+# TODO: It became quite annoying to repeat this when repeatedly ssh'ing into
+# various machines. Further, it's arguably a little more secure.
+#
+# # Start ssh-agent if not running.
+# # https://unix.stackexchange.com/a/90869/162041
+# if [ -z "$SSH_AUTH_SOCK" ]; then
+#   eval $(ssh-agent)
+#   ssh-add
+# fi
 
 # fzf
 case "$SHELL" in
-  *zsh) [[ -f ~/.fzf.zsh ]] && . ~/.fzf.zsh;;
-  *bash) [[ -f ~/.fzf.bash ]] && ~/.fzf.bash;;
+  *zsh) [ -f ~/.fzf.zsh ] && . ~/.fzf.zsh;;
+  *bash) [ -f ~/.fzf.bash ] && ~/.fzf.bash;;
 esac
 export FZF_DEFAULT_OPTS='--height 24 --reverse --border'
 
 # Make less more friendly for non-text input files, see lesspipe(1).
-[[ -x /usr/bin/lesspipe ]] && eval "$(SHELL=/bin/sh lesspipe)"
+[ -x /usr/bin/lesspipe ] && eval "$(SHELL=/bin/sh lesspipe)"
 
 # Start emacs daemon automatically and idempotently with emacsclient.
 # https://stackoverflow.com/a/5578718

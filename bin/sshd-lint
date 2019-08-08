@@ -1,0 +1,128 @@
+#!/bin/sh
+
+# This script performs a simple check on the current effective sshd_config. To
+# execute on a remote server simply do `ssh host < sshd-lint`.
+#
+# If this script returns no errors, then the user SHOULD NOT necessarily
+# consider their ssh server config to be free of vulnerabilities. Conversely,
+# if it does output warnings, they may not be relevant to your situation.
+#
+# Before making changes to your /etc/ssh/sshd_config, make sure to validate it
+# with `sshd -t`, before `systemctl restart sshd` or the like. Lest, experience
+# the pain of dealing with a broken ssh server.
+#
+# Notes:
+# - What about changing the default port? It's not checked in this script. This
+#   can be called "security through obscurity" [2], and shouldn't be relied on by
+#   "the enemy knows the system" principle [4]. But it could have benefits to See
+#   [3] for a full explanation of why you might not want to change it.
+#
+# References:
+#
+# [1] https://linux-audit.com/audit-and-harden-your-ssh-configuration/#use-of-x11forwarding
+# [2] https://en.wikipedia.org/wiki/Security_through_obscurity
+# [3] https://security.stackexchange.com/a/32311/135955
+# [4] https://en.wikipedia.org/wiki/Kerckhoffs%27s_principle
+# [5] http://docs.hardentheworld.org/Applications/OpenSSH/
+# [6] https://www.stigviewer.com/stig/vmware_esxi_server_5.0/2015-09-15/finding/V-39285
+
+if ! systemctl is-active -q fail2ban; then
+  echo "fail2ban is not active"
+fi
+
+# Off by default everything, except what is needed.
+#
+# TODO: Check the ports here.
+if ! systemctl is-active -q ufw; then
+  echo "ufw is not active"
+fi
+
+effectiveConfig=$(sshd -T)
+
+get() {
+  key="$1"
+  echo "$effectiveConfig" | grep -i "$key" | awk '{print $2}'
+}
+
+check() {
+  key="$1"
+  val="$2"
+  if get "$key" | grep -qvi "$val"; then
+    echo "set $key $val"
+  fi
+}
+
+checkLe() {
+  key="$1"
+  val="$2"
+  curr=$(get "$key" | awk '{print $2}')
+  if [ -z "$curr" ] || [ ! "$curr" -le "$val" ]; then
+    echo "set $key $val, or smaller"
+  fi
+}
+
+# [1] The X11 protocol was never built with security in mind. As it opens up
+# channel back to the client, the server could send malicious commands back to
+# the client.
+check X11Forwarding no
+
+# [1] While not common anymore, rhosts was a weak method to authenticate systems.
+# It defines a way to trust another system simply by its IP address.
+check IgnoreRHosts yes
+
+# [1] By default, the SSH server can check if the client connecting maps back to
+# the same combination of hostname and IP address. Use the option UseDNS to
+# perform this basic check as an additional safeguard.
+check UseDNS yes
+
+# [1] Accounts should be protected and users should be accountable. For this
+# reason, the usage of empty passwords should not be allowed.
+check PermitEmptyPasswords no
+
+# [1]
+checkLe MaxAuthTries 3
+
+# [1] Instead of using a normal password-based login, a better way is using public
+# key authentication. Keys are considered much safer and less prone to
+# brute-force attacks. Disable PasswordAuthentication to force users using
+# keys.
+#
+# One can check the efficacy of this with
+#
+#   ssh -o PreferredAuthentications=password -o PubkeyAuthentication=no host
+check PubkeyAuthentication yes
+check PasswordAuthentication no
+
+# [1] If you are running an older system, version 1 of the SSH protocol might
+# still be available. This version has weaknesses and should no longer be used.
+# Since version 7.0 of OpenSSH, protocol 1 is automatically disabled during
+# compile time. If your version is older than that, enforce the protocol
+# version:
+check Protocol 2
+
+# TODO: Needs reference.
+check PermitRootLogin no
+
+# TODO: Needs reference.
+check UsePAM no
+
+# [5] [6]
+check Compression delayed
+
+# [5]
+check StrictModes yes
+
+# TODO: Needs reference.
+checkLe ClientAliveInterval 240
+
+# [5]
+check PermitUserEnvironment no
+
+# TODO: Needs reference.
+check AllowAgentForwarding no
+
+# TODO: Needs reference.
+check TCPKeepAlive no
+
+# TODO: Needs reference.
+check LogLevel verbose
