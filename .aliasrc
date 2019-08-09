@@ -127,12 +127,13 @@ if command -v yay >/dev/null 2>&1; then
   alias y='yay'
   alias yup='yay -Syu'
 fi
-alias p=yay
+alias m=yay
 
 # Update things.
 #
 # common things, based on machine type
 u() {
+  set -x
   if command -v yay >/dev/null 2>&1; then
     yup && echo
   fi
@@ -140,7 +141,7 @@ u() {
     bup && echo
   fi
   if [ "$(uname -s)" = "Linux" ] && command -v apt >/dev/null 2>&1; then
-    sudo apt update && sudo apt upgrade
+    sudo apt update && sudo apt full-upgrade && sudo apt auto-remove
   fi
 }
 # vim update
@@ -452,7 +453,7 @@ alias llg='git log --graph --oneline'
 alias gap='git add -p'
 alias lr='git show HEAD --stat --relative'
 alias lrp='git show HEAD --relative -- . ":(exclude)*_easyjson.go"'
-alias sp='git stash show -p'
+alias p='git stash show -p'
 alias st='git stash --keep-index'
 alias stl='git stash list'
 alias stp='git stash pop'
