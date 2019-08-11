@@ -347,6 +347,11 @@ blinks() {
   done | column -t -s'##'
 }
 
+arx() {
+  set -ex pipefile
+  tar cf - "$1" -P | pv -s "$(du -sb "$1" | awk '{print $1}')" | gzip > "$1.tar.gz"
+}
+
 # Activate, and deactivate python virtualenvs, if applicable.
 pe() {
   if [ -n "$VIRTUAL_ENV" ]; then
