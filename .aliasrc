@@ -375,11 +375,18 @@ pp() {
   #   deactivate &> /dev/null
   # }
   # pe
-  if [ -n "$*" ]; then
-    eval python -c "'$*'"
-  else
+
+  script=$1
+
+  if [ -z "$script" ]; then
     ipython
+    return
   fi
+
+  if echo "$script" | grep -qv ';'; then
+    script="print($script)"
+  fi
+  eval python -c "'$script'"
 }
 pi() {
   local addr="$ADDR"
@@ -401,6 +408,21 @@ pj() {
   }
   pe
   jupyter notebook
+}
+
+compose() {
+  if [ -z "$1" ]; then
+    echo must provide filename
+    exit 1
+  fi
+
+  if [ -e "$1" ]; then
+    mdpreview "$1"
+    return
+  fi
+  mkdir -p "$(dirname "$1")"
+  touch "$1"
+  mdpreview "$1"
 }
 
 #

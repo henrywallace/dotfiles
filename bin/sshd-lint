@@ -25,6 +25,7 @@
 # [4] https://en.wikipedia.org/wiki/Kerckhoffs%27s_principle
 # [5] http://docs.hardentheworld.org/Applications/OpenSSH/
 # [6] https://www.stigviewer.com/stig/vmware_esxi_server_5.0/2015-09-15/finding/V-39285
+# [7] https://unix.stackexchange.com/a/56947/162041
 
 if ! systemctl is-active -q fail2ban; then
   echo "fail2ban is not active"
@@ -73,7 +74,9 @@ check IgnoreRHosts yes
 # [1] By default, the SSH server can check if the client connecting maps back to
 # the same combination of hostname and IP address. Use the option UseDNS to
 # perform this basic check as an additional safeguard.
-check UseDNS yes
+#
+# But also useless: [7].
+#check UseDNS yes
 
 # [1] Accounts should be protected and users should be accountable. For this
 # reason, the usage of empty passwords should not be allowed.

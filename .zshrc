@@ -71,6 +71,8 @@ bindkey "^[[1;5D" backward-word
 bindkey "^[[1;OC" forward-word
 bindkey "^[[1;OD" backward-word
 
+# bindkey "^[[3~"
+
 # History.
 HISTFILE=~/.zsh_history
 HISTSIZE=10000000  # 10^7
