@@ -1,0 +1,56 @@
+#!/bin/sh
+
+set -ex
+
+# Trailing slashes have the semantics of changing directory name, and otherwise
+# creating themselves in the dst if it's a directory
+files="""
+$HOME
+/root/.bash_history
+/var/log
+/etc/netctl
+/etc/wicd
+"""
+
+if [ "$1" = "-s" ] || [ "$1" = "--size" ]; then
+  df -H /
+  sudo du -sch $files
+  exit 0
+fi
+
+dst=$1
+if [ -z "$dst" ]; then
+  echo "must set dst"
+  exit 1
+fi
+
+if command -v yay; then
+  echo 'yay not installed, not trying other AUR, which will be missed'
+  yay -Qqe | sudo tee "$1/packages.txt"
+else
+  pacman -Qqe | sudo tee "$1/packages.txt"
+fi
+
+date | sudo tee "$1/TIMESTAMP"
+cat "$0" | sudo tee "$1/SOURCE"
+
+cat > /tmp/exclude.txt <<EOF
+$HOME/nltk_data/
+$HOME/.cache/
+$HOME/go/pkg/mod/cache/
+$HOME/venv/
+$HOME/*node_modules
+EOF
+trap "rm /tmp/exclude.txt" EXIT
+
+sudo rsync \
+  --exclude-from=/tmp/exclude.txt \
+  --info=progress2 \
+  --recursive \
+  --archive \
+  --partial \
+  --append-verify \
+  --delete \
+  $files \
+  "$dst"
+
