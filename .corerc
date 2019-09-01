@@ -4,6 +4,8 @@
 . ~/.envrc
 . ~/.aliasrc
 
+PATH=$HOME/bin:$PATH
+
 # TODO: It became quite annoying to repeat this when repeatedly ssh'ing into
 # various machines. Further, it's arguably a little more secure.
 #
@@ -17,9 +19,9 @@
 # fzf
 case "$SHELL" in
   *zsh) [ -f ~/.fzf.zsh ] && . ~/.fzf.zsh;;
-  *bash) [ -f ~/.fzf.bash ] && ~/.fzf.bash;;
+  *bash) [ -f ~/.fzf.bash ] && . ~/.fzf.bash;;
 esac
-export FZF_DEFAULT_OPTS='--height 24 --reverse --border'
+export FZF_DEFAULT_OPTS='--height 24% --reverse --border'
 
 # Make less more friendly for non-text input files, see lesspipe(1).
 [ -x /usr/bin/lesspipe ] && eval "$(SHELL=/bin/sh lesspipe)"

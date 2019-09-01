@@ -1,5 +1,7 @@
 #!/bin/bash
 
+. ~/.corerc
+
 # If not running interactively, don't do anything. Why is this necessary? While
 # bash shells normally don't run ~/.bashrc at start-up, there's an exception
 # for remote shell daemons. In those circumstances, printing anything is
@@ -187,23 +189,18 @@ done
 
 complete -C /usr/local/bin/vault vault
 
-# Cowthink
-animals="
-bud-frogs
-default
-flaming-sheep
-moofasa
-satanic
-sheep
-skeleton
-udder
-$HOME/.misc/hypno.cow
-"
-animal="$(echo "$animals" | sed '/^$/d' | sort -R | head -1)"
-method="$(echo cowthink cowsay | xargs | tr ' ' '\n' | sort -R | head -1)"
-# Only display cowthink every other login.
-if [ "$(shuf -i1-8 -n1)" -le "1" ]; then
-  $method -f $animal $(fortune -s)
+if command -v fortune &>/dev/null || command -v cowsay &>/dev/null || command -v lolcat &>/dev/null; then
+  # Cowthink
+  animals="
+  $(find /usr/share/cows -type f)
+  $HOME/.misc/hypno.cow
+  "
+  animal="$(echo "$animals" | sed '/^$/d' | sort -R | head -1)"
+  method="$(echo cowthink cowsay | xargs | tr ' ' '\n' | sort -R | head -1)"
+  # Only display cowthink every other login.
+  if [ "$(shuf -i1-8 -n1)" -le "4" ]; then
+    $method -f $animal $(fortune -s) | lolcat
+  fi
 fi
 
 
