@@ -14,6 +14,7 @@
 [alias]
 	co = checkout
 	cp = cherry-pick
+	c = commit
 	cm = commit --allow-empty -m
 
 [log]

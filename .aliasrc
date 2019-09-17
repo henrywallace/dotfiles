@@ -8,6 +8,8 @@ alias bb='v ~/.bashrc'
 alias vv='v ~/.vimrc'
 alias zz='v ~/.zshrc'
 
+alias rs='rsync --info=progress2 --recursive --archive --partial --append-verify'
+
 # Prevent offering of all keys in ssh-agent [1]. If server is malicious then
 # private keys can be snatched [2].
 #
@@ -24,6 +26,8 @@ if [ 6 -le "$hour" ] && [ "$hour" -le 19 ]; then
 else
   export EDITOR_THEME=DARK
 fi
+# override
+EDITOR_THEME=LIGHT
 
 if command -v systemctl >/dev/null 2>&1; then
   alias s=systemctl
@@ -62,6 +66,7 @@ alias jql='jq . -C | le'
 cu() {
   curl -s "$1" | jql
 }
+export BAT_THEME=GitHub
 # Define a nice pager.
 if command -v bat >/dev/null 2>&1; then
   alias le='bat -p'
@@ -239,7 +244,7 @@ div() {
 
 alias path="echo $PATH | tr ':' '\n'"
 
-alias rg='rg -M 512 --no-heading --sort path'
+alias rg='rg --no-heading --sort path -M1024'
 ports() {
   lsof -iTCP -sTCP:LISTEN -n -P
 }
@@ -323,7 +328,7 @@ wd() {
 #
 # golang
 #
-alias goi='go install -v ./...'
+alias goi='go install -v ./... && go mod tidy'
 alias gome='cd $FIRSTGOPATH/src/github.com/henrywallace'
 gdoc() {
   echo http://localhost:6060
@@ -357,7 +362,7 @@ pe() {
   if [ -n "$VIRTUAL_ENV" ]; then
     deactivate
   fi
-  local virtualenvs=$(fd -I -d 3 -p '^.*/bin/activate$')
+  local virtualenvs=$(fd -LI -d 3 -p '^.*/bin/activate$')
   local num=$(echo "$virtualenvs" | wc -l)
   head=$(echo $virtualenvs | head -n 1)
   tail=$(echo $virtualenvs | tail -n +2)
@@ -435,7 +440,7 @@ gprune() {
     | xargs git branch -d 2> /dev/null \
   || echo "No branches to prune."
 }
-alias con='rg "<<<<<<<" $(git ls-files | sort -u)'
+alias con='rg --heading -C6 "<<<<<<<" $(git ls-files | sort -u)'
 alias g-='git checkout -'
 alias ga='git add -u'
 alias a='git add -u'
@@ -475,11 +480,10 @@ alias clg='clear; lg'
 alias lgs='git log --oneline --stat $(git merge-base master HEAD)..HEAD'
 alias gl='git log $(git merge-base master HEAD)..HEAD'
 alias gls='git log --stat $(git merge-base master HEAD)..HEAD'
-alias lgp='git log --relative -p $(git merge-base master HEAD)..HEAD'
 alias llg='git log --graph --oneline'
 alias gap='git add -p'
-alias lr='git show HEAD --stat --relative'
-alias lrp='git show HEAD --relative -- . ":(exclude)*_easyjson.go"'
+alias lr='git log -n1 --stat'
+alias lrp='git log -p -n1 --stat'
 alias p='git stash show -p'
 alias st='git stash --keep-index'
 alias stl='git stash list'

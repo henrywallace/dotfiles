@@ -17,7 +17,7 @@ Plug 'tpope/vim-eunuch'               " sudo write, rename file, mkdir, etc.
 Plug 'tpope/vim-fugitive'             " git wrapper
 Plug 'tpope/vim-sensible'             " sensible defaults for Vim.
 Plug 'tpope/vim-sleuth'               " heuristically set buffer options
-Plug 'w0rp/ale'                       " linting
+Plug 'dense-analysis/ale'                       " linting
 Plug 'zivyangll/git-blame.vim'        " unintrusive git blame line
 Plug 'the-lambda-church/coquille'     " like emacs proof general
 Plug 'wellle/targets.vim'
@@ -234,33 +234,55 @@ augroup autoformat_settings
   autocmd FileType java AutoFormatBuffer google-java-format
 augroup END
 
+" let g:ale_linters['go'] = ['gopls', 'revive', 'misspell']
+let g:ale_linters = {
+            \ 'go': ['gopls', 'misspell', 'revive', 'govet'],
+\ }
 let g:go_def_mode='gopls'
-" let g:go_def_mode = 'godef'         " godef is so much faster
-let g:go_fmt_command = 'goimports'  " https://github.com/sqs/goreturns
-let g:go_fmt_fail_silently = 1
-let g:ale_go_bingo_executable = 'gopls'
-" https://github.com/fatih/vim-go/issues/1659
-let g:go_gocode_autobuild = 0
+let g:go_info_mode='gopls'
+let g:go_fmt_command='goimports'
+" Make rendering faster, at the expense of pretty.
+" https://github.com/fatih/vim-go/wiki/FAQ-Troubleshooting#vim-becomes-sluggish-while-editing-go-files
+let g:go_highlight_structs = 0
+let g:go_highlight_interfaces = 0
+let g:go_highlight_operators = 0
+let g:ale_list_window_size = 6
+let g:ale_sign_error = '✘'
+
+function! LinterStatus() abort
+    let l:counts = ale#statusline#Count(bufnr(''))
+
+    let l:all_errors = l:counts.error + l:counts.style_error
+    let l:all_non_errors = l:counts.total - l:all_errors
+
+    return l:counts.total == 0 ? 'OK' : printf(
+    \   '%dW %dE',
+    \   all_non_errors,
+    \   all_errors
+    \)
+endfunction
+
+" set statusline+=%{LinterStatus()}
 
 " Make vim-go faster.
-" set re=1
-" set ttyfast
-" set lazyredraw
-" set nocursorcolumn
-" syntax sync minlines=256
+set re=1
+set ttyfast
+set lazyredraw
+set nocursorcolumn
+syntax sync minlines=256
 
 " " " change fzf colors to match color scheme.
 " let g:fzf_colors =
 "  \ { 'fg':      ['fg', 'Normal'],
 "   \ 'bg':      ['bg', 'Normal'],
 "   \ 'hl':      ['fg', 'Comment'],
-"   \ 'fg+':     ['fg', 'CursorLine', 'CursorColumn', 'Normal'],
+"   \ 'fg+':     ['fg', 'Normal'],
 "   \ 'bg+':     ['bg', 'CursorLine', 'CursorColumn'],
 "   \ 'hl+':     ['fg', 'Statement'],
 "   \ 'info':    ['fg', 'PreProc'],
 "   \ 'border':  ['fg', 'Ignore'],
 "   \ 'prompt':  ['fg', 'Conditional'],
-"   \ 'pointer': ['fg', 'Exception'],
+"   \ 'pointer': ['fg', 'Pink'],
 "   \ 'marker':  ['fg', 'Keyword'],
 "   \ 'spinner': ['fg', 'Label'],
 "   \ 'header':  ['fg', 'Comment'] }
@@ -290,36 +312,46 @@ if $EDITOR_THEME == "LIGHT"
   colorscheme minimal
   set background=light
   " hi StatusLine cterm=bold guifg=black guibg=Aquamarine1
-  hi StatusLine cterm=bold guifg=black guibg=#ccccff
-  hi StatusLineNC cterm=bold guifg=black guibg=lightcyan
+  " hi StatusLine cterm=bold guifg=black guibg=#ccccff
+  " hi StatusLineNC cterm=bold guifg=black guibg=lightcyan
+  hi StatusLine cterm=bold guifg=#aaaaff guibg=NONE
+  hi StatusLineNC cterm=bold guifg=black guibg=NONE
   hi SignColumn none
   hi IncSearch cterm=bold guibg=blue guifg=white
   " hi Search cterm=none guibg=yellow guifg=black
   " hi Search cterm=bold guibg=blue guifg=yellow
   " hi Search cterm=none guibg=mistyrose guifg=red
-  hi Search cterm=none guibg=lightcyan1 guifg=blue
+  hi ALEError cterm=bold guibg=#F6C6FF guifg=#CF00FF
+  hi Error guifg=#CF00FF guibg=NONE cterm=bold
+  " hi Error cterm=bold guibg=orange guifg=white
+  " hi Search cterm=none guibg=lightcyan1 guifg=blue
+  " hi Search guibg=#FFE5E5 guifg=#FF0000
+  hi Search guibg=#FFE5E5 guifg=orangered
   " hi String guifg=darkblue
-  hi String guifg=NavyBlue
+  " hi String guifg=NavyBlue
+  hi String guifg=#aaaaff
   hi Function cterm=bold guifg=darkblue
   hi Todo cterm=bold,italic guibg=NONE
-  hi Error guifg=red guibg=NONE cterm=bold
   hi LineNr guifg=ivory
   hi VertSplit guifg=bg
   " hi MatchParen guibg=yellow
   hi MatchParen guibg=lightcyan1 guifg=blue
   " hi LineNr guifg=snow1
   hi LineNr guifg=#aaaaff
-  " hi Normal guibg=white
+  hi Normal guibg=white
   " hi Comment guifg=seagreen
   hi Comment guifg=seashell4
   hi ColorColumn ctermbg=2 guibg=snow1
-  hi GitGutterAddDefault guifg=green3
-  hi GitGutterRemoveDefault guifg=darkred
-  hi GitGutterChangeDefault guifg=gold
-  " hi Visual guifg=red guibg=mistyrose
+  " hi GitGutterAddDefault guifg=green3
+  " hi GitGutterRemoveDefault guifg=darkred
+  " hi GitGutterChangeDefault guifg=gold
+  hi clear SignColumn
+  hi SignColumn guifg=snow1
+  " hi Visual guifg=orangered guibg=peachpuff
   hi Visual guibg=lightcyan1 guifg=blue
-  hi VertSplit guifg=lightgray
+  " hi VertSplit guifg=lightgray
   " hi VertSplit guifg=#aaaaff
+  hi VertSplit guifg=snow1
 else
   colorscheme Blaaark
   set background=dark
@@ -339,4 +371,3 @@ else
   " hi IncSearch  guifg=Black guibg=Red
   " hi Search     guifg=Orange guibg=Black
 endif
-
