@@ -17,6 +17,11 @@ alias rs='rsync --info=progress2 --recursive --archive --partial --append-verify
 # [2] https://krypt.co/docs/security/threat-model.html
 alias ssh='ssh -o IdentitiesOnly=yes '
 
+# TODO: tar progress
+# https://superuser.com/a/665181/577047
+# tar cf - /folder-with-big-files -P | pv -s $(du -sb /folder-with-big-files | awk '{print $1}') | gzip > big-files.tar.gz
+
+
 # Set a custom env EDITOR_THEME to light or dark depending on the time of day,
 # assuming a static time-zone. Editors are responsible for respecting this env
 # in their own config.
