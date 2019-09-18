@@ -133,10 +133,6 @@ nv() {
   . venv/bin/activate && pip install pip-tools
 }
 
-if command -v yay >/dev/null 2>&1; then
-  alias y='yay'
-  alias yup='yay -Syu'
-fi
 alias m=yay
 
 # Update things.
@@ -145,7 +141,7 @@ alias m=yay
 u() {
   set -x
   if command -v yay >/dev/null 2>&1; then
-    yup && echo
+    yay -Syu && echo
   fi
   if command -v brew >/dev/null 2>&1; then
     bup && echo
@@ -179,7 +175,7 @@ d() {
 
 # Allow watch and xargs alias completion with space.
 # https://unix.stackexchange.com/a/25329/162041
-alias watch='watch --color -d '
+alias watch='watch --color '
 alias xargs='xargs '
 
 # if command -v exa > /dev/null; then
@@ -447,6 +443,7 @@ gprune() {
 }
 alias con='rg --heading -C6 "<<<<<<<" $(git ls-files | sort -u)'
 alias g-='git checkout -'
+alias groot='git rev-parse --show-toplevel'
 alias ga='git add -u'
 alias a='git add -u'
 # alias gp='git pull --rebase'

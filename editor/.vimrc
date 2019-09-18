@@ -353,21 +353,24 @@ if $EDITOR_THEME == "LIGHT"
   " hi VertSplit guifg=#aaaaff
   hi VertSplit guifg=snow1
 else
-  colorscheme Blaaark
-  set background=dark
-  " colorscheme space-vim-dark
-  " colorscheme yin
-  " " yin customizations
-  hi MatchParen guifg=Yellow guibg=Blue cterm=bold
-  hi Comment cterm=NONE guifg=#776587 guibg=NONE
-  hi Search  cterm=bold  guifg=white guibg=blue
-  hi GitGutterAdd  guibg=#212026
-  hi GitGutterChange guibg=#212026
-  hi GitGutterDelete guibg=#212026
-  hi GitGutterChangeDelete guibg=#212026
-  hi SignColumn guibg=#212026
-  hi Boolean guifg=#c2bff2
-  hi Todo cterm=bold guifg=#fdffbc
-  " hi IncSearch  guifg=Black guibg=Red
-  " hi Search     guifg=Orange guibg=Black
+  " colorscheme Blaaark
+  " set background=dark
+  " " colorscheme space-vim-dark
+  " " colorscheme yin
+  " " " yin customizations
+  " hi MatchParen guifg=Yellow guibg=Blue cterm=bold
+  " hi Comment cterm=NONE guifg=#776587 guibg=NONE
+  " hi Search  cterm=bold  guifg=white guibg=blue
+  " hi GitGutterAdd  guibg=#212026
+  " hi GitGutterChange guibg=#212026
+  " hi GitGutterDelete guibg=#212026
+  " hi GitGutterChangeDelete guibg=#212026
+  " hi SignColumn guibg=#212026
+  " hi Boolean guifg=#c2bff2
+  " hi Todo cterm=bold guifg=#fdffbc
+  " " hi IncSearch  guifg=Black guibg=Red
+  " " hi Search     guifg=Orange guibg=Black
+
+  " It's october, set seasonal themes
+  colorscheme dracula
 endif

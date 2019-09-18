@@ -1,0 +1,34 @@
+#!/bin/sh
+
+set -ex pipefail
+
+out=$(yay -Syupq)
+count=$(echo "$out" | rg '://' | wc -l)
+cache="$HOME/.cache/systemd/upd"
+sha_script="$(cat < "$(realpath "$0")" | shasum -a 256 | awk '{print $1}')"
+
+mkdir -p "$(dirname "$cache")"
+if [ ! -f "$cache" ]; then
+  subject="success setting up notifications"
+  body="""
+date: $(date)
+user: $(whoami)
+hostname: $(hostname)
+"""
+  $NOTIFY_BIN -s "$subject" -b "$body"
+fi
+if [ "$count" -gt 0 ]; then
+  subject=$(printf "%d package(s) are upgradable %s" "$count" "$(date)")
+  echo "$subject"
+  body="$(echo "$out" | rg '://')"
+  sha_out="$(echo "$out$sha_script" | shasum -a 256 | awk '{print $1}')"
+  if [ ! -f "$cache" ] || rg -vq "$sha_out" "$cache"; then
+    echo "no cache or difference hash, issuing new request: $sha_out"
+    $NOTIFY_BIN -s "$subject" -b "$body"
+    echo "$sha_out" > "$cache"
+  else
+    echo not sending repeat email of same updates
+  fi
+else
+  echo nothing new
+fi

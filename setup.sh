@@ -42,6 +42,7 @@ echo "
 bin             $HOME/bin
 editor          $HOME
 git             $HOME
+systemd/user    $HOME/.config/systemd/user
 " |
 {
   while read -r src dst; do

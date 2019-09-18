@@ -25,13 +25,13 @@ if [ -z "$dst" ]; then
 fi
 
 if command -v yay; then
-  echo 'yay not installed, not trying other AUR, which will be missed'
-  yay -Qqe | sudo tee "$1/packages.txt"
+  yay -Qqe | sudo tee "$1/PACKAGES"
 else
-  pacman -Qqe | sudo tee "$1/packages.txt"
+  echo 'yay not installed, AUR may be missed'
+  pacman -Qqe | sudo tee "$1/PACKAGES"
 fi
 
-date | sudo tee "$1/TIMESTAMP"
+date | sudo tee -a "$1/TIMESTAMP"
 cat "$0" | sudo tee "$1/SOURCE"
 
 cat > /tmp/exclude.txt <<EOF

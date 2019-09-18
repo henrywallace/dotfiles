@@ -71,6 +71,8 @@ bindkey "^[[1;5D" backward-word
 bindkey "^[[1;OC" forward-word
 bindkey "^[[1;OD" backward-word
 
+bindkey "^[[3" backward-delete-char
+
 # bindkey "^[[3~"
 
 # History.

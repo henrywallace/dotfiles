@@ -32,4 +32,4 @@ sleep 2
 sudo dhcpcd $iface
 sleep 2
 
-ping -w 2 archlinux.org
+ping -w 2 1.1.1.1

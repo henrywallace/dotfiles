@@ -1,0 +1,13 @@
+[Unit]
+Description=up
+Wants=up.timer
+StartLimitBurst=5
+StartLimitIntervalSec=10m
+
+[Service]
+ExecStart=/home/henrywallace/bin/upd
+RestartSec=2m
+Restart=on-failure
+
+[Install]
+WantedBy=default.target
