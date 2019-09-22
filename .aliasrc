@@ -41,6 +41,7 @@ fi
 alias cp='cp -i'
 alias mv='mv -i'
 alias rm='rm -i'
+alias df='df -h'
 alias ln='ln -i'
 
 alias v=vim
