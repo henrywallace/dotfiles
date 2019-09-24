@@ -326,10 +326,12 @@ if $EDITOR_THEME == "LIGHT"
   " hi Error cterm=bold guibg=orange guifg=white
   " hi Search cterm=none guibg=lightcyan1 guifg=blue
   " hi Search guibg=#FFE5E5 guifg=#FF0000
-  hi Search guibg=#FFE5E5 guifg=orangered
+  " hi Search guibg=#FFE5E5 guifg=orangered
+  hi Search guibg=yellow guifg=blue
   " hi String guifg=darkblue
   " hi String guifg=NavyBlue
-  hi String guifg=#aaaaff
+  " hi String guifg=#aaaaff
+  hi String guifg=orangered
   hi Function cterm=bold guifg=darkblue
   hi Todo cterm=bold,italic guibg=NONE
   hi LineNr guifg=ivory
