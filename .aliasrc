@@ -179,6 +179,8 @@ d() {
 alias watch='watch --color '
 alias xargs='xargs '
 
+alias tree='tree -C'
+
 # if command -v exa > /dev/null; then
 #   alias ls='exa -F --group-directories-first'
 #   alias lst='ls -T -L2'
@@ -454,7 +456,7 @@ alias re='git reset'
 
 alias gd='git diff'
 alias gdc='git diff --cached'
-alias gdd='git diff --stat $(git merge-base master HEAD)'
+alias gdd='git diff $(git merge-base master HEAD)'
 alias gds='echo; git diff --stat; echo'
 alias gf='git diff --name-only $(git merge-base master HEAD)'
 
