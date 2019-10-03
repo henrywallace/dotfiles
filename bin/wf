@@ -16,7 +16,6 @@ sudo killall wpa_supplicant || true
 sudo dhcpcd -k $iface || true
 
 sudo ip link set $iface down
-sudo iwconfig wlp2s0 channel auto
 sudo ip link set $iface up
 ip link
 sleep 2
@@ -30,6 +29,6 @@ sleep 2
 
 # sudo dhcpcd -t 0 -d -K $iface
 sudo dhcpcd $iface
-sleep 2
+sleep 3
 
 ping -w 2 1.1.1.1

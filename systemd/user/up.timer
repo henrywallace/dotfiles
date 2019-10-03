@@ -3,7 +3,7 @@ Requires=up.service
 
 [Timer]
 Unit=up.service
-OnUnitActiveSec=30m
+OnUnitActiveSec=1h
 AccuracySec=1m
 
 [Install]

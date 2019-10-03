@@ -11,9 +11,9 @@ for repo in $repos; do
   DST="$HOME/.zsh/$(basename "$repo")"
   [ -d "$DST" ] || git clone "$repo" "$DST"
   git -C "$DST" fetch
-  diff=$(git -C "$DST" diff master origin/master)
+  diff=$(git -C "$DST" diff HEAD..origin/master)
   if [ -n "$diff" ]; then
-    echo "$diff"
+    git -C "$DST" log -p --stat HEAD..origin/master
     echo -n "Pull these changes? (Y/n)"
     read -r answer
     if [ -z "$answer" ] || rg -iq "^y"; then

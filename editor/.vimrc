@@ -374,5 +374,13 @@ else
   " " hi Search     guifg=Orange guibg=Black
 
   " It's october, set seasonal themes
-  colorscheme dracula
+  colorscheme Blaaark
+  hi Normal guibg=NONE ctermbg=NONE
+  hi NonText guibg=NONE ctermbg=NONE
 endif
+
+
+
+
+
+

@@ -9,7 +9,6 @@ $HOME
 /root/.bash_history
 /var/log
 /etc/netctl
-/etc/wicd
 """
 
 if [ "$1" = "-s" ] || [ "$1" = "--size" ]; then
@@ -40,6 +39,7 @@ $HOME/.cache/
 $HOME/go/pkg/mod/cache/
 $HOME/venv/
 $HOME/*node_modules
+$HOME/.cache
 EOF
 trap "rm /tmp/exclude.txt" EXIT
 

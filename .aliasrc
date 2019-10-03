@@ -32,10 +32,13 @@ else
   export EDITOR_THEME=DARK
 fi
 # override
-EDITOR_THEME=LIGHT
+EDITOR_THEME=DARK
 
 if command -v systemctl >/dev/null 2>&1; then
-  alias s=systemctl
+  alias sc=systemctl
+fi
+if command -v journalctl >/dev/null 2>&1; then
+  alias jc=journalctl
 fi
 
 alias cp='cp -i'
@@ -72,7 +75,6 @@ alias jql='jq . -C | le'
 cu() {
   curl -s "$1" | jql
 }
-export BAT_THEME=GitHub
 # Define a nice pager.
 if command -v bat >/dev/null 2>&1; then
   alias le='bat -p'
@@ -98,9 +100,8 @@ ${BOLD}UTC$NC %% $(TZ=UTC date +"%H:%M %z")
 """ | column -t -s '%%'
 }
 
-
 # Search for stanza in ssh config whose Host name has a prefix $1.
-sc() {
+sf() {
   rg -U "Host $1\w*?\n(?s:.)*?\n\n" ~/.ssh/config -N --color=never
 }
 # Similar to sc, but just print the ip address.
@@ -136,6 +137,10 @@ nv() {
 
 alias m=yay
 
+alias dw='dmesg -w'
+
+alias lb='lsblk -o NAME,LABEL,FSTYPE,MOUNTPOINT,FSUSED,FSUSE%,SIZE,VENDOR'
+
 # Update things.
 #
 # common things, based on machine type
@@ -150,6 +155,11 @@ u() {
   if [ "$(uname -s)" = "Linux" ] && command -v apt >/dev/null 2>&1; then
     sudo apt update && sudo apt full-upgrade && sudo apt auto-remove
   fi
+}
+uu() {
+  u
+  cup
+  vup
 }
 # vim update
 vup() {
@@ -483,6 +493,7 @@ alias gk='git ck'
 alias lg='git log --reverse --oneline $(git merge-base master HEAD)..HEAD --color=always'
 alias clg='clear; lg'
 alias lgs='git log --oneline --stat $(git merge-base master HEAD)..HEAD'
+alias gp='git log --oneline origin/master..master'
 alias gl='git log $(git merge-base master HEAD)..HEAD'
 alias gls='git log --stat $(git merge-base master HEAD)..HEAD'
 alias llg='git log --graph --oneline'
