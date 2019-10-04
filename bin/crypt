@@ -1,0 +1,96 @@
+#!/bin/sh
+
+set -e
+
+if [ "$1" = '-h' ] || [ "$1" = '--help' ] || [ "$1" = 'help' ]; then
+  echo "Open or close encrypted LUKS labeled partitions."
+  echo "To write LUKs label do:"
+  echo "  sudo cryptsetup config --label=LABEL DISK"
+  echo
+  echo "Usage:"
+  echo "  crypt help"
+  echo "  crypt open LABEL: open LUKs formatted partition with label"
+  echo "  crypt close LABEL: close LUKs formatted partition with label"
+  exit 0
+fi
+
+ACTION=$1
+if [ -z "$ACTION" ]; then
+  echo 'must provide arg 1 ACTION'
+fi
+
+LABEL=$2
+if [ -z "$LABEL" ]; then
+  echo 'must provide arg 2 LABEL'
+  exit 1
+fi
+
+MOUNT="/$LABEL"
+MAPPER="/dev/mapper/$LABEL"
+
+cryptopen() {
+  path="/dev/disk/by-label/$LABEL"
+  if [ ! -e "$path" ]; then
+    echo "no disk with label $LABEL"
+    echo
+    lsblk -o NAME,LABEL,FSTYPE,MOUNTPOINT,FSUSED,FSUSE%,SIZE,VENDOR
+    exit 1
+  fi
+  path=$(readlink -f "$path")
+
+  check=$(sudo cryptsetup status "$LABEL" || true)
+  if echo "$check" | grep -q "$LABEL is inactive"; then
+    sudo cryptsetup open "$path" "$LABEL"
+    echo "opened $path at $MAPPER successfully"
+  else
+    device=$(echo "$check" | grep 'device:' | awk '{print $2}')
+    if [ "$device" != "$path" ]; then
+      echo "/dev/mapper/$LABEL maps to different device $device != $path"
+      exit 1
+    fi
+    echo "$path is already open at $MAPPER"
+  fi
+
+  sudo mkdir -p "$MOUNT"
+  if grep -qs "$MOUNT " /proc/mounts; then
+    echo "$path is already mounted at $MOUNT"
+  else
+    sudo mount "$MAPPER" "$MOUNT"
+    echo "mounted $path at $MOUNT successfully"
+  fi
+}
+
+cryptclose() {
+  path="/dev/disk/by-label/$LABEL"
+  if [ ! -e "$path" ]; then
+    echo "no disk with label $LABEL"
+    echo
+    lsblk -o NAME,LABEL,FSTYPE,MOUNTPOINT,FSUSED,FSUSE%,SIZE,VENDOR
+    exit 1
+  fi
+  path=$(readlink -f "$path")
+
+  if grep -qs "$MOUNT " /proc/mounts; then
+    sudo umount "$MOUNT"
+    echo "unmounted $MOUNT successfully"
+  else
+    echo "$path is already unmounted"
+  fi
+
+  check=$(sudo cryptsetup status "$LABEL" || true)
+  if echo "$check" | grep -q "$LABEL is inactive"; then
+    echo "$LABEL is not mapped, nothing to do"
+  else
+    sudo cryptsetup close "$LABEL"
+    echo "closed $MAPPER successfully"
+  fi
+}
+
+if [ "$ACTION" = 'open' ]; then
+  cryptopen
+elif [ "$ACTION" = 'close' ]; then
+  cryptclose
+else
+  echo "unsupported ACTION '$ACTION'"
+  exit 1
+fi

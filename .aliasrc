@@ -32,7 +32,8 @@ else
   export EDITOR_THEME=DARK
 fi
 # override
-EDITOR_THEME=DARK
+# EDITOR_THEME=DARK
+EDITOR_THEME=LIGHT
 
 if command -v systemctl >/dev/null 2>&1; then
   alias sc=systemctl
