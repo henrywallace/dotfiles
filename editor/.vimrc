@@ -327,7 +327,7 @@ if $EDITOR_THEME == "LIGHT"
   " hi Search cterm=none guibg=lightcyan1 guifg=blue
   " hi Search guibg=#FFE5E5 guifg=#FF0000
   " hi Search guibg=#FFE5E5 guifg=orangered
-  hi Search guibg=yellow guifg=blue
+  hi Search guibg=gold guifg=black
   " hi String guifg=darkblue
   " hi String guifg=NavyBlue
   " hi String guifg=#aaaaff

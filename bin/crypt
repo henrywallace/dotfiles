@@ -25,13 +25,13 @@ if [ -z "$LABEL" ]; then
   exit 1
 fi
 
-MOUNT="/$LABEL"
+MOUNT="$HOME/mnt/$LABEL"
 MAPPER="/dev/mapper/$LABEL"
 
 cryptopen() {
   path="/dev/disk/by-label/$LABEL"
   if [ ! -e "$path" ]; then
-    echo "no disk with label $LABEL"
+    echo "no disks with label '$LABEL'"
     echo
     lsblk -o NAME,LABEL,FSTYPE,MOUNTPOINT,FSUSED,FSUSE%,SIZE,VENDOR
     exit 1
@@ -70,7 +70,7 @@ cryptclose() {
   fi
   path=$(readlink -f "$path")
 
-  if grep -qs "$MOUNT " /proc/mounts; then
+  if grep -q "$LABEL " /proc/mounts; then
     sudo umount "$MOUNT"
     echo "unmounted $MOUNT successfully"
   else

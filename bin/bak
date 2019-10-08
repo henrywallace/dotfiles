@@ -51,6 +51,7 @@ sudo rsync \
   --partial \
   --append-verify \
   --delete \
+  --one-file-system \
   $files \
   "$dst"
 
