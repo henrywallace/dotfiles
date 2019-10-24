@@ -309,8 +309,8 @@ let g:UltiSnipsJumpBackwardTrigger = '<c-z>'
 " colors later on.
 set termguicolors
 if $EDITOR_THEME == "LIGHT"
-  colorscheme minimal
   set background=light
+  colorscheme minimal
   " hi StatusLine cterm=bold guifg=black guibg=Aquamarine1
   " hi StatusLine cterm=bold guifg=black guibg=#ccccff
   " hi StatusLineNC cterm=bold guifg=black guibg=lightcyan
@@ -356,7 +356,7 @@ if $EDITOR_THEME == "LIGHT"
   hi VertSplit guifg=snow1
 else
   " colorscheme Blaaark
-  " set background=dark
+  set background=dark
   " " colorscheme space-vim-dark
   " " colorscheme yin
   " " " yin customizations
@@ -374,9 +374,10 @@ else
   " " hi Search     guifg=Orange guibg=Black
 
   " It's october, set seasonal themes
-  colorscheme Blaaark
+  " colorscheme Blaaark
+  colorscheme gruvbox
   hi Normal guibg=NONE ctermbg=NONE
-  hi NonText guibg=NONE ctermbg=NONE
+  " hi NonText guibg=NONE ctermbg=NONE
 endif
 
 

@@ -14,21 +14,23 @@ rfkill unblock all
 sudo killall dhcpcd || true
 sudo killall wpa_supplicant || true
 sudo dhcpcd -k $iface || true
+sudo wg-quick down abra || true
 
 sudo ip link set $iface down
 sudo ip link set $iface up
-ip link
+ip link show $iface
 sleep 2
 
 opts="-D wext"
 echo "$wpa_conf" | grep home || opts=""  # home is special
 sudo wpa_supplicant -B -i $iface $opts -c "$wpa_conf" -dd
-# TODO: What state can we query to figure out when it's appropriate to spawn
-# dhcpcd?
 sleep 2
 
 # sudo dhcpcd -t 0 -d -K $iface
 sudo dhcpcd $iface
 sleep 3
 
+sudo wg-quick up abra
+
 ping -w 2 1.1.1.1
+curl ipinfo.io

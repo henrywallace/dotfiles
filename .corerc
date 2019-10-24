@@ -29,3 +29,5 @@ export FZF_DEFAULT_OPTS='--height 24% --reverse --border'
 # Start emacs daemon automatically and idempotently with emacsclient.
 # https://stackoverflow.com/a/5578718
 export ALTERNATE_EDITOR=""
+
+export EDITOR=vim
