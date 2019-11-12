@@ -49,15 +49,15 @@ typeset -gU path
 # sudo prefixed.
 zstyle ':completion::complete:*' gain-privileges 1
 
+ZSH_AUTOSUGGESTIONS=~/.zsh/zsh-autosuggestions/zsh-autosuggestions.zsh
+if [ -f "$ZSH_AUTOSUGGESTIONS" ]; then
+  . "$ZSH_AUTOSUGGESTIONS"
+fi
+
 # Fish-like syntax hlghlighting.
 ZSH_SYNTAX_HIGHLIGHTING=~/.zsh/fast-syntax-highlighting/fast-syntax-highlighting.plugin.zsh
 if [ -f "$ZSH_SYNTAX_HIGHLIGHTING" ]; then
   . "$ZSH_SYNTAX_HIGHLIGHTING"
-fi
-
-ZSH_AUTOSUGGESTIONS=~/.zsh/zsh-autosuggestions/zsh-autosuggestions.zsh
-if [ -f "$ZSH_AUTOSUGGESTIONS" ]; then
-  . "$ZSH_AUTOSUGGESTIONS"
 fi
 
 # Use emacs mode.
