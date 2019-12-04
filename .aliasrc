@@ -272,7 +272,7 @@ alias path="echo $PATH | tr ':' '\n'"
 
 alias rg='rg --no-heading --sort path -M1024'
 ports() {
-  lsof -iTCP -sTCP:LISTEN -n -P
+  lsof -i -n -P
 }
 # reload the shell
 rld() {
