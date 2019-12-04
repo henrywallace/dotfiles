@@ -14,7 +14,7 @@ rfkill unblock all
 sudo killall dhcpcd || true
 sudo killall wpa_supplicant || true
 sudo dhcpcd -k $iface || true
-sudo wg-quick down abra || true
+# sudo wg-quick down abra || true
 
 sudo ip link set $iface down
 sudo ip link set $iface up
@@ -30,7 +30,7 @@ sleep 2
 sudo dhcpcd $iface
 sleep 3
 
-sudo wg-quick up abra
+# sudo wg-quick up abra
 
-ping -w 2 1.1.1.1
-curl ipinfo.io
+# ping -c 2 1.1.1.1
+# curl ipinfo.io

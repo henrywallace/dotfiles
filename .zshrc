@@ -30,6 +30,7 @@ autoload -Uz promptinit; promptinit
 
 # https://github.com/zsh-users/zsh-autosuggestions#key-bindings
 bindkey '^ ' autosuggest-accept
+bindkey '^@' autosuggest-accept
 
 # https://vi.stackexchange.com/a/10142
 set formatoptions+=r

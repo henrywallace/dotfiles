@@ -1,5 +1,5 @@
 " Remap leader first, in case loading plugins defines using the leader.
-"
+
 let mapleader = ' '
 nnoremap <space> <nop>
 
@@ -17,36 +17,26 @@ Plug 'tpope/vim-eunuch'               " sudo write, rename file, mkdir, etc.
 Plug 'tpope/vim-fugitive'             " git wrapper
 Plug 'tpope/vim-sensible'             " sensible defaults for Vim.
 Plug 'tpope/vim-sleuth'               " heuristically set buffer options
-Plug 'dense-analysis/ale'                       " linting
+Plug 'dense-analysis/ale'             " linting
 Plug 'zivyangll/git-blame.vim'        " unintrusive git blame line
 Plug 'the-lambda-church/coquille'     " like emacs proof general
 Plug 'wellle/targets.vim'
 Plug 'google/vim-searchindex'         " show which search match number out of
-
-Plug 'SirVer/ultisnips'
-Plug 'honza/vim-snippets'
-
-" Auto format
-Plug 'google/vim-codefmt'
-Plug 'google/vim-maktaba'
-Plug 'google/vim-glaive'
+Plug 'neoclide/coc.nvim', {'branch': 'release'}
 
 " fzf
 Plug 'junegunn/fzf', { 'dir': '~/.fzf', 'do': './install --all' }
 Plug 'junegunn/fzf.vim'
 
 " A e s t h e t i c s
-Plug 'abnt713/vim-hashpunk'
 Plug 'crusoexia/vim-monokai'
 Plug 'dracula/vim', { 'as': 'dracula'}
 Plug 'liuchengxu/space-vim-dark'
 Plug 'morhetz/gruvbox'
 Plug 'neutaaaaan/blaaark'
-Plug 'pgdouyon/vim-yin-yang'
-Plug 'treycucco/vim-monotonic'
 Plug 'wolverian/minimal'
 
-"" Syntax
+" Syntax
 Plug 'cespare/vim-toml'
 Plug 'elzr/vim-json'
 Plug 'fatih/vim-go'
@@ -59,14 +49,15 @@ Plug 'tpope/vim-markdown'
 
 call plug#end()
 
+
+" Disable Background Color Erase (BCE) so that color schemes
+" work properly when Vim is used inside tmux and GNU screen.
 " https://superuser.com/a/588243/577047
 if &term =~ '256color'
-    " Disable Background Color Erase (BCE) so that color schemes
-    " work properly when Vim is used inside tmux and GNU screen.
     set t_ut=
 endif
 
-
+" Format rust files on save.
 let g:rustfmt_autosave = 1
 
 " Allow SIGTSTP from within non-normal modes.
@@ -79,10 +70,11 @@ inoremap <c-a> <c-o><s-^>
 
 " Open godef into adjacent window.
 nnoremap <leader>gd :vsplit<cr><c-w><c-w>:GoDef<cr>
-nnoremap gr :GoReferrers<cr>
+" TODO: renable, once gopls-referrers doesn't always fail, or when
+" guru-referrers doesn't take 1 hour to finish.
+" nnoremap gr :GoReferrers<cr>
 
-
-" Move between windows like hjkl, but with ctrl modifier.
+" Move between windows like hjkl, with ctrl modifier.
 nnoremap <c-h> <c-w><left>
 nnoremap <c-l> <c-w><right>
 nnoremap <c-j> <c-w><down>
@@ -107,7 +99,6 @@ nnoremap <c-p> :Files<cr>
 nnoremap <c-b> :Buffers<cr>
 nnoremap <c-r> :History<cr>
 nnoremap <c-c> :Commands<cr>
-" nnoremap <c-g> :BCommits<cr>
 
 " Edit arg or word under cursor.
 nnoremap f ciw
@@ -117,7 +108,7 @@ nnoremap F BcE
 " TODO: Make this is as good as emac's meta-Q
 nnoremap Q <s-{><s-v><s-}>gq<c-o><c-o>
 
-" Don't allow double spaces after sentences with rewrapping:
+" Don't allow double spaces after sentences with rewrapping.
 " https://stackoverflow.com/a/4760477/2528719
 set nojoinspaces
 
@@ -139,7 +130,6 @@ vnoremap <c-up> :m '<-2<cr>gv
 " Search for errors from ALE.
 nnoremap <leader>n :ALENextWrap<cr>zz
 
-
 " Argument rewrapping, and add trailing commas.
 nnoremap <leader>a :ArgWrap<cr>
 let g:argwrap_tail_comma = 1
@@ -156,7 +146,8 @@ vmap y y`]
 " Reload .vimrc on changes.
 autocmd! BufWritePost $MYVIMRC source $MYVIMRC
 
-" Strip whitespaces on save: https://unix.stackexchange.com/a/75431/162041.
+" Strip whitespaces on save.
+" https://unix.stackexchange.com/a/75431/162041.
 autocmd BufWritePre * :%s/\s\+$//e
 
 " Open a file in the same location as it was opened last time.
@@ -199,15 +190,15 @@ if has("wildmenu")
 endif
 
 " Enable spell checking during git commit.
-" TODO: Get this working.
 autocmd FileType gitcommit setlocal spell
 hi SpellBad ctermfg=red
 
-" Show all matched highlights:
-" http://vim.wikia.com/wiki/Highlight_all_search_pattern_matches.
+" Show all matched highlights.
+" http://vim.wikia.com/wiki/Highlight_all_search_pattern_matches
 set hlsearch
 
-" Nicer split window: https://stackoverflow.com/a/9001540/2601179.
+" Nicer split window.
+" https://stackoverflow.com/a/9001540/2601179
 set fillchars+=vert:\ |
 
 " Show line numbers.
@@ -217,8 +208,8 @@ set number
 set nobackup
 set noswapfile
 
-" Enable syntax, don't override color settings:
-" https://stackoverflow.com/a/33380495/2601179.
+" Enable syntax, don't override color settings.
+" https://stackoverflow.com/a/33380495/2601179
 if !exists("g:syntax_on")
     syntax enable
 endif
@@ -226,66 +217,58 @@ endif
 " No wrapping of lines.
 set wrap!
 
-" Autoformat
-""https://github.com/google/vim-codefmt#autoformatting
-call glaive#Install()
-" Glaive codefmt google_java_executable="java -jar PATH...."
-augroup autoformat_settings
-  autocmd FileType java AutoFormatBuffer google-java-format
-augroup END
-
 " let g:ale_linters['go'] = ['gopls', 'revive', 'misspell']
 let g:ale_linters = {
-            \ 'go': ['gopls', 'misspell', 'revive', 'govet'],
+  \ 'go': ['gopls', 'misspell', 'revive', 'govet'],
 \ }
 let g:go_def_mode='gopls'
 let g:go_info_mode='gopls'
 let g:go_fmt_command='goimports'
-" Make rendering faster, at the expense of pretty.
-" https://github.com/fatih/vim-go/wiki/FAQ-Troubleshooting#vim-becomes-sluggish-while-editing-go-files
-let g:go_highlight_structs = 0
-let g:go_highlight_interfaces = 0
-let g:go_highlight_operators = 0
+
+" Prevent annoying popup loc list on errors
+" https://github.com/fatih/vim-go/issues/1682
+let g:go_fmt_fail_silently = 1
+
+" because we will use coc
+let g:go_def_mapping_enabled = 0
+
 let g:ale_list_window_size = 6
 let g:ale_sign_error = '✘'
 
-function! LinterStatus() abort
-    let l:counts = ale#statusline#Count(bufnr(''))
+" function! LinterStatus() abort
+"     let l:counts = ale#statusline#Count(bufnr(''))
 
-    let l:all_errors = l:counts.error + l:counts.style_error
-    let l:all_non_errors = l:counts.total - l:all_errors
+"     let l:all_errors = l:counts.error + l:counts.style_error
+"     let l:all_non_errors = l:counts.total - l:all_errors
 
-    return l:counts.total == 0 ? 'OK' : printf(
-    \   '%dW %dE',
-    \   all_non_errors,
-    \   all_errors
-    \)
-endfunction
-
+"     return l:counts.total == 0 ? 'OK' : printf(
+"     \   '%dW %dE',
+"     \   all_non_errors,
+"     \   all_errors
+"     \)
+" endfunction
 " set statusline+=%{LinterStatus()}
 
 " Make vim-go faster.
-set re=1
 set ttyfast
 set lazyredraw
-set nocursorcolumn
 syntax sync minlines=256
 
-" " " change fzf colors to match color scheme.
-" let g:fzf_colors =
-"  \ { 'fg':      ['fg', 'Normal'],
-"   \ 'bg':      ['bg', 'Normal'],
-"   \ 'hl':      ['fg', 'Comment'],
-"   \ 'fg+':     ['fg', 'Normal'],
-"   \ 'bg+':     ['bg', 'CursorLine', 'CursorColumn'],
-"   \ 'hl+':     ['fg', 'Statement'],
-"   \ 'info':    ['fg', 'PreProc'],
-"   \ 'border':  ['fg', 'Ignore'],
-"   \ 'prompt':  ['fg', 'Conditional'],
-"   \ 'pointer': ['fg', 'Pink'],
-"   \ 'marker':  ['fg', 'Keyword'],
-"   \ 'spinner': ['fg', 'Label'],
-"   \ 'header':  ['fg', 'Comment'] }
+" " change fzf colors to match color scheme.
+let g:fzf_colors =
+ \ { 'fg':      ['fg', 'Normal'],
+  \ 'bg':      ['bg', 'Normal'],
+  \ 'hl':      ['fg', 'Comment'],
+  \ 'fg+':     ['fg', 'Normal'],
+  \ 'bg+':     ['bg', 'CursorLine', 'CursorColumn'],
+  \ 'hl+':     ['fg', 'Statement'],
+  \ 'info':    ['fg', 'PreProc'],
+  \ 'border':  ['fg', 'Ignore'],
+  \ 'prompt':  ['fg', 'Conditional'],
+  \ 'pointer': ['fg', 'Pink'],
+  \ 'marker':  ['fg', 'Keyword'],
+  \ 'spinner': ['fg', 'Label'],
+  \ 'header':  ['fg', 'Comment'] }
 
 " Markdown code fence syntax highlighting.
 let g:markdown_fenced_languages = ['go', 'sh', 'py=python']
@@ -301,87 +284,120 @@ nnoremap <c-i> :bprev<CR>
 " hidden characters
 nmap <leader>l :set list!<CR>
 
-let g:UltiSnipsExpandTrigger = '<tab>'
-let g:UltiSnipsJumpForwardTrigger = '<c-b>'
-let g:UltiSnipsJumpBackwardTrigger = '<c-z>'
+""" coc
+" Better display for messages
+set cmdheight=2
+" Better experience for diagnostic messages vs. default 4000.
+set updatetime=300
+" Don't give |ins-completion-menu| messages.
+set shortmess+=c
+" Use tab for trigger completion with characters ahead and navigate. Use
+" command ':verbose imap <tab>' to make sure tab is not mapped by other
+" plugin.
+inoremap <silent><expr> <TAB>
+      \ pumvisible() ? "\<C-n>" :
+      \ <SID>check_back_space() ? "\<TAB>" :
+      \ coc#refresh()
+inoremap <expr><S-TAB> pumvisible() ? "\<C-p>" : "\<C-h>"
+function! s:check_back_space() abort
+  let col = col('.') - 1
+  return !col || getline('.')[col - 1]  =~# '\s'
+endfunction
+" Use <c-space> to trigger completion.
+inoremap <silent><expr> <c-space> coc#refresh()
+" Use <cr> to confirm completion, `<C-g>u` means break undo chain at current
+" position. Coc only does snippet and additional edit on confirm.
+inoremap <expr> <cr> pumvisible() ? "\<C-y>" : "\<C-g>u\<CR>"
+" Remap keys for gotos
+nmap <silent> gd <Plug>(coc-definition)
+nmap <silent> gy <Plug>(coc-type-definition)
+nmap <silent> gi <Plug>(coc-implementation)
+nmap <silent> gr <Plug>(coc-references)
+" Use K to show documentation in preview window
+nnoremap <silent> K :call <SID>show_documentation()<CR>
+function! s:show_documentation()
+  if (index(['vim','help'], &filetype) >= 0)
+    execute 'h '.expand('<cword>')
+  else
+    call CocAction('doHover')
+  endif
+endfunction
+" Highlight symbol under cursor on CursorHold
+autocmd CursorHold * silent call CocActionAsync('highlight')
+" Remap for rename current word
+nmap <leader>rn <Plug>(coc-rename)
 
-" Color theme. We define this earlier on so that we can more freely customize
-" colors later on.
-set termguicolors
+" " Color theme. We define this earlier on so that we can more freely customize
+" " colors later on.
+" set termguicolors
 if $EDITOR_THEME == "LIGHT"
   set background=light
-  colorscheme minimal
-  " hi StatusLine cterm=bold guifg=black guibg=Aquamarine1
-  " hi StatusLine cterm=bold guifg=black guibg=#ccccff
-  " hi StatusLineNC cterm=bold guifg=black guibg=lightcyan
-  hi StatusLine cterm=bold guifg=#aaaaff guibg=NONE
-  hi StatusLineNC cterm=bold guifg=black guibg=NONE
-  hi SignColumn none
-  hi IncSearch cterm=bold guibg=blue guifg=white
-  " hi Search cterm=none guibg=yellow guifg=black
-  " hi Search cterm=bold guibg=blue guifg=yellow
-  " hi Search cterm=none guibg=mistyrose guifg=red
-  hi ALEError cterm=bold guibg=#F6C6FF guifg=#CF00FF
-  hi Error guifg=#CF00FF guibg=NONE cterm=bold
-  " hi Error cterm=bold guibg=orange guifg=white
-  " hi Search cterm=none guibg=lightcyan1 guifg=blue
-  " hi Search guibg=#FFE5E5 guifg=#FF0000
-  " hi Search guibg=#FFE5E5 guifg=orangered
-  hi Search guibg=gold guifg=black
-  " hi String guifg=darkblue
-  " hi String guifg=NavyBlue
-  " hi String guifg=#aaaaff
-  hi String guifg=orangered
-  hi Function cterm=bold guifg=darkblue
-  hi Todo cterm=bold,italic guibg=NONE
-  hi LineNr guifg=ivory
-  hi VertSplit guifg=bg
-  " hi MatchParen guibg=yellow
-  hi MatchParen guibg=lightcyan1 guifg=blue
-  " hi LineNr guifg=snow1
-  hi LineNr guifg=#aaaaff
-  hi Normal guibg=white
-  " hi Comment guifg=seagreen
-  hi Comment guifg=seashell4
-  hi ColorColumn ctermbg=2 guibg=snow1
-  " hi GitGutterAddDefault guifg=green3
-  " hi GitGutterRemoveDefault guifg=darkred
-  " hi GitGutterChangeDefault guifg=gold
-  hi clear SignColumn
-  hi SignColumn guifg=snow1
-  " hi Visual guifg=orangered guibg=peachpuff
-  hi Visual guibg=lightcyan1 guifg=blue
-  " hi VertSplit guifg=lightgray
-  " hi VertSplit guifg=#aaaaff
-  hi VertSplit guifg=snow1
+"   colorscheme minimal
+"   " hi StatusLine cterm=bold guifg=black guibg=Aquamarine1
+"   " hi StatusLine cterm=bold guifg=black guibg=#ccccff
+"   " hi StatusLineNC cterm=bold guifg=black guibg=lightcyan
+"   hi StatusLine cterm=bold guifg=#aaaaff guibg=NONE
+"   hi StatusLineNC cterm=bold guifg=black guibg=NONE
+"   hi SignColumn none
+"   hi IncSearch cterm=bold guibg=blue guifg=white
+"   " hi Search cterm=none guibg=yellow guifg=black
+"   " hi Search cterm=bold guibg=blue guifg=yellow
+"   " hi Search cterm=none guibg=mistyrose guifg=red
+"   hi ALEError cterm=bold guibg=#F6C6FF guifg=#CF00FF
+"   hi Error guifg=#CF00FF guibg=NONE cterm=bold
+"   " hi Error cterm=bold guibg=orange guifg=white
+"   " hi Search cterm=none guibg=lightcyan1 guifg=blue
+"   " hi Search guibg=#FFE5E5 guifg=#FF0000
+"   " hi Search guibg=#FFE5E5 guifg=orangered
+"   hi Search guibg=gold guifg=black
+"   " hi String guifg=darkblue
+"   " hi String guifg=NavyBlue
+"   " hi String guifg=#aaaaff
+"   hi String guifg=orangered
+"   hi Function cterm=bold guifg=darkblue
+"   hi Todo cterm=bold,italic guibg=NONE
+"   hi LineNr guifg=ivory
+"   hi VertSplit guifg=bg
+"   " hi MatchParen guibg=yellow
+"   hi MatchParen guibg=lightcyan1 guifg=blue
+"   " hi LineNr guifg=snow1
+"   hi LineNr guifg=#aaaaff
+"   hi Normal guibg=white
+"   " hi Comment guifg=seagreen
+"   hi Comment guifg=seashell4
+"   hi ColorColumn ctermbg=2 guibg=snow1
+"   " hi GitGutterAddDefault guifg=green3
+"   " hi GitGutterRemoveDefault guifg=darkred
+"   " hi GitGutterChangeDefault guifg=gold
+"   hi clear SignColumn
+"   hi SignColumn guifg=snow1
+"   " hi Visual guifg=orangered guibg=peachpuff
+"   hi Visual guibg=lightcyan1 guifg=blue
+"   " hi VertSplit guifg=lightgray
+"   " hi VertSplit guifg=#aaaaff
+"   hi VertSplit guifg=snow1
 else
-  " colorscheme Blaaark
+  colorscheme Blaaark
   set background=dark
-  " " colorscheme space-vim-dark
-  " " colorscheme yin
-  " " " yin customizations
-  " hi MatchParen guifg=Yellow guibg=Blue cterm=bold
-  " hi Comment cterm=NONE guifg=#776587 guibg=NONE
-  " hi Search  cterm=bold  guifg=white guibg=blue
-  " hi GitGutterAdd  guibg=#212026
-  " hi GitGutterChange guibg=#212026
-  " hi GitGutterDelete guibg=#212026
-  " hi GitGutterChangeDelete guibg=#212026
-  " hi SignColumn guibg=#212026
-  " hi Boolean guifg=#c2bff2
-  " hi Todo cterm=bold guifg=#fdffbc
-  " " hi IncSearch  guifg=Black guibg=Red
-  " " hi Search     guifg=Orange guibg=Black
+"   " " colorscheme space-vim-dark
+"   " " colorscheme yin
+"   " " " yin customizations
+"   " hi MatchParen guifg=Yellow guibg=Blue cterm=bold
+"   " hi Comment cterm=NONE guifg=#776587 guibg=NONE
+"   " hi Search  cterm=bold  guifg=white guibg=blue
+"   " hi GitGutterAdd  guibg=#212026
+"   " hi GitGutterChange guibg=#212026
+"   " hi GitGutterDelete guibg=#212026
+"   " hi GitGutterChangeDelete guibg=#212026
+"   " hi SignColumn guibg=#212026
+"   " hi Boolean guifg=#c2bff2
+"   " hi Todo cterm=bold guifg=#fdffbc
+"   " " hi IncSearch  guifg=Black guibg=Red
+"   " " hi Search     guifg=Orange guibg=Black
 
-  " It's october, set seasonal themes
-  " colorscheme Blaaark
-  colorscheme gruvbox
-  hi Normal guibg=NONE ctermbg=NONE
-  " hi NonText guibg=NONE ctermbg=NONE
+"   " It's october, set seasonal themes
+"   " colorscheme Blaaark
+"   colorscheme gruvbox
+"   hi Normal guibg=NONE ctermbg=NONE
+"   " hi NonText guibg=NONE ctermbg=NONE
 endif
-
-
-
-
-
-

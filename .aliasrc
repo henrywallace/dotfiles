@@ -173,11 +173,15 @@ vup() {
     +PlugUpgrade \
     +PlugUpdate \
     +PlugClean \
-    +GoUpdateBinaries \
     +qall
 }
 zup() {
   ~/.zsh/update.sh
+}
+
+touchp() {
+  mkdir -p "$(dirname "$1")"
+  touch "$1"
 }
 
 # Show info about the date, calendar, battery, and eventually other useful

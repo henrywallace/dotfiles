@@ -12,6 +12,9 @@ PATH=$HOME/.local/bin:$PATH
 # personal scripts
 PATH=$HOME/bin:$PATH
 
+# python
+PATH=$HOME/.local/bin:$PATH
+
 # ruby
 if [[ "$(uname -s)" == "Darwin" ]]; then
   PATH=/usr/local/lib/ruby/gems/2.6.0/bin:$PATH

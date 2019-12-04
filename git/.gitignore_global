@@ -20,3 +20,4 @@ Untitled*.ipynb
 *-bak
 *.bak*
 *.hdf5
+*Cargo.lock
