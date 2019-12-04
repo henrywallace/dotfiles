@@ -2,15 +2,6 @@
 
 set -ex
 
-# Trailing slashes have the semantics of changing directory name, and otherwise
-# creating themselves in the dst if it's a directory
-files="""
-$HOME
-/root/.bash_history
-/var/log
-/etc/netctl
-"""
-
 if [ "$1" = "-s" ] || [ "$1" = "--size" ]; then
   df -H /
   sudo du -sch $files
@@ -52,6 +43,6 @@ sudo rsync \
   --append-verify \
   --delete \
   --one-file-system \
-  $files \
-  "$dst"
+  $HOME \
+  $dst
 

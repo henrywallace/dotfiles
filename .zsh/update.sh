@@ -14,7 +14,7 @@ for repo in $repos; do
   diff=$(git -C "$DST" diff HEAD..origin/master)
   if [ -n "$diff" ]; then
     git -C "$DST" log -p --stat HEAD..origin/master
-    echo -n "Pull these changes? (Y/n)"
+    echo -n "Pull these changes? (Y/n) "
     read -r answer
     if [ -z "$answer" ] || rg -iq "^y"; then
       git -C "$DST" pull

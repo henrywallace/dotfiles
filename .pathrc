@@ -6,6 +6,9 @@ GOPATH=$HOME/go
 PATH=$GOPATH/bin:$PATH
 PATH=$PATH:/usr/local/go/bin
 
+# python pip install --user
+PATH=$HOME/.local/bin:$PATH
+
 # personal scripts
 PATH=$HOME/bin:$PATH
 

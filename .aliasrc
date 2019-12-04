@@ -22,6 +22,8 @@ alias ssh='ssh -o IdentitiesOnly=yes '
 # https://superuser.com/a/665181/577047
 # tar cf - /folder-with-big-files -P | pv -s $(du -sb /folder-with-big-files | awk '{print $1}') | gzip > big-files.tar.gz
 
+alias xl='XSECURELOCK_PASSWORD_PROMPT=time_hex xsecurelock'
+
 
 # Set a custom env EDITOR_THEME to light or dark depending on the time of day,
 # assuming a static time-zone. Editors are responsible for respecting this env
@@ -37,12 +39,12 @@ EDITOR_THEME=DARK
 # EDITOR_THEME=LIGHT
 
 if command -v systemctl >/dev/null 2>&1; then
-  alias sc=systemctl
-  alias scu='systemctl --user'
+  alias sc='sudo systemctl '
+  alias scu='systemctl --user '
 fi
 if command -v journalctl >/dev/null 2>&1; then
-  alias jc=journalctl
-  alias jcu='journalctl --user'
+  alias jc='sudo journalctl '
+  alias jcu='journalctl --user '
 fi
 
 alias cp='cp -i'
@@ -110,7 +112,7 @@ sf() {
 }
 # Similar to sc, but just print the ip address.
 scip() {
-  sc "$1" | rg Hostname | awk '{print $2}'
+  sf "$1" | rg Hostname | awk '{print $2}'
 }
 
 # Style man pages like in the arch install. I really dig it.
@@ -237,6 +239,8 @@ opx() {
     echo | xclip -i -sel clip
   } &
 }
+
+alias xc='xclip -i -sel clip'
 
 #
 # misc
