@@ -220,12 +220,12 @@ ops() {
 }
 opf() {
   SMARTCASE=
-  if echo $@ | rg -q '^\s*(\p{Ll}\w*($|\s+))+'; then
+  if echo "$@" | rg -q '^\s*(\p{Ll}\w*($|\s+))+'; then
     SMARTCASE='-i'
   fi
   op list items \
     | jq '.[] | .overview.title + "##" + .uuid' -r \
-    | rg --color=always $SMARTCASE $@ \
+    | rg --color=always "$SMARTCASE" $@ \
     | column -t -s'##' \
     | sort
 }
@@ -267,8 +267,9 @@ div() {
   tput sgr0
 }
 
-
-alias path="echo $PATH | tr ':' '\n'"
+path() {
+  echo "$PATH" | tr ':' '\n'
+}
 
 alias rg='rg --no-heading --sort path -M1024'
 ports() {
@@ -277,8 +278,8 @@ ports() {
 # reload the shell
 rld() {
   case "$SHELL" in
-    *zsh) . ~/.zshrc;;
-    *bash) . ~/.bashrc;;
+    *zsh) . ~/.zshrc ;;
+    *bash) . ~/.bashrc ;;
   esac
 }
 # search aliases, and print them out in columns
