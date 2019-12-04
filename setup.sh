@@ -39,6 +39,9 @@ echo "
 .tmux.conf      $HOME
 .zsh/update.sh  $HOME/.zsh
 .zshrc          $HOME
+.xinitrc        $HOME
+.Xresources     $HOME
+.Xmodmap        $HOME
 bin             $HOME/bin
 editor          $HOME
 git             $HOME
