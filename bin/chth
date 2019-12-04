@@ -1,0 +1,43 @@
+#!/bin/sh
+
+set -e
+
+DIR="$HOME/.config/alacritty"
+CONFIG="$DIR/alacritty.yml"
+THEMES="$DIR/themes"
+NEW_THEME="$DIR/themes/$1.yaml"
+
+if [ ! -f "$CONFIG" ]; then
+  echo "missing alacritty config $CONFIG"
+  exit 1
+fi
+
+if [ -z "$1" ]; then
+  echo "must provide theme name as first arg"
+  exit 1
+fi
+
+mkdir -p "$THEMES"
+
+download() {
+  if [ -f "$NEW_THEME" ]; then
+    return
+  fi
+  url="https://raw.githubusercontent.com/eendroroy/alacritty-theme/master/themes/$1.yaml"
+  echo "$url"
+  curl -f "$url" > "$NEW_THEME"
+}
+
+download "$1"
+
+cp "$CONFIG" "$CONFIG.bak"
+
+if ! rg -q '^colors:' "$CONFIG"; then
+  cat "$NEW_THEME" >> "$CONFIG"
+else
+  rg -U --multiline-dotall \
+    --passthru -N '(^#.*)+colors:.*(^\w+)?' \
+    -or "$(cat "$NEW_THEME")" \
+    "$DIR/alacritty.yml" > "$DIR/alacritty.yml.tmp"
+  mv "$DIR/alacritty.yml.tmp" "$DIR/alacritty.yml"
+fi
