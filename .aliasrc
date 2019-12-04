@@ -277,7 +277,7 @@ path() {
 
 alias rg='rg --no-heading --sort path -M1024'
 ports() {
-  lsof -i -n -P
+  sudo lsof -i -n -P
 }
 # reload the shell
 rld() {
