@@ -1,5 +1,11 @@
+#!/bin/zsh
+
 # Base shell-agnostic rc.
 . ~/.corerc
+
+if command -v kubectl &>/dev/null; then
+  . <(kubectl completion zsh)
+fi
 
 fpath=( "$HOME/.zfunctions" $fpath )
 

@@ -315,7 +315,7 @@ lab() {
 # k8s + gcloud
 #
 alias gup='sudo gcloud components update'
-alias k='kubectl'
+alias k='kubectl '
 alias kn='kubectl get no'
 alias kpa='kp -a'
 alias mkl='minikube service list'
