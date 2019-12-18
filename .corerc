@@ -1,33 +1,50 @@
-#!/bin/sh
+#!/bin/bash
 
+# shellcheck source=/dev/null
 . ~/.pathrc
-. ~/.envrc
 . ~/.aliasrc
+. ~/.diffeorc
 
-PATH=$HOME/bin:$PATH
-
-# TODO: It became quite annoying to repeat this when repeatedly ssh'ing into
-# various machines. Further, it's arguably a little more secure.
-#
-# # Start ssh-agent if not running.
-# # https://unix.stackexchange.com/a/90869/162041
-# if [ -z "$SSH_AUTH_SOCK" ]; then
-#   eval $(ssh-agent)
-#   ssh-add
-# fi
 
 # fzf
 case "$SHELL" in
   *zsh) [ -f ~/.fzf.zsh ] && . ~/.fzf.zsh;;
   *bash) [ -f ~/.fzf.bash ] && . ~/.fzf.bash;;
 esac
-export FZF_DEFAULT_OPTS='--height 24% --reverse --border'
 
-# Make less more friendly for non-text input files, see lesspipe(1).
-[ -x /usr/bin/lesspipe ] && eval "$(SHELL=/bin/sh lesspipe)"
+if [ "$(uname -s)" = Darwin ]; then
+  ulimit -n 65536 unlimited
+fi
+
+export CGO_CPPFLAGS="$CGO_CPPFLAGS -Wno-unused-result"
+export GOTMPDIR=/tmp/go/
+[ -d $GOTMPDIR ] || mkdir -p $GOTMPDIR
+export MANWIDTH=100
+if command -v bat &>/dev/null; then
+  export MANPAGER="sh -c 'col -b | bat -l man -p'"
+fi
+
+export FZF_DEFAULT_OPTS='--height 24% --reverse --border'
 
 # Start emacs daemon automatically and idempotently with emacsclient.
 # https://stackoverflow.com/a/5578718
 export ALTERNATE_EDITOR=""
 
 export EDITOR=vim
+
+if command -v bat >/dev/null 2>&1; then
+  export BAT_THEME=ansi-light
+fi
+
+# Set a custom env EDITOR_THEME to light or dark depending on the time of day,
+# assuming a static time-zone. Editors are responsible for respecting this env
+# in their own config.
+hour=$(TZ=America/New_York date +%H)
+if [ 6 -le "$hour" ] && [ "$hour" -le 19 ]; then
+  export EDITOR_THEME=LIGHT
+else
+  export EDITOR_THEME=DARK
+fi
+# override
+# EDITOR_THEME=DARK
+# EDITOR_THEME=LIGHT

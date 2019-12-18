@@ -9,20 +9,25 @@ PATH=$PATH:/usr/local/go/bin
 # python pip install --user
 PATH=$HOME/.local/bin:$PATH
 
+# ruby
+if [ "$(uname -s)" = "Darwin" ]; then
+  PATH=/usr/local/Cellar/ruby/2.6.5/bin:$PATH
+fi
+
 # personal scripts
 PATH=$HOME/bin:$PATH
 
 # python
 PATH=$HOME/.local/bin:$PATH
 
-# ruby
-if [[ "$(uname -s)" == "Darwin" ]]; then
-  PATH=/usr/local/lib/ruby/gems/2.6.0/bin:$PATH
+if [ -d /usr/local/sbin ]; then
+  PATH=/usr/local/sbin:$PATH
 fi
 
 # homebrew
 if [[ "$(uname -s)" == "Darwin" ]]; then
   PATH=$HOME/.cask/bin:$PATH
+  PATH=/usr/local/bin:$PATH
 fi
 
 # gcloud

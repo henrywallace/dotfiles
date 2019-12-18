@@ -1,5 +1,9 @@
 #!/bin/zsh
 
+# Completion. We do this first in case anything below wants to set up
+# completion additional definitions.
+autoload -Uz compinit; compinit
+
 # Base shell-agnostic rc.
 . ~/.corerc
 
@@ -12,9 +16,6 @@ fpath=( "$HOME/.zfunctions" $fpath )
 # Tab complete dir colors.
 # https://github.com/robbyrussell/oh-my-zsh/issues/1563#issuecomment-26591369.
 zstyle ':completion:*' list-colors "${(@s.:.)LS_COLORS}"
-
-# Completion.
-autoload -Uz compinit; compinit
 
 # Allow completing inside of words.
 setopt completeinword
@@ -96,3 +97,9 @@ setopt HIST_REDUCE_BLANKS # dont save blanks
 if [[ "$(uname -s)" == "Darwin" ]]; then
   export PATH="/usr/local/opt/node@10/bin:$PATH"
 fi
+
+# The next line updates PATH for the Google Cloud SDK.
+if [ -f '/usr/local/google-cloud-sdk/path.zsh.inc' ]; then . '/usr/local/google-cloud-sdk/path.zsh.inc'; fi
+
+# The next line enables shell command completion for gcloud.
+if [ -f '/usr/local/google-cloud-sdk/completion.zsh.inc' ]; then . '/usr/local/google-cloud-sdk/completion.zsh.inc'; fi
