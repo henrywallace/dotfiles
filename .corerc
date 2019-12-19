@@ -5,6 +5,14 @@
 . ~/.aliasrc
 . ~/.diffeorc
 
+if command -v alacritty &>/dev/null; then
+  # In particular, this is useful for i3-sensible-terminal which will loop
+  # through various terminals, checking this env first. i3 will use the
+  # i3-sensible-terminal command whenever a config error occurs. And choosing a
+  # terminal that one is familiar with avoids undue pain for unfamilar
+  # environments.
+  export TERMINAL=alacritty
+fi
 
 # fzf
 case "$SHELL" in

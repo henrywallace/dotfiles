@@ -2,6 +2,8 @@
 
 set -e
 
+# TODO: Create command to list out what the theme names are.
+
 DIR="$HOME/.config/alacritty"
 CONFIG="$DIR/alacritty.yml"
 THEMES="$DIR/themes"

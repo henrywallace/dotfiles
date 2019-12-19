@@ -151,6 +151,9 @@ nv() {
   . venv/bin/activate && pip install pip-tools
 }
 
+alias ic='$EDITOR ~/.config/i3/config'
+alias ics='$EDITOR ~/.config/i3status/config'
+
 alias m=yay
 
 alias dw='dmesg -w'
@@ -199,18 +202,6 @@ zup() {
 touchp() {
   mkdir -p "$(dirname "$1")"
   touch "$1"
-}
-
-# Show info about the date, calendar, battery, and eventually other useful
-# "dashboard" like things.
-d() {
-  cal
-  echo "$BOLD"
-  date
-  echo "$NC"
-  acpi
-  # ip link show wlp2s0 && echo
-  # iw dev wlp2s0 info
 }
 
 # Allow watch and xargs alias completion with space.
@@ -518,24 +509,12 @@ alias rc='git rebase --continue'
 alias pu='git push origin HEAD'
 alias fpu='git push -f origin HEAD'
 
-# alias gs=~/bin/git-status
 alias gs='git status'
-# gk() {
-#   if [ -z "$@" ]; then
-#     git commit
-#   else
-#     git commit -m "$@"
-#   fi
-# }
-alias gk='git ck'
-alias lg='git log --reverse --oneline $(git merge-base master HEAD)..HEAD --color=always'
-alias clg='clear; lg'
-alias lgs='git log --oneline --stat $(git merge-base master HEAD)..HEAD'
-alias gp='git log --oneline origin/master..master'
-alias gl='git log $(git merge-base master HEAD)..HEAD'
-alias gls='git log --stat $(git merge-base master HEAD)..HEAD'
-alias llg='git log --graph --oneline'
 alias gap='git add -p'
+alias lg='git log --reverse --oneline $(git merge-base master HEAD)..HEAD'
+alias gls='git log --reverse --stat $(git merge-base master HEAD)..HEAD'
+alias gl='git log --oneline'
+alias gls='git log --stat'
 alias lr='git log -n1 --stat'
 alias lrp='git log -p -n1 --stat'
 p() {
@@ -567,35 +546,4 @@ gca() {
     git commit --amend --allow-empty
   fi
 }
-# pretty git branches
 alias gb=~/bin/git-branches
-grst() {
-  remote="$REMOTE"
-  if [ -z "$remote" ]; then
-    remote=origin
-  fi
-  git fetch "$remote" && git reset --hard "$remote/$(git branch | rg '\* (.*)' -or '$1')"
-}
-grb() {
-  return
-  root="$(git rev-parse --show-toplevel)"
-  [[ -d "$root/.git/rebase-merge" ]] || [[ -d "$root/.git/rebase-apply" ]] || echo "Not rebasing" && return
-  rebase="$(basename "$(find $root/.git/ -name 'rebase*')")"
-  cat "$root/.git/$rebase/done" > /tmp/rebase-done
-  cat "$root/.git/$rebase/git-rebase-todo" | rg '^[^#]' | sed '/^\s*$/d' > /tmp/rebase-todo
-  num_done="$(wc -l /tmp/rebase-done | awk '{print $1}')"
-  num_todo="$(wc -l /tmp/rebase-todo | awk '{print $1}')"
-  echo "Branch: $(git branch | rg 'rebasing (.*)\)' -or '$1')"
-  echo "Progress: ($num_done/$((num_done + num_todo)))"
-  bat /tmp/rebase-done
-  conflicts && echo
-  bat /tmp/rebase-todo
-}
-#
-gbs() {
-  ref="$1"
-  if [ -z "$ref" ]; then
-    ref=HEAD
-  fi
-  git diff "$(git merge-base master $ref)..$ref"
-}

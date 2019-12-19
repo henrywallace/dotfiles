@@ -23,6 +23,7 @@ Plug 'wellle/targets.vim'
 Plug 'google/vim-searchindex'         " show which search match number out of
 Plug 'neoclide/coc.nvim', {'branch': 'release'}
 " Plug 'wellle/context.vim'
+Plug 'jszakmeister/vim-togglecursor'
 
 " fzf
 Plug 'junegunn/fzf', { 'dir': '~/.fzf', 'do': './install --all' }
@@ -391,7 +392,7 @@ if $EDITOR_THEME == "LIGHT"
   " " hi VertSplit guifg=#aaaaff
   " hi VertSplit guifg=snow1
 else
-"  " colorscheme Blaaark
+  colorscheme Blaaark
 "  set background=dark
 "  " " colorscheme space-vim-dark
 "  " " colorscheme yin
@@ -417,4 +418,4 @@ else
 "  " hi NonText guibg=NONE ctermbg=NONE
 endif
 
-hi CocHighlightText ctermbg=121 cterm=NONE
+" hi CocHighlightText ctermbg=121 cterm=NONE
