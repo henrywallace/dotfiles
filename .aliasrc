@@ -209,7 +209,7 @@ touchp() {
 alias watch='watch --color '
 alias xargs='xargs '
 
-alias tree='tree -C'
+alias tree='tree -Ca -I .git'
 
 colors() {
   for i in $(seq 0 255) ; do

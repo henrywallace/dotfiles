@@ -3,7 +3,7 @@
 # shellcheck source=/dev/null
 . ~/.pathrc
 . ~/.aliasrc
-. ~/.diffeorc
+[ -f ~/.diffeorc ] && . ~/.diffeorc
 
 if command -v alacritty &>/dev/null; then
   # In particular, this is useful for i3-sensible-terminal which will loop
