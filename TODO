@@ -1,0 +1,3 @@
+- create helper to "move" existing non-linked file to be linked
+- use natural file structure instead of category dirs
+- 

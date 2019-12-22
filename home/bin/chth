@@ -38,7 +38,7 @@ if ! rg -q '^colors:' "$CONFIG"; then
   cat "$NEW_THEME" >> "$CONFIG"
 else
   rg -U --multiline-dotall \
-    --passthru -N '(^#.*)+colors:.*(^\w+)?' \
+    --passthru -N 'colors:.*(^\w+)?' \
     -or "$(cat "$NEW_THEME")" \
     "$DIR/alacritty.yml" > "$DIR/alacritty.yml.tmp"
   mv "$DIR/alacritty.yml.tmp" "$DIR/alacritty.yml"

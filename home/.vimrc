@@ -340,82 +340,82 @@ hi MatchParen cterm=bold
 
 let g:ale_sh_shellcheck_options = '-x -P'
 
-if $EDITOR_THEME == "LIGHT"
-  set background=light
+" if $EDITOR_THEME == "LIGHT"
+"   set background=light
 
-  " TODO: If some env, then do this
-  " hi LineNr ctermbg=none ctermfg=254
-  " hi ColorColumn ctermbg=255
+"   " TODO: If some env, then do this
+"   " hi LineNr ctermbg=none ctermfg=254
+"   " hi ColorColumn ctermbg=255
 
-  " colorscheme minimal
-  " " hi StatusLine cterm=bold guifg=black guibg=Aquamarine1
-  " " hi StatusLine cterm=bold guifg=black guibg=#ccccff
-  " " hi StatusLineNC cterm=bold guifg=black guibg=lightcyan
-  " hi StatusLine cterm=bold guifg=#aaaaff guibg=NONE
-  " hi StatusLineNC cterm=bold guifg=black guibg=NONE
-  " hi SignColumn none
-  " hi IncSearch cterm=bold guibg=blue guifg=white
-  " " hi Search cterm=none guibg=yellow guifg=black
-  " " hi Search cterm=bold guibg=blue guifg=yellow
-  " " hi Search cterm=none guibg=mistyrose guifg=red
-  " hi ALEError cterm=bold guibg=#F6C6FF guifg=#CF00FF
-  " hi Error guifg=#CF00FF guibg=NONE cterm=bold
-  " " hi Error cterm=bold guibg=orange guifg=white
-  " " hi Search cterm=none guibg=lightcyan1 guifg=blue
-  " " hi Search guibg=#FFE5E5 guifg=#FF0000
-  " " hi Search guibg=#FFE5E5 guifg=orangered
-  " hi Search guibg=gold guifg=black
-  " " hi String guifg=darkblue
-  " " hi String guifg=NavyBlue
-  " " hi String guifg=#aaaaff
-  " hi String guifg=orangered
-  " hi Function cterm=bold guifg=darkblue
-  " hi Todo cterm=bold,italic guibg=NONE
-  " hi LineNr guifg=ivory
-  " hi VertSplit guifg=bg
-  " " hi MatchParen guibg=yellow
-  " hi MatchParen guibg=lightcyan1 guifg=blue
-  " " hi LineNr guifg=snow1
-  " hi LineNr guifg=#aaaaff
-  " hi Normal guibg=white
-  " " hi Comment guifg=seagreen
-  " hi Comment guifg=seashell4
-  " hi ColorColumn ctermbg=2 guibg=snow1
-  " " hi GitGutterAddDefault guifg=green3
-  " " hi GitGutterRemoveDefault guifg=darkred
-  " " hi GitGutterChangeDefault guifg=gold
-  " hi clear SignColumn
-  " hi SignColumn guifg=snow1
-  " " hi Visual guifg=orangered guibg=peachpuff
-  " hi Visual guibg=lightcyan1 guifg=blue
-  " " hi VertSplit guifg=lightgray
-  " " hi VertSplit guifg=#aaaaff
-  " hi VertSplit guifg=snow1
-else
-  colorscheme Blaaark
-"  set background=dark
-"  " " colorscheme space-vim-dark
-"  " " colorscheme yin
-"  " " " yin customizations
-"  " hi MatchParen guifg=Yellow guibg=Blue cterm=bold
-"  " hi Comment cterm=NONE guifg=#776587 guibg=NONE
-"  " hi Search  cterm=bold  guifg=white guibg=blue
-"  " hi GitGutterAdd  guibg=#212026
-"  " hi GitGutterChange guibg=#212026
-"  " hi GitGutterDelete guibg=#212026
-"  " hi GitGutterChangeDelete guibg=#212026
-"  " hi SignColumn guibg=#212026
-"  " hi Boolean guifg=#c2bff2
-"  " hi Todo cterm=bold guifg=#fdffbc
-"  " " hi IncSearch  guifg=Black guibg=Red
-"  " " hi Search     guifg=Orange guibg=Black
-    " hi MatchParen cterm=bold
+"   " colorscheme minimal
+"   " " hi StatusLine cterm=bold guifg=black guibg=Aquamarine1
+"   " " hi StatusLine cterm=bold guifg=black guibg=#ccccff
+"   " " hi StatusLineNC cterm=bold guifg=black guibg=lightcyan
+"   " hi StatusLine cterm=bold guifg=#aaaaff guibg=NONE
+"   " hi StatusLineNC cterm=bold guifg=black guibg=NONE
+"   " hi SignColumn none
+"   " hi IncSearch cterm=bold guibg=blue guifg=white
+"   " " hi Search cterm=none guibg=yellow guifg=black
+"   " " hi Search cterm=bold guibg=blue guifg=yellow
+"   " " hi Search cterm=none guibg=mistyrose guifg=red
+"   " hi ALEError cterm=bold guibg=#F6C6FF guifg=#CF00FF
+"   " hi Error guifg=#CF00FF guibg=NONE cterm=bold
+"   " " hi Error cterm=bold guibg=orange guifg=white
+"   " " hi Search cterm=none guibg=lightcyan1 guifg=blue
+"   " " hi Search guibg=#FFE5E5 guifg=#FF0000
+"   " " hi Search guibg=#FFE5E5 guifg=orangered
+"   " hi Search guibg=gold guifg=black
+"   " " hi String guifg=darkblue
+"   " " hi String guifg=NavyBlue
+"   " " hi String guifg=#aaaaff
+"   " hi String guifg=orangered
+"   " hi Function cterm=bold guifg=darkblue
+"   " hi Todo cterm=bold,italic guibg=NONE
+"   " hi LineNr guifg=ivory
+"   " hi VertSplit guifg=bg
+"   " " hi MatchParen guibg=yellow
+"   " hi MatchParen guibg=lightcyan1 guifg=blue
+"   " " hi LineNr guifg=snow1
+"   " hi LineNr guifg=#aaaaff
+"   " hi Normal guibg=white
+"   " " hi Comment guifg=seagreen
+"   " hi Comment guifg=seashell4
+"   " hi ColorColumn ctermbg=2 guibg=snow1
+"   " " hi GitGutterAddDefault guifg=green3
+"   " " hi GitGutterRemoveDefault guifg=darkred
+"   " " hi GitGutterChangeDefault guifg=gold
+"   " hi clear SignColumn
+"   " hi SignColumn guifg=snow1
+"   " " hi Visual guifg=orangered guibg=peachpuff
+"   " hi Visual guibg=lightcyan1 guifg=blue
+"   " " hi VertSplit guifg=lightgray
+"   " " hi VertSplit guifg=#aaaaff
+"   " hi VertSplit guifg=snow1
+" else
+"   colorscheme Blaaark
+" "  set background=dark
+" "  " " colorscheme space-vim-dark
+" "  " " colorscheme yin
+" "  " " " yin customizations
+" "  " hi MatchParen guifg=Yellow guibg=Blue cterm=bold
+" "  " hi Comment cterm=NONE guifg=#776587 guibg=NONE
+" "  " hi Search  cterm=bold  guifg=white guibg=blue
+" "  " hi GitGutterAdd  guibg=#212026
+" "  " hi GitGutterChange guibg=#212026
+" "  " hi GitGutterDelete guibg=#212026
+" "  " hi GitGutterChangeDelete guibg=#212026
+" "  " hi SignColumn guibg=#212026
+" "  " hi Boolean guifg=#c2bff2
+" "  " hi Todo cterm=bold guifg=#fdffbc
+" "  " " hi IncSearch  guifg=Black guibg=Red
+" "  " " hi Search     guifg=Orange guibg=Black
+"     " hi MatchParen cterm=bold
 
-"  " It's october, set seasonal themes
-"  " colorscheme Blaaark
-"  colorscheme gruvbox
-"  hi Normal guibg=NONE ctermbg=NONE
-"  " hi NonText guibg=NONE ctermbg=NONE
-endif
+" "  " It's october, set seasonal themes
+" "  " colorscheme Blaaark
+" "  colorscheme gruvbox
+" "  hi Normal guibg=NONE ctermbg=NONE
+" "  " hi NonText guibg=NONE ctermbg=NONE
+" endif
 
-" hi CocHighlightText ctermbg=121 cterm=NONE
+" " hi CocHighlightText ctermbg=121 cterm=NONE

@@ -1,68 +1,40 @@
 #!/bin/bash
 
-set -e
+D=$(realpath "$(dirname "$0")")
+DOTDIR=".dotdir"
 
-mkdir -p ~/.zsh
-mkdir -p ~/bin
-
-# Maybe link a src file to a dst. If the src is not a file, then this returns a
-# non-zero value. If dst is a directory, then the src is attempted to be linked
-# into that directory. This returns a non-zero value if symbolic linking fails.
-maybelink() {
-  local src=$1
-  local dst=$2
-  if [ -d "$src" ]; then
-    return 1
-  fi
-  if [ -d "$dst" ]; then
-    dst=$dst/$(basename "$src")
-  fi
-  if [ -L "$dst" ] && [ "$(realpath "$src")" == "$(realpath "$dst")" ]; then
-    return 0
-  fi
-  if [ ! -e "$dst" ]; then
-    # If it's a broken symlink then force the linking.
-    ln -sf "$(realpath "$src")" "$dst"
-  else
-    ln -s "$(realpath "$src")" "$dst"
-  fi
-}
-
-echo "
-.aliasrc        $HOME
-.bashrc         $HOME
-.colors         $HOME
-.corerc         $HOME
-.envrc          $HOME
-.inputrc        $HOME
-.pathrc         $HOME
-.tmux.conf      $HOME
-.zsh/update.sh  $HOME/.zsh
-.zshrc          $HOME
-.xinitrc        $HOME
-.Xresources     $HOME
-.Xmodmap        $HOME
-bin             $HOME/bin
-editor          $HOME
-git             $HOME
-" |
-{
-  while read -r src dst; do
-    # Skip if it's a blank line or starts with a commment.
-    if [ -z "$src$dst" ] || echo "$src" | grep -q '^#'; then
+linkDir() {
+  root=$1
+  for fn in "$root"/{,.}*; do
+    bn="$(basename "$fn")"
+    if [ "$bn" = '.' ] || [ "$bn" = '..' ]; then
       continue
     fi
-    # If it's a directory, then symlink everything in it.
-    if [ -d "$src" ]; then
-      if [ -e "$dst" ] && [ ! -d "$dst" ]; then
-        echo "dst can't be a file for directory src, src=$src/, dst=$dst"
+    if [ -d "$fn" ] && [ ! -f "$fn/$DOTDIR" ]; then
+      linkDir "$fn"
+    else
+      src="$D/$fn"
+      dst=$(echo "$fn" \
+        | sed 's@^home@'"$HOME"'@' \
+        | sed 's/^root/\//' \
+      )
+      # If the dst already links to our src, then we don't need to link again.
+      if [ "$(realpath "$src")" = "$(realpath -m "$dst")" ]; then
         continue
       fi
-      for subsrc in $(find "$src" -path "$src/*"); do
-        maybelink "$subsrc" "$dst" || continue
-      done
-    else
-      maybelink "$src" "$dst" || continue
+      # Make the necessary directory, since linking will fail otherwise.
+      dn="$(dirname "$dst")"
+      if [ ! -d "$dn" ]; then
+        mkdir -p "$dn"
+      fi
+      # If it's a dead link, then just replace it.
+      if [ ! -e "$dst" ]; then
+        ln -fsT "$src" "$dst"
+      else
+        ln -sT "$src" "$dst"
+      fi
     fi
   done
 }
+
+linkDir home
