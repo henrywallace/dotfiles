@@ -1,16 +1,14 @@
 #!/bin/bash
 
-# shellcheck source=/dev/null
 . ~/.pathrc
 . ~/.aliasrc
 [ -f ~/.diffeorc ] && . ~/.diffeorc
+[ -f ~/.customrc ] && . ~/.customrc
 
 if command -v alacritty &>/dev/null; then
   # In particular, this is useful for i3-sensible-terminal which will loop
   # through various terminals, checking this env first. i3 will use the
-  # i3-sensible-terminal command whenever a config error occurs. And choosing a
-  # terminal that one is familiar with avoids undue pain for unfamilar
-  # environments.
+  # i3-sensible-terminal command whenever a config error occurs.
   export TERMINAL=alacritty
 fi
 
@@ -38,15 +36,18 @@ export FZF_DEFAULT_OPTS='--height 24% --reverse --border'
 # https://stackoverflow.com/a/5578718
 export ALTERNATE_EDITOR=""
 
-export EDITOR=vim
-
-if command -v bat >/dev/null 2>&1; then
-  export BAT_THEME=ansi-light
+if command -v vim &>/dev/null; then
+  export EDITOR=vim
+elif command -v vi &>/dev/null; then
+  export EDITOR=vi
 fi
 
-# Set a custom env EDITOR_THEME to light or dark depending on the time of day,
-# assuming a static time-zone. Editors are responsible for respecting this env
-# in their own config.
+if command -v bat >/dev/null 2>&1; then
+  export BAT_THEME=zenburn
+fi
+
+# Set bespoke EDITOR_THEME to light or dark depending on the time of day,
+# assuming a static time-zone.
 hour=$(TZ=America/New_York date +%H)
 if [ 6 -le "$hour" ] && [ "$hour" -le 19 ]; then
   export EDITOR_THEME=LIGHT

@@ -21,8 +21,6 @@ Plug 'dense-analysis/ale'             " linting
 Plug 'zivyangll/git-blame.vim'        " unintrusive git blame line
 Plug 'wellle/targets.vim'
 Plug 'google/vim-searchindex'         " show which search match number out of
-Plug 'neoclide/coc.nvim', {'branch': 'release'}
-" Plug 'wellle/context.vim'
 Plug 'jszakmeister/vim-togglecursor'
 
 " fzf
@@ -30,11 +28,11 @@ Plug 'junegunn/fzf', { 'dir': '~/.fzf', 'do': './install --all' }
 Plug 'junegunn/fzf.vim'
 
 " A e s t h e t i c s
-Plug 'crusoexia/vim-monokai'
 Plug 'dracula/vim', { 'as': 'dracula'}
 Plug 'morhetz/gruvbox'
 Plug 'neutaaaaan/blaaark'
-Plug 'wolverian/minimal'
+Plug 'arcticicestudio/nord-vim'
+Plug 'challenger-deep-theme/vim'
 
 " Syntax
 Plug 'cespare/vim-toml'
@@ -233,19 +231,6 @@ let g:go_fmt_fail_silently = 1
 let g:ale_list_window_size = 6
 let g:ale_sign_error = '✘'
 
-" function! LinterStatus() abort
-"     let l:counts = ale#statusline#Count(bufnr(''))
-
-"     let l:all_errors = l:counts.error + l:counts.style_error
-"     let l:all_non_errors = l:counts.total - l:all_errors
-"     return l:counts.total == 0 ? 'OK' : printf(
-"     \   '%dW %dE',
-"     \   all_non_errors,
-"     \   all_errors
-"     \)
-" endfunction
-" set statusline+=%{LinterStatus()}
-
 " Make vim-go faster.
 set ttyfast
 set lazyredraw
@@ -281,141 +266,9 @@ nnoremap <c-i> :bprev<CR>
 " hidden characters
 nmap <leader>l :set list!<CR>
 
-""" coc
-" Better display for messages
-set cmdheight=2
-" Better experience for diagnostic messages vs. default 4000.
-set updatetime=300
-" Don't give |ins-completion-menu| messages.
-set shortmess+=c
-" Use tab for trigger completion with characters ahead and navigate. Use
-" command ':verbose imap <tab>' to make sure tab is not mapped by other
-" plugin.
-inoremap <silent><expr> <TAB>
-      \ pumvisible() ? "\<C-n>" :
-      \ <SID>check_back_space() ? "\<TAB>" :
-      \ coc#refresh()
-inoremap <expr><S-TAB> pumvisible() ? "\<C-p>" : "\<C-h>"
-function! s:check_back_space() abort
-  let col = col('.') - 1
-  return !col || getline('.')[col - 1]  =~# '\s'
-endfunction
-" Use <c-space> to trigger completion.
-inoremap <silent><expr> <c-space> coc#refresh()
-" Use <cr> to confirm completion, `<C-g>u` means break undo chain at current
-" position. Coc only does snippet and additional edit on confirm.
-inoremap <expr> <cr> complete_info()["selected"] != "-1" ? "\<C-y>" : "\<C-g>u\<CR>"
-" Remap keys for gotos
-nmap <silent> gd <Plug>(coc-definition)
-nmap <silent> gy <Plug>(coc-type-definition)
-nmap <silent> gi <Plug>(coc-implementation)
-nmap <silent> gr <Plug>(coc-references)
-" Use K to show documentation in preview window
-nnoremap <silent> K :call <SID>show_documentation()<CR>
-function! s:show_documentation()
-  if (index(['vim','help'], &filetype) >= 0)
-    execute 'h '.expand('<cword>')
-  else
-    call CocAction('doHover')
-  endif
-endfunction
-" Highlight symbol under cursor on CursorHold
-autocmd CursorHold * silent call CocActionAsync('highlight')
-" Remap for rename current word
-nmap <leader>rn <Plug>(coc-rename)
+set background=dark
+if (has("termguicolors"))
+ set termguicolors
+endif
+colorscheme challenger_deep
 
-" let g:gitgutter_override_sign_column_highlight = 0
-
-"" Color theme. We define this earlier on so that we can more freely customize
-"" colors later on.
-"set termguicolors
-"let &t_8f = "\<Esc>[38;2;%lu;%lu;%lum"
-"let &t_8b = "\<Esc>[48;2;%lu;%lu;%lum"
-"let &t_8f = "\<Esc>[38;2;%lu;%lu;%lum"
-"let &t_8b = "\<Esc>[48;2;%lu;%lu;%lum"
-"set t_Co=256
-" set term=xterm=256color
-
-hi MatchParen cterm=bold
-
-let g:ale_sh_shellcheck_options = '-x -P'
-
-" if $EDITOR_THEME == "LIGHT"
-"   set background=light
-
-"   " TODO: If some env, then do this
-"   " hi LineNr ctermbg=none ctermfg=254
-"   " hi ColorColumn ctermbg=255
-
-"   " colorscheme minimal
-"   " " hi StatusLine cterm=bold guifg=black guibg=Aquamarine1
-"   " " hi StatusLine cterm=bold guifg=black guibg=#ccccff
-"   " " hi StatusLineNC cterm=bold guifg=black guibg=lightcyan
-"   " hi StatusLine cterm=bold guifg=#aaaaff guibg=NONE
-"   " hi StatusLineNC cterm=bold guifg=black guibg=NONE
-"   " hi SignColumn none
-"   " hi IncSearch cterm=bold guibg=blue guifg=white
-"   " " hi Search cterm=none guibg=yellow guifg=black
-"   " " hi Search cterm=bold guibg=blue guifg=yellow
-"   " " hi Search cterm=none guibg=mistyrose guifg=red
-"   " hi ALEError cterm=bold guibg=#F6C6FF guifg=#CF00FF
-"   " hi Error guifg=#CF00FF guibg=NONE cterm=bold
-"   " " hi Error cterm=bold guibg=orange guifg=white
-"   " " hi Search cterm=none guibg=lightcyan1 guifg=blue
-"   " " hi Search guibg=#FFE5E5 guifg=#FF0000
-"   " " hi Search guibg=#FFE5E5 guifg=orangered
-"   " hi Search guibg=gold guifg=black
-"   " " hi String guifg=darkblue
-"   " " hi String guifg=NavyBlue
-"   " " hi String guifg=#aaaaff
-"   " hi String guifg=orangered
-"   " hi Function cterm=bold guifg=darkblue
-"   " hi Todo cterm=bold,italic guibg=NONE
-"   " hi LineNr guifg=ivory
-"   " hi VertSplit guifg=bg
-"   " " hi MatchParen guibg=yellow
-"   " hi MatchParen guibg=lightcyan1 guifg=blue
-"   " " hi LineNr guifg=snow1
-"   " hi LineNr guifg=#aaaaff
-"   " hi Normal guibg=white
-"   " " hi Comment guifg=seagreen
-"   " hi Comment guifg=seashell4
-"   " hi ColorColumn ctermbg=2 guibg=snow1
-"   " " hi GitGutterAddDefault guifg=green3
-"   " " hi GitGutterRemoveDefault guifg=darkred
-"   " " hi GitGutterChangeDefault guifg=gold
-"   " hi clear SignColumn
-"   " hi SignColumn guifg=snow1
-"   " " hi Visual guifg=orangered guibg=peachpuff
-"   " hi Visual guibg=lightcyan1 guifg=blue
-"   " " hi VertSplit guifg=lightgray
-"   " " hi VertSplit guifg=#aaaaff
-"   " hi VertSplit guifg=snow1
-" else
-"   colorscheme Blaaark
-" "  set background=dark
-" "  " " colorscheme space-vim-dark
-" "  " " colorscheme yin
-" "  " " " yin customizations
-" "  " hi MatchParen guifg=Yellow guibg=Blue cterm=bold
-" "  " hi Comment cterm=NONE guifg=#776587 guibg=NONE
-" "  " hi Search  cterm=bold  guifg=white guibg=blue
-" "  " hi GitGutterAdd  guibg=#212026
-" "  " hi GitGutterChange guibg=#212026
-" "  " hi GitGutterDelete guibg=#212026
-" "  " hi GitGutterChangeDelete guibg=#212026
-" "  " hi SignColumn guibg=#212026
-" "  " hi Boolean guifg=#c2bff2
-" "  " hi Todo cterm=bold guifg=#fdffbc
-" "  " " hi IncSearch  guifg=Black guibg=Red
-" "  " " hi Search     guifg=Orange guibg=Black
-"     " hi MatchParen cterm=bold
-
-" "  " It's october, set seasonal themes
-" "  " colorscheme Blaaark
-" "  colorscheme gruvbox
-" "  hi Normal guibg=NONE ctermbg=NONE
-" "  " hi NonText guibg=NONE ctermbg=NONE
-" endif
-
-" " hi CocHighlightText ctermbg=121 cterm=NONE

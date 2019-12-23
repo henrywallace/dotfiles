@@ -1,0 +1,2 @@
+# Env vars and other setup specific to a computer, that won't be tracked in
+# this source control.
