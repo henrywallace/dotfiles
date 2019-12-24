@@ -1,4 +1,4 @@
-#!/bin/sh
+#!/bin/bash
 
 repos="
 https://github.com/zsh-users/zsh-autosuggestions
@@ -8,18 +8,17 @@ https://github.com/zdharma/fast-syntax-highlighting
 for repo in $repos; do
   [ -z "$repo" ] && continue
   tput setaf 4; echo "$repo"; tput sgr0
-  DST="$HOME/.zsh/$(basename "$repo")"
-  [ -d "$DST" ] || git clone "$repo" "$DST"
-  git -C "$DST" fetch
-  diff=$(git -C "$DST" diff HEAD..origin/master)
+  dst="$HOME/.zsh/$(basename "$repo")"
+  [ -d "$dst" ] || git clone "$repo" "$dst"
+  git -C "$dst" fetch
+  diff=$(git -C "$dst" diff HEAD..origin/master)
   if [ -n "$diff" ]; then
-    git -C "$DST" log -p --stat HEAD..origin/master
+    git -C "$dst" log -p --stat HEAD..origin/master
     echo -n "Pull these changes? (Y/n) "
     read -r answer
     if [ -z "$answer" ] || rg -iq "^y"; then
-      git -C "$DST" pull
+      git -C "$dst" pull
     fi
-    git -C "$DST" pull
   fi
 done
 
