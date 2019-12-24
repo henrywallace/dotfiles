@@ -16,6 +16,7 @@ fi
 
 # personal scripts
 PATH=$HOME/bin:$PATH
+PATH=$HOME/hack:$PATH
 
 # python
 PATH=$HOME/.local/bin:$PATH
