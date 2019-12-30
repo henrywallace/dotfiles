@@ -1,0 +1,56 @@
+# vim: syntax=config ts=4 sw=4
+
+general {
+    colors = false
+}
+
+order += "disk /"
+order += "memory"
+order += "load"
+order += "wireless _first_"
+order += "ethernet _first_"
+# order += "run_watch DHCP"
+# order += "run_watch Docker"
+order += "battery 0"
+order += "tztime local"
+
+wireless _first_ {
+    format_up = "W: %ip (%essid%quality)"
+	format_down = "W: down"
+}
+
+ethernet _first_ {
+	# if you use %speed, i3status requires root privileges
+	format_up = "E: %ip (%speed)"
+	format_down = "E: down"
+}
+
+# run_watch DHCP {
+# 	pidfile = "/var/run/dhcpcd.pid"
+# }
+
+# run_watch Docker {
+# 	pidfile = "/var/run/docker.pid"
+# }
+
+battery 0 {
+	format = "BAT %percentage %remaining"
+	path = "/sys/class/power_supply/BAT%d/uevent"
+}
+
+
+tztime local {
+    format = "%Y-%m-%d %r"
+}
+
+disk "/" {
+    format = "%avail"
+}
+
+memory {
+    format = "%used"
+}
+
+load {
+	format = "L: %1min"
+}

@@ -10,7 +10,7 @@ Plug 'FooSoft/vim-argwrap'            " fold arguments
 Plug 'airblade/vim-gitgutter'         " git diff gutter
 Plug 'editorconfig/editorconfig-vim'  " configure vim based on the project
 Plug 'majutsushi/tagbar'              " ctags sidebar
-Plug 'roxma/vim-paste-easy'           " set paste off when pasting (typing at inhuman speeds).
+Plug 'roxma/vim-paste-easy'           " set paste off when pasting (typing at inhuman speeds)
 Plug 'terryma/vim-multiple-cursors'   " multi-cursor ftw
 Plug 'tpope/vim-commentary'           " toggle comment lines
 Plug 'tpope/vim-eunuch'               " sudo write, rename file, mkdir, etc.
@@ -266,6 +266,7 @@ nnoremap <c-i> :bprev<CR>
 " hidden characters
 nmap <leader>l :set list!<CR>
 
+" TODO: set this based on EDITOR_THEME
 set background=dark
 if (has("termguicolors"))
  set termguicolors
