@@ -10,7 +10,7 @@ NC="$(tput sgr0)"
 
 scale() {
   # n=$(bc -l <<< "scale=0; l($2)/1")
-  # n=1
+  n=1
   printf -- "$1%.0s" $(seq 1 $n)
   # echo ""
 }
@@ -43,6 +43,6 @@ lastactive() {
 i=0
 for b in $(git branch --sort=-committerdate | sed 's/\* //'); do
   echo "${i} $BOLD${b}$NC%%$(lastactive "$b")%%$(diffstat "$b")" &
-  let i=$i+1
-done | sort -nk1 | sed 's/^[0-9]\+ //' | column -t -s'%%'
+  (( i++ ))
+done | sort -nk1 | sed -E 's/^[0-9]+ +//g' | column -t -s'%%'
 

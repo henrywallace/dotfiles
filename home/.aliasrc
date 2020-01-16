@@ -482,7 +482,11 @@ gprune() {
     | xargs git branch -d 2> /dev/null \
   || echo "No branches to prune."
 }
-alias con='rg --no-heading -C6 "<<<<<<<" $(git ls-files | sort -u)'
+con() {
+  git diff --name-only --diff-filter=U \
+    | xargs realpath --relative-to=. \
+    | xargs rg --no-heading -C6 "<<<<<<<"
+}
 alias g-='git checkout -'
 alias groot='git rev-parse --show-toplevel'
 alias ga='git add -u'

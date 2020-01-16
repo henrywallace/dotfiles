@@ -42,9 +42,6 @@ elif command -v vi &>/dev/null; then
   export EDITOR=vi
 fi
 
-if command -v bat >/dev/null 2>&1; then
-  export BAT_THEME=zenburn
-fi
 
 # Set bespoke EDITOR_THEME to light or dark depending on the time of day,
 # assuming a static time-zone.
@@ -55,5 +52,9 @@ else
   export EDITOR_THEME=DARK
 fi
 # override
-# EDITOR_THEME=DARK
+EDITOR_THEME=DARK
 # EDITOR_THEME=LIGHT
+
+if command -v bat >/dev/null 2>&1; then
+  export BAT_THEME=default
+fi

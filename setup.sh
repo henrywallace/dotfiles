@@ -1,18 +1,19 @@
 #!/bin/bash
 
+
 D=$(realpath "$(dirname "$0")")
 DOTDIR=".dotdir"
 
-lnopt=
-if strings /bin/ln | grep -q BSD; then
-  lnopt='-sF'
-elif strings /bin/ln | grep -q GNU; then
-  lnopt='-sT'
-else
-  echo unsupported /bin/ln version
-  exit 1
-fi
-
+# Link files and directories in the same structure as they appear here into the
+# appropriate target of the same structure.
+#
+# If a source directory contains the special file $DOTDIR, then the directory
+# is linked as is. Otherwise, it is recursively traversed and it's files or
+# directories are linked. Directories are created to model the same structure
+# here.
+#
+# Currently this supports only two top level directories: home, and root which
+# map to $HOME and /, respectively.
 linkDir() {
   root=$1
   for fn in "$root"/{,.}*; do
@@ -37,11 +38,12 @@ linkDir() {
       if [ ! -d "$dn" ]; then
         mkdir -p "$dn"
       fi
-      # If it's a dead link, then just replace it.
+      # If it's a dead link, or doesn't yet exist then just replace it.
       if [ ! -e "$dst" ]; then
-        ln $lnopt -f "$src" "$dst"
+        rm -f "$dst"
+        ln -s "$src" "$dst"
       else
-        ln $lnopt "$src" "$dst"
+        echo target already exists "$src -> $dst"
       fi
     fi
   done
