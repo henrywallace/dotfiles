@@ -32,7 +32,8 @@ Plug 'dracula/vim', { 'as': 'dracula'}
 Plug 'morhetz/gruvbox'
 Plug 'neutaaaaan/blaaark'
 Plug 'arcticicestudio/nord-vim'
-Plug 'challenger-deep-theme/vim'
+Plug 'challenger-deep-theme/vim', { 'as': 'challenger-deep' }
+
 
 " Syntax
 Plug 'cespare/vim-toml'

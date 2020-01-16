@@ -3,6 +3,16 @@
 D=$(realpath "$(dirname "$0")")
 DOTDIR=".dotdir"
 
+lnopt=
+if strings /bin/ln | grep -q BSD; then
+  lnopt='-sF'
+elif strings /bin/ln | grep -q GNU; then
+  lnopt='-sT'
+else
+  echo unsupported /bin/ln version
+  exit 1
+fi
+
 linkDir() {
   root=$1
   for fn in "$root"/{,.}*; do
@@ -29,9 +39,9 @@ linkDir() {
       fi
       # If it's a dead link, then just replace it.
       if [ ! -e "$dst" ]; then
-        ln -fsT "$src" "$dst"
+        ln $lnopt -f "$src" "$dst"
       else
-        ln -sT "$src" "$dst"
+        ln $lnopt "$src" "$dst"
       fi
     fi
   done
