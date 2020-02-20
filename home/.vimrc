@@ -22,6 +22,7 @@ Plug 'zivyangll/git-blame.vim'        " unintrusive git blame line
 Plug 'wellle/targets.vim'
 Plug 'google/vim-searchindex'         " show which search match number out of
 Plug 'jszakmeister/vim-togglecursor'
+Plug 'tpope/vim-dispatch'
 
 " fzf
 Plug 'junegunn/fzf', { 'dir': '~/.fzf', 'do': './install --all' }
@@ -30,8 +31,6 @@ Plug 'junegunn/fzf.vim'
 " A e s t h e t i c s
 Plug 'dracula/vim', { 'as': 'dracula'}
 Plug 'morhetz/gruvbox'
-Plug 'neutaaaaan/blaaark'
-Plug 'arcticicestudio/nord-vim'
 Plug 'challenger-deep-theme/vim', { 'as': 'challenger-deep' }
 
 
@@ -48,6 +47,8 @@ Plug 'tpope/vim-markdown'
 Plug 'isobit/vim-caddyfile'
 
 call plug#end()
+
+set timeoutlen=1000 ttimeoutlen=0
 
 " Disable Background Color Erase (BCE) so that color schemes
 " work properly when Vim is used inside tmux and GNU screen.
@@ -98,7 +99,7 @@ nnoremap <c-f> :BLines<cr>
 nnoremap <c-p> :Files<cr>
 nnoremap <c-b> :Buffers<cr>
 nnoremap <c-r> :History<cr>
-nnoremap <c-c> :Commands<cr>
+nnoremap <c-x> :Commands<cr>
 
 " Edit arg or word under cursor.
 nnoremap f ciw
@@ -217,9 +218,12 @@ endif
 " No wrapping of lines.
 set wrap!
 
+let g:ale_enabled = 1
+
 " let g:ale_linters['go'] = ['gopls', 'revive', 'misspell']
 let g:ale_linters = {
-  \ 'go': ['gopls', 'misspell', 'revive', 'govet'],
+  \ 'go': ['gopls', 'revive', 'govet'],
+  \ 'py': ['flake8', 'pylint'],
 \ }
 let g:go_def_mode='gopls'
 let g:go_info_mode='gopls'
@@ -268,9 +272,10 @@ nnoremap <c-i> :bprev<CR>
 nmap <leader>l :set list!<CR>
 
 " TODO: set this based on EDITOR_THEME
+" https://github.com/tmux/tmux/issues/1246
 set background=dark
 if (has("termguicolors"))
- set termguicolors
+  set termguicolors
 endif
 colorscheme challenger_deep
 

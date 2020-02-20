@@ -20,7 +20,6 @@ alias zz='v ~/.zshrc'
 # fi
 
 alias rs='rsync --info=progress2 --recursive --archive --partial --append-verify --one-file-system'
-alias rsd='rs --delete'
 
 # Prevent offering of all keys in ssh-agent [1]. If server is malicious then
 # private keys can be snatched [2].
@@ -33,26 +32,15 @@ alias ssh='ssh -o IdentitiesOnly=yes '
 # https://superuser.com/a/665181/577047
 # tar cf - /folder-with-big-files -P | pv -s $(du -sb /folder-with-big-files | awk '{print $1}') | gzip > big-files.tar.gz
 
-alias xl='XSECURELOCK_PASSWORD_PROMPT=time_hex xsecurelock'
-
-# Set a custom env EDITOR_THEME to light or dark depending on the time of day,
-# assuming a static time-zone. Editors are responsible for respecting this env
-# in their own config.
-hour=$(TZ=America/New_York date +%H)
-if [ 6 -le "$hour" ] && [ "$hour" -le 19 ]; then
-  export EDITOR_THEME=LIGHT
-else
-  export EDITOR_THEME=DARK
+if command -v xsecurelock &>/dev/null; then
+  alias xl='XSECURELOCK_PASSWORD_PROMPT=time_hex xsecurelock'
 fi
-# override
-EDITOR_THEME=DARK
-# EDITOR_THEME=LIGHT
 
-if command -v systemctl >/dev/null 2>&1; then
+if command -v systemctl &>/dev/null; then
   alias sc='sudo systemctl '
   alias scu='systemctl --user '
 fi
-if command -v journalctl >/dev/null 2>&1; then
+if command -v journalctl &>/dev/null; then
   alias jc='sudo journalctl '
   alias jcu='journalctl --user '
 fi
@@ -70,9 +58,13 @@ alias j='jobs -l'
 alias l='ls'
 alias ll='ls -lah'
 if [ "$(uname -s)" = Linux ]; then
-  alias ls='ls -F --color'
+  alias ls='ls -F --color -H'
 elif [ "$(uname -s)" = Darwin ]; then
-  alias ls='ls -FG'
+  alias ls='ls -FGH'
+fi
+
+if [ "$(uname -s)" = Darwin ]; then
+  alias make='gmake'
 fi
 
 alias t='tmux'
@@ -99,6 +91,13 @@ else
 fi
 
 alias dfs='cd ~/dotfiles'
+
+swap() {
+  tmp=$(mktemp)
+  mv "$1" "$tmp"
+  mv "$2" "$1"
+  mv "$tmp" "$2"
+}
 
 # Trailing space allows alias substitution [1] [2].
 # [1] https://wiki.archlinux.org/index.php/Sudo#Passing_aliases
@@ -305,7 +304,7 @@ rld() {
 }
 # search aliases, and print them out in columns
 ra() {
-  alias | rg "$@" | rg "(\w+)='(.*)'" -r '$1%%$2' | column -t -s'%%'
+  alias | rg '"$@"' | rg "(\w+)='(.*)'" -r '$1%%$2' | column -t -s'%%'
 }
 # simple and quick HTTP server
 serve() {
@@ -314,45 +313,10 @@ serve() {
   python3 -m http.server "$PORT" --bind 127.0.0.1
 }
 
-# Show what an alias or function is.
-wh() {
-  out=$(command -V $1)
-  echo $out
-  echo $out | grep -q 'is a shell function' && declare -f $1
-}
-
-lab() {
-  cd ~/g/drive/notebooks || return
-  . ./env/bin/activate
-  jupyter notebook
-}
-
-
 #
 # k8s + gcloud
 #
 alias k='kubectl '
-alias kn='kubectl get no'
-alias kpa='kp -a'
-alias mkl='minikube service list'
-alias wpa='wp -a'
-# # search for k8s pods
-# kp() {
-#   resource=$1
-#   if [ -z "$resource" ]; then
-#     resource=pods
-#   fi
-#   if [ -z "$1" ]; then
-#     kubectl get $resource
-#   elif [ "$1" = '-a' ]; then
-#     kubectl get $resource --all-namespaces
-#   else
-#     local PAT
-#     PAT="$(echo "$@" | tr -s ' ' '|')"
-#     HEADER=kubectl get $resource --all-namespaces | head -1
-#     kubectl get $resource --all-namespaces | rg -N --color=always "$PAT"
-#   fi
-# }
 # watch k8s pods
 wp() {
   export -f kp
@@ -393,7 +357,6 @@ blinks() {
 }
 
 arx() {
-  set -ex pipefile
   tar cf - "$1" -P | pv -s "$(du -sb "$1" | awk '{print $1}')" | gzip > "$1.tar.gz"
 }
 
@@ -433,11 +396,13 @@ pp() {
   fi
   eval python -c "'$script'"
 }
+
 pi() {
   local addr="$ADDR"
   [ -z "$addr" ] && addr="1.1.1.1"
   if ping -c 2 "$addr"; then
     echo "$BLUE${BOLD}Connected to the internet!$NC"
+    # TODO: Pick the first good wifi interface, instead of hardcoding one.
     out=$(iw dev wlp2s0 info)
     ssid=$(echo $out | rg ssid)
     ty=$(echo $out | rg type)
@@ -450,6 +415,7 @@ pi() {
 ipr() {
   ip route show | rg '^default.*src\s+((\d{1,4}\.?){4})' -or '$1' --color=never
 }
+
 # Start a jupyter notebook if applicable.
 pj() {
   # TODO: Can we figure out how to get this to
@@ -511,6 +477,7 @@ alias gn='git checkout -b'
 
 alias gr='git rebase master'
 alias rc='git rebase --continue'
+alias ck='git commit --allow-empty -m "CHECKPOINT"'
 
 alias pu='git push origin HEAD'
 alias fpu='git push -f origin HEAD'
@@ -519,7 +486,7 @@ alias gs='git status'
 alias gap='git add -p'
 alias lg='git log --reverse --oneline $(git merge-base master HEAD)..HEAD'
 alias gls='git log --reverse --stat $(git merge-base master HEAD)..HEAD'
-alias gl='git log --oneline'
+alias gl='git log $(git merge-base master HEAD)..HEAD'
 alias gls='git log --stat'
 alias lr='git log -n1 --stat'
 alias lrp='git log -p -n1 --stat'
