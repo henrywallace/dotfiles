@@ -4,6 +4,7 @@ general {
     colors = false
 }
 
+order += "volume master"
 order += "disk /"
 order += "memory"
 order += "load"
@@ -23,6 +24,14 @@ ethernet _first_ {
 	# if you use %speed, i3status requires root privileges
 	format_up = "E: %ip (%speed)"
 	format_down = "E: down"
+}
+
+volume master {
+        format = "♪: %volume"
+        format_muted = "♪: muted (%volume)"
+        device = "default"
+        mixer = "Master"
+        mixer_idx = 0
 }
 
 # run_watch DHCP {

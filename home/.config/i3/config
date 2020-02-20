@@ -26,8 +26,8 @@ bindsym $mod+o exec $browser
 # kill focused container
 bindsym $mod+q kill
 
-# default container layout
-workspace_layout tabbed
+# # default container layout
+# workspace_layout tabbed
 
 # change container layout (stacked, tabbed, toggle split)
 bindsym $mod+s layout stacking

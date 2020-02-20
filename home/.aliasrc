@@ -447,6 +447,9 @@ pi() {
     echo "$YELLOW${BOLD}Not connected to the internet.$NC"
   fi
 }
+ipr() {
+  ip route show | rg '^default.*src\s+((\d{1,4}\.?){4})' -or '$1' --color=never
+}
 # Start a jupyter notebook if applicable.
 pj() {
   # TODO: Can we figure out how to get this to
