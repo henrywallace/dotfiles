@@ -50,4 +50,6 @@ linkDir() {
 }
 
 linkDir home
-linkDir etc
+if [ "$(uname -s)" != Darwin ]; then
+  linkDir etc
+fi
