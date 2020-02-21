@@ -27,6 +27,7 @@ linkDir() {
       dst=$(echo "$fn" \
         | sed 's@^home@'"$HOME"'@' \
         | sed 's/^root/\//' \
+        | sed 's/^etc/\/etc\//' \
       )
       # If the dst already links to our src, then we don't need to link again.
       if [ "$(realpath "$src")" = "$(realpath -m "$dst")" ]; then
@@ -49,3 +50,4 @@ linkDir() {
 }
 
 linkDir home
+linkDir etc

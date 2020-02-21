@@ -1,0 +1,26 @@
+#!/bin/bash
+
+set -e
+
+dotfiles=$HOME/dotfiles
+if [ ! -d "$dotfiles" ]; then
+  echo missing "$dotfiles"
+  exit 1
+fi
+
+src=$(realpath "$1")
+
+if echo "$src" | grep -q "^/home/"; then
+  dst="$dotfiles/home/${src#*"$HOME/"}"
+  mkdir -p "$(dirname "$dst")"
+  mv "$src" "$dst"
+  ln -s "$dst" "$src"
+elif echo "$src" | grep -q "^/etc/"; then
+  dst="$dotfiles/$src"
+  mkdir -p "$(dirname "$dst")"
+  sudo mv "$src" "$dst"
+  sudo ln -s "$dst" "$src"
+else
+  echo "unhandled src path $src"
+  exit 1
+fi

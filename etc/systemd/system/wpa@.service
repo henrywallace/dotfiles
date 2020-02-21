@@ -1,0 +1,11 @@
+[Unit]
+Description=WPA supplicant daemon (interface-specific version)
+Before=network.target
+Wants=network.target
+
+[Service]
+Type=simple
+ExecStart=/usr/bin/wpa_supplicant -c /etc/wpa_supplicant/%I.conf -i wlp2s0 -d
+
+[Install]
+Alias=default.target
