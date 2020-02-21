@@ -56,5 +56,5 @@ EDITOR_THEME=DARK
 # EDITOR_THEME=LIGHT
 
 if command -v bat >/dev/null 2>&1; then
-  export BAT_THEME=default
+  export BAT_THEME="Monokai Extended"
 fi

@@ -39,6 +39,7 @@ fi
 if command -v systemctl &>/dev/null; then
   alias sc='sudo systemctl '
   alias scu='systemctl --user '
+  alias scr='sudo systemctl daemon-reload'
 fi
 if command -v journalctl &>/dev/null; then
   alias jc='sudo journalctl '
