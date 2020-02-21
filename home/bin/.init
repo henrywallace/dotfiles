@@ -1,0 +1,10 @@
+#!/bin/bash
+
+# Intended to be called in ~/.xinitrc. Split out for the convenience of testing
+# reloading of config changes, without having to restart X.
+
+# xrandr --dpi 220
+[ -f ~/.Xmodmap ] && xmodmap ~/.Xmodmap
+[ -f ~/.Xresources ] && xrdb -merge ~/.Xresources
+xset r rate 160 45
+

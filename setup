@@ -9,8 +9,7 @@ DOTDIR=".dotdir"
 #
 # If a source directory contains the special file $DOTDIR, then the directory
 # is linked as is. Otherwise, it is recursively traversed and it's files or
-# directories are linked. Directories are created to model the same structure
-# here.
+# directories are linked.
 #
 # Currently this supports only two top level directories: home, and root which
 # map to $HOME and /, respectively.
