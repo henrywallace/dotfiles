@@ -151,6 +151,8 @@ nv() {
   . venv/bin/activate && pip install pip-tools
 }
 
+alias ref='cd ~/projects/ref'
+
 alias ic='$EDITOR ~/.config/i3/config'
 alias ics='$EDITOR ~/.config/i3status/config'
 
@@ -399,6 +401,9 @@ pp() {
 }
 
 pi() {
+  # See also:
+  # https://stackoverflow.com/questions/4481005/get-wireless-ssid-through-shell-script-on-mac-os-x
+  # /System/Library/PrivateFrameworks/Apple80211.framework/Resources/airport -I
   local addr="$ADDR"
   [ -z "$addr" ] && addr="1.1.1.1"
   if ping -c 2 "$addr"; then
@@ -455,7 +460,7 @@ gprune() {
 con() {
   git diff --name-only --diff-filter=U \
     | xargs realpath --relative-to=. \
-    | xargs rg --no-heading -C6 "<<<<<<<"
+    | xargs rg --no-heading -l "<<<<<<<"
 }
 alias g-='git checkout -'
 alias groot='git rev-parse --show-toplevel'
@@ -478,7 +483,7 @@ alias gn='git checkout -b'
 
 alias gr='git rebase master'
 alias rc='git rebase --continue'
-alias ck='git commit --allow-empty -m "CHECKPOINT"'
+alias gk='git commit --allow-empty -m "CHECKPOINT"'
 
 alias pu='git push origin HEAD'
 alias fpu='git push -f origin HEAD'

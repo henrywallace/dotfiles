@@ -20,6 +20,10 @@ zstyle ':completion:*' list-colors "${(@s.:.)LS_COLORS}"
 # Allow completing inside of words.
 setopt completeinword
 
+# Allow writing comment lines in interactive shell, like bash.
+# https://stackoverflow.com/a/11873793
+setopt interactivecomments
+
 # Allow delete back part, not full word, like bash.
 # https://unix.stackexchange.com/a/258661/162041
 autoload -U select-word-style; select-word-style bash

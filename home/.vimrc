@@ -85,6 +85,8 @@ inoremap <c-l> <c-o><c-w><right>
 inoremap <c-j> <c-o><c-w><down>
 inoremap <c-k> <c-o><c-w><up>
 
+nnoremap <c-m> :Explore<cr>
+
 " Create new split windows faster.
 " nnoremap <leader>b :bp<cr>
 nnoremap <c-\> :vsplit<cr><c-w>w
@@ -122,6 +124,10 @@ set nojoinspaces
 " https://stackoverflow.com/a/22577860/2601179
 set formatoptions+=cron
 
+" Show which line I'm currently on. This helps me focus as a human.
+" https://vim.fandom.com/wiki/Highlight_current_line
+set cursorline
+
 " Move line(s) up or down.
 nnoremap <c-down> :m +1<cr>
 nnoremap <c-up> :m -2<cr>
@@ -143,6 +149,12 @@ nnoremap <leader>j :update<cr>
 " Move cursor to bottom after yanking.
 " https://stackoverflow.com/a/3806683/2601179
 vmap y y`]
+
+" Scroll page when at this many lines to the border. This also makes it so
+" that when moving to new search highlights with 'n', it will be more
+" centered, without having to do a subsequent 'zz' to center the page.
+" https://vim.fandom.com/wiki/Make_search_results_appear_in_the_middle_of_the_screen
+set scrolloff=5
 
 " Reload .vimrc on changes.
 autocmd! BufWritePost $MYVIMRC source $MYVIMRC
@@ -222,7 +234,7 @@ let g:ale_enabled = 1
 
 " let g:ale_linters['go'] = ['gopls', 'revive', 'misspell']
 let g:ale_linters = {
-  \ 'go': ['gopls', 'revive', 'govet'],
+  \ 'go': ['gopls', 'golint', 'govet'],
   \ 'py': ['flake8', 'pylint'],
 \ }
 let g:go_def_mode='gopls'
