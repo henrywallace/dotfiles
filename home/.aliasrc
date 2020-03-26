@@ -468,7 +468,7 @@ alias ga='git add -u'
 alias a='git add -u'
 # alias gp='git pull --rebase'
 alias fold='git stash --keep-index && git stash'
-alias gua='git reset --soft HEAD@{1} && git reset'
+# alias gua='git reset --soft HEAD@{1} && git reset'
 alias re='git reset'
 
 alias gd='git diff'
@@ -476,6 +476,11 @@ alias gdc='git diff --cached'
 alias gdd='git diff $(git merge-base master HEAD)'
 alias gds='echo; git diff --stat; echo'
 alias gf='git diff --name-only $(git merge-base master HEAD)'
+
+alias dirty='git diff --name-only --relative'
+rd() {
+  rg $@ $(git diff --name-only --relative)
+}
 
 alias gm='git branch -m'
 alias gmp='git checkout master && git pull && gprune'
