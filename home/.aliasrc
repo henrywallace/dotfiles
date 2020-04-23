@@ -200,6 +200,9 @@ gup() {
 zup() {
   ~/.zsh/update.sh
 }
+tup() {
+  ~/.tmux/update.sh
+}
 
 touchp() {
   mkdir -p "$(dirname "$1")"
