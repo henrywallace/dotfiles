@@ -23,6 +23,7 @@ Plug 'wellle/targets.vim'
 Plug 'google/vim-searchindex'         " show which search match number out of
 Plug 'jszakmeister/vim-togglecursor'
 Plug 'tpope/vim-dispatch'
+" Plug 'neoclide/coc.nvim', {'branch': 'release'}
 
 " fzf
 Plug 'junegunn/fzf', { 'dir': '~/.fzf', 'do': './install --all' }
@@ -57,6 +58,10 @@ if &term =~ '256color'
     set t_ut=
 endif
 
+" " All moving the cursor freely, instead of being limited by the then length of
+" " a line.
+" set virtualedit=all
+
 " Format rust files on save.
 let g:rustfmt_autosave = 1
 
@@ -85,6 +90,9 @@ inoremap <c-l> <c-o><c-w><right>
 inoremap <c-j> <c-o><c-w><down>
 inoremap <c-k> <c-o><c-w><up>
 
+nnoremap <s-j> <c-e>
+nnoremap <s-k> <c-y>
+
 nnoremap <c-m> :Explore<cr>
 
 " Create new split windows faster.
@@ -102,6 +110,20 @@ nnoremap <c-p> :Files<cr>
 nnoremap <c-b> :Buffers<cr>
 nnoremap <c-r> :History<cr>
 nnoremap <c-x> :Commands<cr>
+
+" " coc
+" " Use tab for trigger completion with characters ahead and navigate.
+" " NOTE: Use command ':verbose imap <tab>' to make sure tab is not mapped by
+" " other plugin before putting this into your config.
+" inoremap <silent><expr> <TAB>
+"       \ pumvisible() ? "\<C-n>" :
+"       \ <SID>check_back_space() ? "\<TAB>" :
+"       \ coc#refresh()
+" inoremap <expr><S-TAB> pumvisible() ? "\<C-p>" : "\<C-h>"
+" function! s:check_back_space() abort
+"   let col = col('.') - 1
+"   return !col || getline('.')[col - 1]  =~# '\s'
+" endfunction
 
 " Edit arg or word under cursor.
 nnoremap f ciw

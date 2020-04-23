@@ -20,6 +20,14 @@ zstyle ':completion:*' list-colors "${(@s.:.)LS_COLORS}"
 # Allow completing inside of words.
 setopt completeinword
 
+# Remove command lines from the history list when the first character on the
+# line is a space, or when one of the expanded aliases contains a leading
+# space. Note that the command lingers in the internal history until the next
+# command is entered before it vanishes, allowing you to briefly reuse or edit
+# the line. If you want to make it vanish right away without entering another
+# command, type a space and press return.
+setopt HIST_IGNORE_SPACE
+
 # Allow writing comment lines in interactive shell, like bash.
 # https://stackoverflow.com/a/11873793
 setopt interactivecomments

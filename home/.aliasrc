@@ -467,7 +467,6 @@ alias groot='git rev-parse --show-toplevel'
 alias ga='git add -u'
 alias a='git add -u'
 # alias gp='git pull --rebase'
-alias fold='git stash --keep-index && git stash'
 # alias gua='git reset --soft HEAD@{1} && git reset'
 alias re='git reset'
 
@@ -501,6 +500,8 @@ alias gl='git log $(git merge-base master HEAD)..HEAD'
 alias gls='git log --stat'
 alias lr='git log -n1 --stat'
 alias lrp='git log -p -n1 --stat'
+
+# git stash
 p() {
   if [ -z "$1" ]; then
     git stash show -p
@@ -508,8 +509,10 @@ p() {
   git stash show -p "stash@{$1}"
 }
 alias st='git stash --keep-index'
+alias fold='git stash --keep-index && git stash'
 alias stl='git stash list'
 alias stp='git stash pop'
+
 # Rebase master or rebase back $1 commits.
 rb () {
   if [ -z "$1" ]; then
