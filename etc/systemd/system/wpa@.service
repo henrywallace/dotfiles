@@ -2,6 +2,7 @@
 Description=WPA supplicant daemon (interface-specific version)
 Before=network.target
 Wants=network.target
+Conflicts=wpa@.service
 
 [Service]
 Type=simple

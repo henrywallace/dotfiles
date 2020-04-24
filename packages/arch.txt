@@ -2,7 +2,7 @@ alacritty
 arp-scan
 bat
 dhcpcd
-doccker
+docker
 fail2ban
 fd
 feh

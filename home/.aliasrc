@@ -21,12 +21,6 @@ alias zz='v ~/.zshrc'
 
 alias rs='rsync --info=progress2 --recursive --archive --partial --append-verify --one-file-system'
 
-# Prevent offering of all keys in ssh-agent [1]. If server is malicious then
-# private keys can be snatched [2].
-#
-# [1] https://serverfault.com/a/515214/430816
-# [2] https://krypt.co/docs/security/threat-model.html
-alias ssh='ssh -o IdentitiesOnly=yes '
 
 # TODO: tar progress
 # https://superuser.com/a/665181/577047
@@ -79,6 +73,7 @@ ta() {
     tmux attach -t "$@"
   fi
 }
+alias cul='curl $@ | le'
 alias jql='jq . -C | le'
 # Curl in site, and stream through jq.
 cu() {

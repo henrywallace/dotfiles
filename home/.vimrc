@@ -24,6 +24,8 @@ Plug 'google/vim-searchindex'         " show which search match number out of
 Plug 'jszakmeister/vim-togglecursor'
 Plug 'tpope/vim-dispatch'
 " Plug 'neoclide/coc.nvim', {'branch': 'release'}
+Plug 'jceb/vim-orgmode'
+Plug 'tpope/vim-speeddating'
 
 " fzf
 Plug 'junegunn/fzf', { 'dir': '~/.fzf', 'do': './install --all' }
@@ -33,7 +35,7 @@ Plug 'junegunn/fzf.vim'
 Plug 'dracula/vim', { 'as': 'dracula'}
 Plug 'morhetz/gruvbox'
 Plug 'challenger-deep-theme/vim', { 'as': 'challenger-deep' }
-
+Plug 'romainl/vim-dichromatic'
 
 " Syntax
 Plug 'cespare/vim-toml'
