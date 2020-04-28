@@ -1,23 +1,9 @@
 # -*- mode: gitignore; -*-
 
-*~
 .DS_Store
 .ipynb_checkpoints
 .ropeproject
 .vscode
-.vscode
-Gopkg.lock
-Untitled.ipynb
-\#*\#
 __pycache__
-env
 venv
-ve36
-graveyard
 vendor
-Untitled*.ipynb
-.*.ipynb
-*-bak
-*.bak*
-*.hdf5
-*Cargo.lock
