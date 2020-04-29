@@ -46,7 +46,11 @@ alias rm='rm -i'
 alias df='df -h'
 alias ln='ln -i'
 
-alias v=vim
+if command -v nvim &>/dev/null; then
+  alias v=nvim
+else
+  alias v=vim
+fi
 alias e='emacs -nw'  # always prefer terminal emacs: "no window"
 
 alias j='jobs -l'
