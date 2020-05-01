@@ -8,6 +8,10 @@ alias bb='v ~/.bashrc'
 alias vv='v ~/.vimrc'
 alias zz='v ~/.zshrc'
 
+if command -v nix-env &>/dev/null; then
+  alias n='nix-env '
+fi
+
 # if echo "$SHELL" | grep -q zsh; then
 #   fg() {
 #     set -m
@@ -172,8 +176,11 @@ u() {
   if command -v brew >/dev/null 2>&1; then
     bup && echo
   fi
-  if [ "$(uname -s)" = "Linux" ] && command -v apt >/dev/null 2>&1; then
+  if command -v apt >/dev/null 2>&1; then
     sudo apt update && sudo apt full-upgrade && sudo apt auto-remove
+  fi
+  if command -v nix-env &>/dev/null; then
+    nix-env --upgrade
   fi
 }
 uu() {
@@ -185,10 +192,11 @@ uu() {
 }
 # vim update
 vup() {
-  vim \
-    +PlugUpgrade \
-    +PlugUpdate \
-    +PlugClean \
+  if [ -d ~/.config/nvim ]; then
+    ~/.config/nvim/setup
+  fi
+  v +PlugUpgrade +PlugUpdate +PlugClean \
+    +CocUpdateSync \
     +qall
 }
 gup() {
@@ -317,6 +325,10 @@ serve() {
   echo "http://localhost:$PORT"
   python3 -m http.server "$PORT" --bind 127.0.0.1
 }
+
+if command -v nex-env &>/dev/null; then
+  alias n=nex-env
+fi
 
 #
 # k8s + gcloud
@@ -498,10 +510,12 @@ alias gs='git status'
 alias gap='git add -p'
 alias lg='git log --reverse --oneline $(git merge-base master HEAD)..HEAD'
 alias gls='git log --reverse --stat $(git merge-base master HEAD)..HEAD'
-alias gl='git log $(git merge-base master HEAD)..HEAD'
+# alias gl='git log $(git merge-base master HEAD)..HEAD'
 alias gls='git log --stat'
 alias lr='git log -n1 --stat'
 alias lrp='git log -p -n1 --stat'
+
+alias gpl='gpg --list-secret-keys --keyid-format LONG'
 
 # git stash
 p() {

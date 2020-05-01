@@ -1,9 +1,14 @@
 #!/bin/bash
 
+if [ -f ~/.nix-profile/etc/profile.d/nix.sh ]; then
+  . ~/.nix-profile/etc/profile.d/nix.sh
+fi
+
 . ~/.pathrc
 . ~/.aliasrc
 [ -f ~/.diffeorc ] && . ~/.diffeorc
 [ -f ~/.customrc ] && . ~/.customrc
+
 
 if command -v alacritty &>/dev/null; then
   # In particular, this is useful for i3-sensible-terminal which will loop
@@ -11,6 +16,8 @@ if command -v alacritty &>/dev/null; then
   # i3-sensible-terminal command whenever a config error occurs.
   export TERMINAL=alacritty
 fi
+
+export GPG_TTY=$(tty)
 
 # fzf
 case "$SHELL" in
@@ -31,6 +38,9 @@ if command -v bat &>/dev/null; then
 fi
 
 export FZF_DEFAULT_OPTS='--height 24% --reverse --border'
+if command -v fd &>/dev/null; then
+  export FZF_DEFAULT_COMMAND='fd --type f'
+fi
 
 # Start emacs daemon automatically and idempotently with emacsclient.
 # https://stackoverflow.com/a/5578718

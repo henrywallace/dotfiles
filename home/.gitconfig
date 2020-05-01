@@ -1,6 +1,7 @@
 [user]
 	name = Henry Wallace
-	email = henry@henrywallace.io
+	email = "henry@henrywallace.io"
+	signingkey = "henry@henrywallace.io"
 
 [push]
 	default = simple
@@ -10,6 +11,9 @@
 	# git-config does indeed expand ~
 	# https://stackoverflow.com/a/11262153
 	excludesfile = ~/.gitignore_global
+
+[commit]
+	gpgsign = true
 
 [alias]
 	co = checkout
@@ -34,3 +38,4 @@
 	required = true
 	clean = git-lfs clean -- %f
 	smudge = git-lfs smudge -- %f
+
