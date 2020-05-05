@@ -40,8 +40,8 @@ if (has("termguicolors"))
   set termguicolors
 endif
 " TODO: set this based on EDITOR_THEME
-" set background=dark
-" colorscheme challenger_deep
+set background=dark
+colorscheme challenger_deep
 " set background=light
 " colorscheme vacme
 
