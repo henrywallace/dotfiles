@@ -1,0 +1,8 @@
+#!/bin/bash
+
+recent_tags=$(git tag --sort=taggerdate | tail -4)
+for branch in 'master' $recent_tags; do
+  git branch --merge "$branch" \
+    | grep -v "$branch" \
+    | xargs git branch -d 2>/dev/null
+done

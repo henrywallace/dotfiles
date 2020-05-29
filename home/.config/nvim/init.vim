@@ -8,7 +8,7 @@ call plug#begin('~/.vim/plugged')
 
 " Miscellany
 Plug 'FooSoft/vim-argwrap'            			" fold args
-Plug 'airblade/vim-gitgutter'         			" git diff gutter
+" Plug 'airblade/vim-gitgutter'         			" git diff gutter
 Plug 'tpope/vim-commentary'           			" toggle commen out oft lines
 Plug 'tpope/vim-eunuch'               			" rename, mkdir, sudo, etc.
 Plug 'google/vim-searchindex'         			" search match [1/n]
@@ -17,6 +17,9 @@ Plug 'junegunn/fzf', { 'do': { -> fzf#install() } }	" fzf
 Plug 'junegunn/fzf.vim'
 Plug 'neoclide/coc.nvim', {'branch': 'release'}         " language server
 Plug 'dense-analysis/ale'                               " linting
+Plug 'tpope/vim-fugitive'                               " git
+Plug 'terryma/vim-multiple-cursors' 			" multiple-cusors
+Plug 'zivyangll/git-blame.vim'                          " simple git blame
 
 " Language specific
 Plug 'fatih/vim-go'                                     " go
@@ -28,25 +31,10 @@ Plug 'challenger-deep-theme/vim', { 'as': 'challenger-deep' }
 Plug 'morhetz/gruvbox'
 Plug 'vim-scripts/summerfruit256.vim'
 Plug 'olivertaylor/vacme'
+Plug 'endel/vim-github-colorscheme'
+Plug 'dracula/vim'
 
 call plug#end()
-
-"
-" Theme settings
-"
-
-" https://github.com/tmux/tmux/issues/1246
-if (has("termguicolors"))
-  set termguicolors
-endif
-" TODO: set this based on EDITOR_THEME
-set background=dark
-colorscheme challenger_deep
-" set background=light
-" colorscheme vacme
-
-" Only do this if current theme is challenger_deep
-highlight SignColumn ctermbg=232 guibg=#100E23
 
 "
 " Generic key-bindings
@@ -70,6 +58,9 @@ nnoremap <s-k> <c-y>
 inoremap <c-e> <c-o><s-$>
 inoremap <c-a> <c-o><s-^>
 
+" Open up file viewer.
+nnoremap <c-m> :Explore<cr>
+
 " Edit arg or word under cursor.
 nnoremap f ciw
 
@@ -80,6 +71,8 @@ nnoremap <leader>j :wa<cr>
 " nnoremap <leader>b :bp<cr>
 nnoremap <c-\> :vsplit<cr><c-w>w
 inoremap <c-\> <esc>:vsplit<cr><c-w>w
+" nnoremap <c-l> :split<cr><c-w>w
+" inoremap <c-l> <esc>:split<cr><c-w>w
 
 " Move cursor to bottom after yanking.
 " https://stackoverflow.com/a/3806683/2601179
@@ -91,6 +84,16 @@ nnoremap <c-up> :m -2<cr>
 vnoremap <c-down>:m '>+1<cr>gv
 vnoremap <c-up> :m '<-2<cr>gv
 
+" Show current enclosing scope; usually.
+" https://vi.stackexchange.com/a/12429
+nnoremap <leader>l :echo getline(search('\v^[[:alpha:]$_]', "bn", 1, 100))<CR>
+
+" Show git blame for current line. Simpler and less obtrusive.
+nnoremap <leader>b :<C-u>call gitblame#echo()<CR>
+
+nnoremap # #<c-o>
+
+
 "
 " Generic settings
 "
@@ -98,7 +101,7 @@ vnoremap <c-up> :m '<-2<cr>gv
 " Primary motivated by git gutter, and coc
 " https://github.com/airblade/vim-gitgutter
 " https://github.com/neoclide/coc.nvim
-set updatetime=300
+set updatetime=100
 
 " Reload .vimrc on changes.
 autocmd! BufWritePost $MYVIMRC source $MYVIMRC
@@ -113,6 +116,9 @@ if has("autocmd") && &filetype != 'gitcommit'
   au BufReadPost * if line("'\"") > 0 && line("'\"") <= line("$")
     \| exe "normal! g'\"" | endif
 endif
+
+" Show the cursor line for ease of knowing what I'm doing in this life.
+set cursorline
 
 " I am inordinately annoyed by previously saved file dialogs.
 set nobackup
@@ -134,7 +140,7 @@ set formatoptions+=cron
 set nojoinspaces
 
 " No wrapping of lines.
-set wrap!
+set nowrap
 
 "
 " Plugin Settings
@@ -172,11 +178,16 @@ inoremap <silent><expr> <Tab>
       \ <SID>check_back_space() ? "\<Tab>" :
       \ coc#refresh()
 nmap <silent> gd <Plug>(coc-definition)
-nnoremap <leader>gd :vsplit<cr><c-w><c-w><Plug>(coc-definition)
+nnoremap <leader>gd :vsplit<cr><c-w><c-w>:GoDef<cr>
 nmap <silent> gy <Plug>(coc-type-definition)
 nmap <silent> gi <Plug>(coc-implementation)
 nmap <silent> gr <Plug>(coc-references)
 nmap <silent> <leader>n <Plug>(coc-diagnostic-next-error)
+
+" Highlight current symbol under cursor.
+" https://github.com/neoclide/coc-highlight#usage
+autocmd CursorHold * silent call CocActionAsync('highlight')
+
 
 " ALE linter
 " nnoremap <leader>n :ALENextWrap<cr>zz
@@ -196,3 +207,32 @@ nnoremap <c-p> :Files<cr>
 
 " Markdown code fence syntax highlighting.
 let g:markdown_fenced_languages = ['go', 'sh', 'py=python']
+
+set timeoutlen=1000 ttimeoutlen=0
+
+"
+" Theme settings
+
+
+
+" https://github.com/tmux/tmux/issues/1246
+if (has("termguicolors"))
+  set termguicolors
+endif
+" TODO: set this based on EDITOR_THEME
+
+set background=dark
+colorscheme challenger_deep
+" Only do this if current theme is challenger_deep
+highlight SignColumn ctermbg=232 guibg=#100E23
+hi CocHighlightText guifg=plum
+
+" colorscheme summerfruit256
+
+" set background=light
+" colorscheme github
+
+" hi Cursor guibg=red guifg=white
+
+
+" hi Cursor ctermbg=red ctermfg=blue guibg=blue guifg=white

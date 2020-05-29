@@ -348,7 +348,7 @@ wd() {
 #
 # golang
 #
-alias goi='go install ./... && go mod tidy'
+alias goi='go install -v ./... && go mod tidy'
 alias goiv='go install -v ./... && go mod tidy'
 alias gome='cd $FIRSTGOPATH/src/github.com/henrywallace'
 gdoc() {
@@ -464,13 +464,6 @@ compose() {
 #
 # git
 #
-gprune() {
-  # include latest tag
-  git branch --merge master \
-    | grep -v master \
-    | xargs git branch -d 2> /dev/null \
-  || echo "No branches to prune."
-}
 con() {
   git diff --name-only --diff-filter=U \
     | xargs realpath --relative-to=. \

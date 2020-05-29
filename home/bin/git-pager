@@ -1,0 +1,10 @@
+#!/bin/bash
+
+# https://github.com/dandavison/delta
+# if command -v delta &>/dev/null; then
+#   exec delta --hunk-style=plain
+if command -v bat &>/dev/null; then
+  exec bat -l diff -p
+else
+  exec less
+fi
