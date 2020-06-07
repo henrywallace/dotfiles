@@ -28,10 +28,10 @@ diffstat() {
   del="$(echo "$diff" | rg '(\d+) deletions?' -or '$1')"
   sep=" "
   summary=""
-  [[ -z "$com" ]] || summary+="${MAGENTA}$(printf "%3s" $com"$(scale 'c' 1)")${NC}${sep}"
-  [[ -z "$chg" ]] || summary+="${BLUE}$(printf "%3s" $chg"$(scale 'f' 1)")${NC}${sep}"
-  [[ -z "$ins" ]] || summary+="${GREEN}$(printf "%5s" "$ins$(scale '+' 1)")${NC}${sep}"
-  [[ -z "$del" ]] || summary+="${RED}$(printf "%5s" "$del$(scale '-' 1)")${NC}"
+  [[ -z "$com" ]] || summary+="${MAGENTA}$(printf "%6s" $com"$(scale 'c' 1)")${NC}${sep}"
+  [[ -z "$chg" ]] || summary+="${BLUE}$(printf "%6s" $chg"$(scale 'f' 1)")${NC}${sep}"
+  [[ -z "$ins" ]] || summary+="${GREEN}$(printf "%6s" "$ins$(scale '+' 1)")${NC}${sep}"
+  [[ -z "$del" ]] || summary+="${RED}$(printf "%6s" "$del$(scale '-' 1)")${NC}"
   echo "$summary"
 }
 

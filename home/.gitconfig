@@ -7,7 +7,9 @@
 	default = simple
 
 [core]
-	editor = vim
+	# Don't set editor, but instead just use $EDITOR
+	# https://git-scm.com/book/en/v2/Customizing-Git-Git-Configuration#_core_editor
+	# editor =
 	# git-config does indeed expand ~
 	# https://stackoverflow.com/a/11262153
 	excludesfile = ~/.gitignore_global

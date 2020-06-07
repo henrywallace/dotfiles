@@ -1,0 +1,27 @@
+{
+  "coc.preferences.extensionUpdateCheck": "daily",
+  "languageserver": {
+    "golang": {
+      "command": "gopls",
+      "rootPatterns": [
+        "go.mod"
+      ],
+      "args": [
+        "-remote=auto",
+        "-debug=localhost:6061",
+        "serve"
+      ],
+      "filetypes": [
+        "go"
+      ],
+      "trace.server": "verbose",
+      "initializationOptions": {
+        "usePlaceholders": true
+      }
+    }
+  },
+  "coc.preferences.formatOnSaveFiletypes": [
+    "go",
+    "json"
+  ]
+}

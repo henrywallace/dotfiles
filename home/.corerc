@@ -46,7 +46,9 @@ fi
 # https://stackoverflow.com/a/5578718
 export ALTERNATE_EDITOR=""
 
-if command -v vim &>/dev/null; then
+if command -v nvim &>/dev/null; then
+  export EDITOR=nvim
+elif command -v vim &>/dev/null; then
   export EDITOR=vim
 elif command -v vi &>/dev/null; then
   export EDITOR=vi
@@ -66,5 +68,5 @@ EDITOR_THEME=DARK
 # EDITOR_THEME=LIGHT
 
 if command -v bat >/dev/null 2>&1; then
-  export BAT_THEME="Monokai Extended"
+  export BAT_THEME="ansi-dark"
 fi

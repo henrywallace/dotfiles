@@ -8,7 +8,6 @@ call plug#begin('~/.vim/plugged')
 
 " Miscellany
 Plug 'FooSoft/vim-argwrap'            			" fold args
-" Plug 'airblade/vim-gitgutter'         			" git diff gutter
 Plug 'tpope/vim-commentary'           			" toggle commen out oft lines
 Plug 'tpope/vim-eunuch'               			" rename, mkdir, sudo, etc.
 Plug 'google/vim-searchindex'         			" search match [1/n]
@@ -17,14 +16,14 @@ Plug 'junegunn/fzf', { 'do': { -> fzf#install() } }	" fzf
 Plug 'junegunn/fzf.vim'
 Plug 'neoclide/coc.nvim', {'branch': 'release'}         " language server
 Plug 'dense-analysis/ale'                               " linting
-Plug 'tpope/vim-fugitive'                               " git
 Plug 'terryma/vim-multiple-cursors' 			" multiple-cusors
 Plug 'zivyangll/git-blame.vim'                          " simple git blame
 
 " Language specific
-Plug 'fatih/vim-go'                                     " go
 Plug 'rust-lang/rust.vim'                               " rust
 Plug 'tpope/vim-markdown'                               " markdown
+Plug 'cespare/vim-toml'   				" toml
+"Plug 'fatih/vim-go', { 'do': ':GoUpdateBinaries' }      " go
 
 " A e s t h e t i c s
 Plug 'challenger-deep-theme/vim', { 'as': 'challenger-deep' }
@@ -91,9 +90,6 @@ nnoremap <leader>l :echo getline(search('\v^[[:alpha:]$_]', "bn", 1, 100))<CR>
 " Show git blame for current line. Simpler and less obtrusive.
 nnoremap <leader>b :<C-u>call gitblame#echo()<CR>
 
-nnoremap # #<c-o>
-
-
 "
 " Generic settings
 "
@@ -142,58 +138,51 @@ set nojoinspaces
 " No wrapping of lines.
 set nowrap
 
+" List only up to 10 best spelling suggestions, instead of an entire
+" buffer-filling selection.
+"
+" https://github.com/vim/vim/issues/4087#issue-418688650
+set spellsuggest=best,10
+
+nnoremap z0 1z=
+
+" " Backspace can not work in some wird cases.
+" set backspace=indent,eol,start
+
 "
 " Plugin Settings
 "
 
-" vim-go
-"
-" Import on save, instead of just gofmt.
-let g:go_fmt_command='goimports'
-" Prevent annoying popup loc list on errors
-" https://github.com/fatih/vim-go/issues/1682
-let g:go_fmt_fail_silently = 1
-" disable vim-go :GoDef short cut (gd)
-" this is handled by LanguageClient [LC]
-let g:go_def_mapping_enabled = 0
-
 " coc improvements
-"
-" Use <cr> to confirm completion, `<C-g>u` means break undo chain at current
-" position. Coc only does snippet and additional edit on confirm.
-" <cr> could be remapped by other vim plugin, try `:verbose imap <CR>`.
+set cmdheight=2
+set shortmess+=c
+set signcolumn=yes
+inoremap <silent><expr> <TAB>
+      \ pumvisible() ? "\<C-n>" :
+      \ <SID>check_back_space() ? "\<TAB>" :
+      \ coc#refresh()
+inoremap <expr><S-TAB> pumvisible() ? "\<C-p>" : "\<C-h>"
+
+function! s:check_back_space() abort
+  let col = col('.') - 1
+  return !col || getline('.')[col - 1]  =~# '\s'
+endfunction
 if exists('*complete_info')
   inoremap <expr> <cr> complete_info()["selected"] != "-1" ? "\<C-y>" : "\<C-g>u\<CR>"
 else
   inoremap <expr> <cr> pumvisible() ? "\<C-y>" : "\<C-g>u\<CR>"
 endif
-" In addition to c-n, and c-p to cycle through completion options, also use
-" <tab>, and to trigger completion.
-function! s:check_back_space() abort
-  let col = col('.') - 1
-  return !col || getline('.')[col - 1]  =~ '\s'
-endfunction
-inoremap <silent><expr> <Tab>
-      \ pumvisible() ? "\<C-n>" :
-      \ <SID>check_back_space() ? "\<Tab>" :
-      \ coc#refresh()
-nmap <silent> gd <Plug>(coc-definition)
-nnoremap <leader>gd :vsplit<cr><c-w><c-w>:GoDef<cr>
-nmap <silent> gy <Plug>(coc-type-definition)
-nmap <silent> gi <Plug>(coc-implementation)
-nmap <silent> gr <Plug>(coc-references)
-nmap <silent> <leader>n <Plug>(coc-diagnostic-next-error)
-
+nmap gd <Plug>(coc-definition)zz
+nmap gy <Plug>(coc-type-definition)
+nmap <leader>gd :vsplit<cr><c-w><c-w><Plug>(coc-definition)zz
 " Highlight current symbol under cursor.
 " https://github.com/neoclide/coc-highlight#usage
 autocmd CursorHold * silent call CocActionAsync('highlight')
-
-
-" ALE linter
-" nnoremap <leader>n :ALENextWrap<cr>zz
-" let g:ale_enabled = 1
-" let g:ale_list_window_size = 6
-" let g:ale_sign_error = '✘'
+" goimport on save
+" https://github.com/josa42/coc-go#examples
+" https://github.com/neoclide/coc.nvim/issues/888
+autocmd BufWritePre *.go :call CocAction('runCommand', 'editor.action.organizeImport')
+nmap <leader>n <Plug>(coc-diagnostic-next-error)
 
 " Argument rewrapping, and add trailing commas.
 nnoremap <leader>a :ArgWrap<cr>
@@ -226,8 +215,6 @@ colorscheme challenger_deep
 " Only do this if current theme is challenger_deep
 highlight SignColumn ctermbg=232 guibg=#100E23
 hi CocHighlightText guifg=plum
-
-" colorscheme summerfruit256
 
 " set background=light
 " colorscheme github
