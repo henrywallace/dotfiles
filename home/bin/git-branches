@@ -40,9 +40,15 @@ lastactive() {
   echo "$DIM$(git log --abbrev-commit -1 --date=relative "$branch"  | rg 'Date:\s+(.*)' -or '$1')$NC"
 }
 
+curr_branch=$(git branch | rg '\*\s+(.*)' -or '$1')
+
 i=0
 for b in $(git branch --sort=-committerdate | sed 's/\* //'); do
-  echo "${i} $BOLD${b}$NC%%$(lastactive "$b")%%$(diffstat "$b")" &
+  if [ "$b" == "$curr_branch" ]; then
+    echo "${i} $RED$BOLD${b}$NC%%$(lastactive "$b")%%$(diffstat "$b")" &
+  else
+    echo "${i} $NC$NC$b$NC%%$(lastactive "$b")%%$(diffstat "$b")" &
+  fi
   (( i++ ))
 done | sort -nk1 | sed -E 's/^[0-9]+ +//g' | column -t -s'%%'
 

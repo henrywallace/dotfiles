@@ -176,7 +176,8 @@ u() {
   if command -v brew >/dev/null 2>&1; then
     bup && echo
   fi
-  if command -v apt >/dev/null 2>&1; then
+  # Weirdly, mac has apt: "apt - annotation processing tool"
+  if [ "$(uname -s)" != Darwin ] && command -v apt >/dev/null 2>&1; then
     sudo apt update && sudo apt full-upgrade && sudo apt auto-remove
   fi
   if command -v nix-env &>/dev/null; then
@@ -186,6 +187,7 @@ u() {
 uu() {
   u
   zup
+  tup
   vup
   cup
   gup
@@ -281,6 +283,7 @@ alias xc='xclip -i -sel clip'
 bup() {
   set -x
   brew upgrade
+  brew cask upgrade
   brew cleanup
 }
 cup() {
@@ -485,7 +488,7 @@ alias gf='git diff --name-only $(git merge-base master HEAD)'
 
 alias dirty='git diff --name-only --relative'
 rd() {
-  rg $@ $(git diff --name-only --relative)
+  rg $@ $(git diff --name-only --relative $(git merge-base master HEAD))
 }
 
 alias gm='git branch -m'
@@ -502,10 +505,10 @@ alias fpu='git push -f origin HEAD'
 alias gs='git status'
 alias gap='git add -p'
 alias lg='git log --reverse --oneline $(git merge-base master HEAD)..HEAD'
-alias gls='git log --reverse --stat $(git merge-base master HEAD)..HEAD'
+alias gls='git log --stat $(git merge-base master HEAD)..HEAD'
 # alias gl='git log $(git merge-base master HEAD)..HEAD'
 alias gls='git log --stat'
-alias lr='git log -n1 --stat'
+alias lr='git log -n1 --stat --relative'
 alias lrp='git log -p -n1 --stat'
 
 alias gpl='gpg --list-secret-keys --keyid-format LONG'
@@ -514,6 +517,7 @@ alias gpl='gpg --list-secret-keys --keyid-format LONG'
 p() {
   if [ -z "$1" ]; then
     git stash show -p
+    return
   fi
   git stash show -p "stash@{$1}"
 }

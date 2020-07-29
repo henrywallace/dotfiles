@@ -8,7 +8,7 @@ call plug#begin('~/.vim/plugged')
 
 " Miscellany
 Plug 'FooSoft/vim-argwrap'            			" fold args
-Plug 'tpope/vim-commentary'           			" toggle commen out oft lines
+Plug 'tpope/vim-commentary'           			" toggle commented lines
 Plug 'tpope/vim-eunuch'               			" rename, mkdir, sudo, etc.
 Plug 'google/vim-searchindex'         			" search match [1/n]
 Plug 'editorconfig/editorconfig-vim'                    " filetype format config
@@ -18,12 +18,17 @@ Plug 'neoclide/coc.nvim', {'branch': 'release'}         " language server
 Plug 'dense-analysis/ale'                               " linting
 Plug 'terryma/vim-multiple-cursors' 			" multiple-cusors
 Plug 'zivyangll/git-blame.vim'                          " simple git blame
+Plug 'djoshea/vim-autoread' 				" autoreload buffers changed on disk
+Plug 'ap/vim-buftabline'                                " simple buffer list in the tabline
+Plug 'tpope/vim-surround' 				" modify surrounding chars
+Plug 'tpope/vim-sleuth'
+Plug 'preservim/nerdtree'
 
 " Language specific
 Plug 'rust-lang/rust.vim'                               " rust
 Plug 'tpope/vim-markdown'                               " markdown
 Plug 'cespare/vim-toml'   				" toml
-"Plug 'fatih/vim-go', { 'do': ':GoUpdateBinaries' }      " go
+Plug 'towolf/vim-helm'                                  " helm
 
 " A e s t h e t i c s
 Plug 'challenger-deep-theme/vim', { 'as': 'challenger-deep' }
@@ -32,6 +37,7 @@ Plug 'vim-scripts/summerfruit256.vim'
 Plug 'olivertaylor/vacme'
 Plug 'endel/vim-github-colorscheme'
 Plug 'dracula/vim'
+Plug 'phanviet/vim-monokai-pro'
 
 call plug#end()
 
@@ -39,11 +45,29 @@ call plug#end()
 " Generic key-bindings
 "
 
-" Move between windows like hjkl, with ctrl modifier.
+" " Move between windows like hjkl, with ctrl modifier.
+" function! WinMove(key)
+"     let t:curwin = winnr()
+"     exec "wincmd ".a:key
+"     if (t:curwin == winnr())
+"         if (match(a:key,'[jk]'))
+"             wincmd v
+"         else
+"             wincmd s
+"         endif
+"         exec "wincmd ".a:key
+"     endif
+" endfunction
+" nnoremap <c-h> :call WinMove('h')<CR>
+" nnoremap <c-j> :call WinMove('j')<CR>
+" nnoremap <c-k> :call WinMove('k')<CR>
+" nnoremap <c-l> :call WinMove('l')<CR>
+
 nnoremap <c-h> <c-w><left>
 nnoremap <c-l> <c-w><right>
 nnoremap <c-j> <c-w><down>
 nnoremap <c-k> <c-w><up>
+
 inoremap <c-h> <c-o><c-w><left>
 inoremap <c-l> <c-o><c-w><right>
 inoremap <c-j> <c-o><c-w><down>
@@ -90,6 +114,18 @@ nnoremap <leader>l :echo getline(search('\v^[[:alpha:]$_]', "bn", 1, 100))<CR>
 " Show git blame for current line. Simpler and less obtrusive.
 nnoremap <leader>b :<C-u>call gitblame#echo()<CR>
 
+" https://github.com/ap/vim-buftabline
+set showtabline=2
+set hidden
+nnoremap <tab> :bnext<cr>
+nnoremap <s-tab> :bprev<cr>
+nnoremap <leader>w :bd<cr>
+
+" show hilight group under cursor
+nnoremap <leader>h :echo "hi<" . synIDattr(synID(line("."),col("."),1),"name") . '> trans<'
+\ . synIDattr(synID(line("."),col("."),0),"name") . "> lo<"
+\ . synIDattr(synIDtrans(synID(line("."),col("."),1)),"name") . ">"<cr>
+
 "
 " Generic settings
 "
@@ -105,6 +141,7 @@ autocmd! BufWritePost $MYVIMRC source $MYVIMRC
 " Strip whitespaces on save.
 " https://unix.stackexchange.com/a/75431/162041.
 autocmd BufWritePre * :%s/\s\+$//e
+
 
 " Open a file in the same location as it was opened last time.
 " https://stackoverflow.com/a/774599/2601179
@@ -129,7 +166,11 @@ autocmd FileType gitcommit setlocal spell
 
 " Continue comment sections on return, and format numbered lists.
 " https://stackoverflow.com/a/22577860/2601179
-set formatoptions+=cron
+" https://stackoverflow.com/a/4783237/2601179
+set formatoptions+=cront
+set tw=79
+set comments=fb:-,fb:*
+" set formatlistpat="^\s*[\d*-]\+[\]:.)}\t ]\s*"
 
 " Don't allow double spaces after sentences with rewrapping.
 " https://stackoverflow.com/a/4760477/2528719
@@ -157,11 +198,11 @@ nnoremap z0 1z=
 set cmdheight=2
 set shortmess+=c
 set signcolumn=yes
-inoremap <silent><expr> <TAB>
+inoremap <silent><expr> <tab>
       \ pumvisible() ? "\<C-n>" :
-      \ <SID>check_back_space() ? "\<TAB>" :
+      \ <SID>check_back_space() ? "\<tab>" :
       \ coc#refresh()
-inoremap <expr><S-TAB> pumvisible() ? "\<C-p>" : "\<C-h>"
+inoremap <expr><s-tab> pumvisible() ? "\<c-p>" : "\<c-h>"
 
 function! s:check_back_space() abort
   let col = col('.') - 1
@@ -172,9 +213,9 @@ if exists('*complete_info')
 else
   inoremap <expr> <cr> pumvisible() ? "\<C-y>" : "\<C-g>u\<CR>"
 endif
-nmap gd <Plug>(coc-definition)zz
+nmap gd <Plug>(coc-definition) zz
 nmap gy <Plug>(coc-type-definition)
-nmap <leader>gd :vsplit<cr><c-w><c-w><Plug>(coc-definition)zz
+nmap <leader>gd :vsplit<cr><c-w><c-w><Plug>(coc-definition) zz
 " Highlight current symbol under cursor.
 " https://github.com/neoclide/coc-highlight#usage
 autocmd CursorHold * silent call CocActionAsync('highlight')
@@ -183,6 +224,7 @@ autocmd CursorHold * silent call CocActionAsync('highlight')
 " https://github.com/neoclide/coc.nvim/issues/888
 autocmd BufWritePre *.go :call CocAction('runCommand', 'editor.action.organizeImport')
 nmap <leader>n <Plug>(coc-diagnostic-next-error)
+" set statusline^=%{coc#status()}%{get(b:,'coc_current_function','')}
 
 " Argument rewrapping, and add trailing commas.
 nnoremap <leader>a :ArgWrap<cr>
@@ -193,11 +235,22 @@ nnoremap <c-g> :Rg<cr>
 nnoremap <c-f> :BLines<cr>
 nnoremap <c-r> :History<cr>
 nnoremap <c-p> :Files<cr>
+nnoremap <c-x> :Commands<cr>
+nnoremap <leader>h :History:<cr>
+
+nnoremap <leader>m noh
+
+nmap <leader>o :NERDTreeToggle<CR>
+nmap <leader>k :NERDTreeFind<CR>
+
+vnoremap <leader>p !par T8 'B=.,?_A_a' 79qrp13dh<cr>
 
 " Markdown code fence syntax highlighting.
 let g:markdown_fenced_languages = ['go', 'sh', 'py=python']
 
 set timeoutlen=1000 ttimeoutlen=0
+
+set colorcolumn=80,100
 
 "
 " Theme settings
@@ -210,16 +263,36 @@ if (has("termguicolors"))
 endif
 " TODO: set this based on EDITOR_THEME
 
+" colorscheme vacme
+" hi CocHighlightText ctermfg=238 ctermbg=8 guifg=#424242 guibg=#EEEEA7
+
+
 set background=dark
-colorscheme challenger_deep
-" Only do this if current theme is challenger_deep
-highlight SignColumn ctermbg=232 guibg=#100E23
-hi CocHighlightText guifg=plum
+
+" gruvbox theme
+colorscheme gruvbox
+highlight SignColumn ctermbg=235 guibg=#282828
+
+" colorscheme challenger_deep
+" " Only do this if current theme is challenger_deep
+" highlight SignColumn ctermbg=232 guibg=#100E23
+" " hi CocHighlightText guifg=plum
+" " hi CocHighlightText guifg=#91ddff
+" " hi CocHighlightText guifg=pink
+" " hi CocHighlightText ctermbg=236 guibg=#565575
+" hi CocHighlightText guifg=#65b2ff
+" hi goComment ctermfg=243 gui=none guifg=#767676
+" hi IncSearch cterm=underline ctermfg=253 gui=underline guifg=#cbe3e7
+" " hi goComment ctermfg=243 gui=none guifg=#91ddff
+" " hi goComment ctermfg=243 gui=none guifg=#ffe9aa
 
 " set background=light
-" colorscheme github
+" colorscheme vacme
+" hi MatchParen ctermfg=238 ctermbg=8 guifg=#424242 guibg=#EEEEA7
+" hi CocHighlightText ctermfg=238 ctermbg=8 guifg=#424242 guibg=#EEEEA7
+" hi goComment ctermfg=195 guifg=#EEFEFF
 
 " hi Cursor guibg=red guifg=white
 
-
 " hi Cursor ctermbg=red ctermfg=blue guibg=blue guifg=white
+

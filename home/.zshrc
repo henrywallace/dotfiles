@@ -20,6 +20,10 @@ zstyle ':completion:*' list-colors "${(@s.:.)LS_COLORS}"
 # Allow completing inside of words.
 setopt completeinword
 
+# Bash-style delete backword
+autoload -Uz select-word-style
+select-word-style whitespace
+
 # Remove command lines from the history list when the first character on the
 # line is a space, or when one of the expanded aliases contains a leading
 # space. Note that the command lingers in the internal history until the next
@@ -56,9 +60,11 @@ set formatoptions+=r
 # set comments-=mb:*
 # set comments+=fb:*
 
-prompt pure
-PURE_CMD_MAX_EXEC_TIME=2
-PURE_PROMPT_SYMBOL='%%'
+# prompt pure
+# PURE_CMD_MAX_EXEC_TIME=2
+# PURE_PROMPT_SYMBOL='%%'
+
+eval "$(starship init zsh)"
 
 # Don't add anything to $PATH if it's there already.
 # https://wiki.archlinux.org/index.php/zsh

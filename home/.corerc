@@ -25,22 +25,24 @@ case "$SHELL" in
   *bash) [ -f ~/.fzf.bash ] && . ~/.fzf.bash;;
 esac
 
-if [ "$(uname -s)" = Darwin ]; then
-  ulimit -n 65536 unlimited
-fi
+# if [ "$(uname -s)" = Darwin ]; then
+#   sudo launchctl limit maxfiles 65536 200000
+# fi
 
 export CGO_CPPFLAGS="$CGO_CPPFLAGS -Wno-unused-result"
 export GOTMPDIR=/tmp/go/
 [ -d $GOTMPDIR ] || mkdir -p $GOTMPDIR
 export MANWIDTH=100
 if command -v bat &>/dev/null; then
-  export MANPAGER="sh -c 'col -b | bat -l man -p'"
+  export MANPAGER="sh -c 'col -b | less'"
 fi
 
 export FZF_DEFAULT_OPTS='--height 24% --reverse --border'
 if command -v fd &>/dev/null; then
   export FZF_DEFAULT_COMMAND='fd --type f'
 fi
+# # https://github.com/junegunn/fzf/issues/174#issuecomment-104317985
+# export FZF_DEFAULT_OPTS='--bind alt-j:down,alt-k:up'
 
 # Start emacs daemon automatically and idempotently with emacsclient.
 # https://stackoverflow.com/a/5578718
@@ -68,5 +70,10 @@ EDITOR_THEME=DARK
 # EDITOR_THEME=LIGHT
 
 if command -v bat >/dev/null 2>&1; then
-  export BAT_THEME="ansi-dark"
+  export BAT_THEME="1337"
+fi
+
+if [ "$(uname -s)" = Darwin ]; then
+  defaults write -g InitialKeyRepeat -int 10 # normal minimum is 15 (225 ms)
+  defaults write -g KeyRepeat -int 1 # normal minimum is 2 (30 ms)
 fi
