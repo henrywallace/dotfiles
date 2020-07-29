@@ -1,0 +1,73 @@
+font:
+  normal:
+    # family: Monaco
+    family: JetBrains Mono
+    # family: pokemon-font
+    # family: Tye Paloon
+  size: 16
+
+background_opacity: 0.9
+
+# window:
+  # startup_mode: "Maximized"
+  # decorations: "buttonless"
+
+# window:
+#   decorations: buttonless
+
+# Colors (Challenger Deep)
+colors-challenger-deep: &challenger-deep
+  # Default colors
+  primary:
+    background: '0x1e1c31'
+    foreground: '0xcbe1e7'
+  # # Colors the cursor will use if `custom_cursor_colors` is true
+  # cursor:
+  #   text: '0xff271d'
+  #   cursor: '0xfbfcfc'
+  # Normal colors
+  normal:
+    black:   '0x141228'
+    red:     '0xff5458'
+    green:   '0x62d196'
+    yellow:  '0xffb378'
+    blue:    '0x65b2ff'
+    magenta: '0x906cff'
+    cyan:    '0x63f2f1'
+    white:   '0xa6b3cc'
+  # Bright colors
+  bright:
+    black:   '0x565575'
+    red:     '0xff8080'
+    green:   '0x95ffa4'
+    yellow:  '0xffe9aa'
+    blue:    '0x91ddff'
+    magenta: '0xc991e1'
+    cyan:    '0xaaffe4'
+    white:   '0xcbe3e7'
+
+# Colors (Terminal.app)
+colors-terminal-app: &terminal-app
+  primary:
+    background: "#FFFFFF"
+    foreground: "#000000"
+  normal:
+    black:      "#000000"
+    red:        "#990000"
+    green:      "#00A600"
+    yellow:     "#999900"
+    blue:       "#0000B2"
+    magenta:    "#B200B2"
+    cyan:       "#00A6B2"
+    white:      "#BFBFBF"
+  bright:
+    black:      "#666666"
+    red:        "#E50000"
+    green:      "#00D900"
+    yellow:     "#E5E500"
+    blue:       "#0000FF"
+    magenta:    "#E500E5"
+    cyan:       "#00E5E5"
+    white:      "#E5E5E5"
+
+colors: *challenger-deep
