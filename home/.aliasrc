@@ -30,10 +30,6 @@ alias rs='rsync --info=progress2 --recursive --archive --partial --append-verify
 # https://superuser.com/a/665181/577047
 # tar cf - /folder-with-big-files -P | pv -s $(du -sb /folder-with-big-files | awk '{print $1}') | gzip > big-files.tar.gz
 
-if command -v xsecurelock &>/dev/null; then
-  alias xl='XSECURELOCK_PASSWORD_PROMPT=time_hex xsecurelock'
-fi
-
 if command -v systemctl &>/dev/null; then
   alias sc='sudo systemctl '
   alias scu='systemctl --user '
@@ -338,10 +334,10 @@ fi
 #
 alias k='kubectl '
 # watch k8s pods
-wp() {
-  export -f kp
-  watch kp "$@"
-}
+# wp() {
+#   export -f kp
+#   watch kp "$@"
+# }
 # watch deployments
 wd() {
   export -f kd

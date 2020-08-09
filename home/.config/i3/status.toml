@@ -1,0 +1,50 @@
+theme = "slick"
+icons = "awesome5"
+
+[[block]]
+block = "sound"
+
+[[block]]
+block = "cpu"
+interval = 1
+format = "{utilization}%"
+
+[[block]]
+block = "memory"
+format_mem = "{Mup}%"
+
+# [[block]]
+# block = "disk_space"
+# info_type = "available"
+# unit = "GB"
+
+# [[block]]
+# block = "github"
+# format = "{total}|{author}|{comment}|{mention}|{review_requested}"
+
+[[block]]
+block = "net"
+device = "wlp2s0"
+ssid = true
+# ip = true
+speed_up = false
+speed_down = false
+# graph_up = true
+# graph_down = true
+signal_strength = true
+# speed_up = false
+# interval = 5
+# use_bits = false
+#
+[[block]]
+block = "battery"
+interval = 10
+format = "{percentage}% {time}"
+
+[[block]]
+block = "time"
+interval = 1
+format = "%a %m/%d %r"
+
+[[block]]
+block = "uptime"

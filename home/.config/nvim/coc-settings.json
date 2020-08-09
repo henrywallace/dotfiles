@@ -1,4 +1,9 @@
 {
+  "python.jediEnabled": true,
+  "python.autoUpdateLanguageServer": true,
+  "python.linting.lintOnSave": false,
+  "python.linting.flake8Enabled": true,
+  "python.linting.pylintEnabled": false,
   "coc.preferences.extensionUpdateCheck": "daily",
   "languageserver": {
     "golang": {
@@ -14,7 +19,6 @@
       "filetypes": [
         "go"
       ],
-      "trace.server": "verbose",
       "initializationOptions": {
         "usePlaceholders": true
       }

@@ -7,4 +7,5 @@
 [ -f ~/.Xmodmap ] && xmodmap ~/.Xmodmap
 [ -f ~/.Xresources ] && xrdb -merge ~/.Xresources
 xset r rate 160 45
+feh --bg-fill ~/wallpapers/wp4737307.jpg
 

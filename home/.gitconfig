@@ -1,7 +1,7 @@
 [user]
 	name = Henry Wallace
 	email = "henry@henrywallace.io"
-	signingkey = "henry@henrywallace.io"
+	; signingkey = "henry@henrywallace.io"
 
 [push]
 	default = simple
@@ -15,8 +15,8 @@
 	excludesfile = ~/.gitignore_global
 	pager = git-pager
 
-[commit]
-	gpgsign = true
+; [commit]
+; 	gpgsign = true
 
 [alias]
 	co = checkout

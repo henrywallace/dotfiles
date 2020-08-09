@@ -9,6 +9,17 @@
 #
 # Please see https://i3wm.org/docs/userguide.html for a complete reference!
 
+# https://github.com/Airblader/i3#configuration
+for_window [class=".*"] border pixel 0
+# smart_gaps on
+gaps inner 8
+gaps outer 8
+# gaps inner all set 20
+# gaps outer current plus 5
+# gaps horizontal current plus 40
+# gaps outer current toggle 60
+# workspace <ws> gaps [inner|outer|horizontal|vertical|top|left|bottom|right] <px>
+
 # split in horizontal orientation
 bindsym $mod+m split h
 bindsym $mod+n split v
@@ -102,7 +113,9 @@ bindsym XF86MonBrightnessDown exec --no-startup-id lux -s 6%
 #floating_modifier $mod
 
 ## start dmenu (a program launcher)
-bindsym $mod+d exec dmenu_run
+# bindsym $mod+d exec dmenu_run
+bindsym $mod+d exec rofi -show run
+bindsym $mod+p exec rofi -show window
 ## There also is the (new) i3-dmenu-desktop which only displays applications
 ## shipping a .desktop file. It is a wrapper around dmenu, so you need that
 ## installed.
@@ -173,5 +186,16 @@ bindsym $mod+Shift+r restart
 # Start i3bar to display a workspace bar (plus the system information i3status
 # finds out, if available)
 bar {
-        status_command i3status
+    font pango:JetBrains Mono
+    position top
+    status_command i3status-rs ~/.config/i3/status.toml
+    # colors {
+    #     separator #666666
+    #     background #222222
+    #     statusline #dddddd
+    #     focused_workspace #0088CC #0088CC #ffffff
+    #     active_workspace #333333 #333333 #ffffff
+    #     inactive_workspace #333333 #333333 #888888
+    #     urgent_workspace #2f343a #900000 #ffffff
+    # }
 }
