@@ -198,8 +198,12 @@ vup() {
     +qall
 }
 gup() {
+  # arch linux has managed release so gcloud components update will fail
+  if [ -f "/etc/arch-release" ]; then
+    return
+  fi
   if command -v gcloud &>/dev/null; then
-    sudo gcloud components update
+    gcloud components update
   fi
 }
 zup() {
