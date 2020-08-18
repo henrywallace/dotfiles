@@ -70,4 +70,5 @@ colors-terminal-app: &terminal-app
     cyan:       "#00E5E5"
     white:      "#E5E5E5"
 
-colors: *challenger-deep
+# colors: *challenger-deep
+colors: *terminal-app

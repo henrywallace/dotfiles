@@ -19,7 +19,7 @@ Plug 'dense-analysis/ale'                               " linting
 Plug 'terryma/vim-multiple-cursors' 			" multiple-cusors
 Plug 'zivyangll/git-blame.vim'                          " simple git blame
 Plug 'djoshea/vim-autoread' 				" autoreload buffers changed on disk
-Plug 'ap/vim-buftabline'                                " simple buffer list in the tabline
+" Plug 'ap/vim-buftabline'                                " simple buffer list in the tabline
 Plug 'tpope/vim-surround' 				" modify surrounding chars
 Plug 'tpope/vim-sleuth'
 Plug 'preservim/nerdtree'
@@ -114,12 +114,12 @@ nnoremap <leader>l :echo getline(search('\v^[[:alpha:]$_]', "bn", 1, 100))<CR>
 " Show git blame for current line. Simpler and less obtrusive.
 nnoremap <leader>b :<C-u>call gitblame#echo()<CR>
 
-" https://github.com/ap/vim-buftabline
-set showtabline=2
-set hidden
-nnoremap <tab> :bnext<cr>
-nnoremap <s-tab> :bprev<cr>
-nnoremap <leader>w :bd<cr>
+" " https://github.com/ap/vim-buftabline
+" set showtabline=2
+" set hidden
+" nnoremap <tab> :bnext<cr>
+" nnoremap <s-tab> :bprev<cr>
+" nnoremap <leader>w :bd<cr>
 
 " show hilight group under cursor
 nnoremap <leader>h :echo "hi<" . synIDattr(synID(line("."),col("."),1),"name") . '> trans<'
@@ -266,12 +266,18 @@ endif
 " colorscheme vacme
 " hi CocHighlightText ctermfg=238 ctermbg=8 guifg=#424242 guibg=#EEEEA7
 
+hi SignColumn guibg=none
+hi StatusLine cterm=NONE gui=bold guibg=grey93 guifg=none
+hi StatusLineNC cterm=NONE gui=none guibg=grey93 guifg=none
+hi ColorColumn gui=none guibg=grey93 guifg=none ctermbg=NONE
+hi LineNr guifg=grey74
+hi CursorLineNr guifg=grey35 gui=bold
 
-set background=dark
+" set background=dark
 
-" gruvbox theme
-colorscheme gruvbox
-highlight SignColumn ctermbg=235 guibg=#282828
+" " gruvbox theme
+" colorscheme gruvbox
+" highlight SignColumn ctermbg=235 guibg=#282828
 
 " colorscheme challenger_deep
 " " Only do this if current theme is challenger_deep
