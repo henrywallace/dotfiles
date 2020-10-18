@@ -1,0 +1,3 @@
+#!/bin/bash
+
+$EDITOR $(FZF_DEFAULT_COMMAND='fd' fzf)

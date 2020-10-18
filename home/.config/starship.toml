@@ -1,34 +1,38 @@
-prompt_order = [
-    "username",
-    "hostname",
-    # "python"
-    # "kubernetes",
-    "directory",
-    "git_branch",
-    "git_commit",
-    "git_state",
-    "git_status",
-    "custom.git_test",
-    "custom.git_stash",
-    "custom.git_commits",
-    # "memory_usage",
-    # "env_var",
-    "cmd_duration",
-    "line_break",
-    "jobs",
-    # "battery",
-    # "time",
-    "character",
-]
+format = """\
+$hostname\
+$directory\
+$git_branch$git_state$git_status\
+$cmd_duration\
+$line_break\
+$status\
+$jobs$character\
+"""
 
-[character]
-symbol = "$"
+[hostname]
+ssh_only = false
+style = "blue"
+
+[directory]
+style = "bold green"
+
+[git_branch]
+style = "purple"
+symbol = ""
+
+[git_status]
+style = "dimmed"
+
+[cmd_duration]
+min_time = 500
 
 [jobs]
 symbol = "+"
+style = "bold blue"
 
-[git_branch]
-symbol = ""
+[character]
+success_symbol = "[\\$](bold green)"
+error_symbol = "[\\$](bold red)"
+
 
 [custom.git_stash]
 command = "stash-summary"

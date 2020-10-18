@@ -13,7 +13,7 @@
 	# git-config does indeed expand ~
 	# https://stackoverflow.com/a/11262153
 	excludesfile = ~/.gitignore_global
-	pager = git-pager
+	hooksPath = ~/dotfiles/misc/git-hooks
 
 ; [commit]
 ; 	gpgsign = true

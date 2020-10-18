@@ -1,10 +1,10 @@
 font:
   normal:
     # family: Monaco
-    family: JetBrains Mono
+    family: JetBrains Mono Regular
     # family: pokemon-font
     # family: Tye Paloon
-  size: 13
+  size: 14
 
 background_opacity: 0.9
 
@@ -70,5 +70,5 @@ colors-terminal-app: &terminal-app
     cyan:       "#00E5E5"
     white:      "#E5E5E5"
 
-# colors: *challenger-deep
-colors: *terminal-app
+colors: *challenger-deep
+# colors: *terminal-app

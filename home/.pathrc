@@ -35,7 +35,8 @@ fi
 if [[ "$(uname -s)" == "Linux" ]]; then
   PATH=$PATH:/usr/share/google-cloud-sdk/bin
 else
-  PATH=$PATH:/usr/local/google-cloud-sdk/bin
+  # PATH=$PATH:/usr/local/google-cloud-sdk/bin
+  PATH=$PATH:$HOME/google-cloud-sdk/bin
 fi
 
 # https://wiki.archlinux.org/index.php/Node.js_#Allow_user-wide_installations
