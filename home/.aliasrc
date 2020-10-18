@@ -54,7 +54,7 @@ fi
 alias e='emacs -nw'  # always prefer terminal emacs: "no window"
 
 alias j='jobs -l'
-alias l='ls'
+alias l='ls -a'
 alias ll='ls -lah'
 if [ "$(uname -s)" = Linux ]; then
   alias ls='ls -F --color -H'
@@ -283,7 +283,7 @@ alias xc='xclip -i -sel clip'
 bup() {
   set -x
   brew upgrade
-  brew cask upgrade
+  brew upgrade --cask
   brew cleanup
 }
 cup() {
@@ -351,8 +351,7 @@ wd() {
 #
 # golang
 #
-alias goi='go install -v ./... && go mod tidy'
-alias goiv='go install -v ./... && go mod tidy'
+alias goi="go install -v ./... && go mod tidy |& rg -v 'warning: ignoring symlink'"
 alias gome='cd $FIRSTGOPATH/src/github.com/henrywallace'
 gdoc() {
   echo http://localhost:6060
