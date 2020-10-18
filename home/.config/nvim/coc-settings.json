@@ -1,6 +1,7 @@
 {
-  "python.jediEnabled": true,
+  "python.jediEnabled": false,
   "python.autoUpdateLanguageServer": true,
+  "python.linting.enabled": true,
   "python.linting.lintOnSave": false,
   "python.linting.flake8Enabled": true,
   "python.linting.pylintEnabled": false,

@@ -11,4 +11,5 @@ else
   show_dates="$first..$last"
 fi
 
-echo "$num; $show_dates"
+# echo "$num; $show_dates"
+echo "$num"

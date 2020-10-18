@@ -15,14 +15,12 @@ Plug 'editorconfig/editorconfig-vim'                    " filetype format config
 Plug 'junegunn/fzf', { 'do': { -> fzf#install() } }	" fzf
 Plug 'junegunn/fzf.vim'
 Plug 'neoclide/coc.nvim', {'branch': 'release'}         " language server
-Plug 'dense-analysis/ale'                               " linting
 Plug 'terryma/vim-multiple-cursors' 			" multiple-cusors
 Plug 'zivyangll/git-blame.vim'                          " simple git blame
 Plug 'djoshea/vim-autoread' 				" autoreload buffers changed on disk
-" Plug 'ap/vim-buftabline'                                " simple buffer list in the tabline
 Plug 'tpope/vim-surround' 				" modify surrounding chars
 Plug 'tpope/vim-sleuth'
-Plug 'preservim/nerdtree'
+Plug 'airblade/vim-gitgutter'
 
 " Language specific
 Plug 'rust-lang/rust.vim'                               " rust
@@ -240,10 +238,18 @@ nnoremap <leader>h :History:<cr>
 
 nnoremap <leader>m noh
 
-nmap <leader>o :NERDTreeToggle<CR>
-nmap <leader>k :NERDTreeFind<CR>
-
 vnoremap <leader>p !par T8 'B=.,?_A_a' 79qrp13dh<cr>
+
+" function! GitGutterNextHunkCycle()
+"   let line = line('.')
+"   silent! GitGutterNextHunk
+"   if line('.') == line
+"     1
+"     GitGutterNextHunk
+"   endif
+" endfunction
+
+nmap <leader>g :GitGutterNextHunk <cr>
 
 " Markdown code fence syntax highlighting.
 let g:markdown_fenced_languages = ['go', 'sh', 'py=python']
@@ -266,37 +272,54 @@ endif
 " colorscheme vacme
 " hi CocHighlightText ctermfg=238 ctermbg=8 guifg=#424242 guibg=#EEEEA7
 
-hi SignColumn guibg=none
-hi StatusLine cterm=NONE gui=bold guibg=grey93 guifg=none
-hi StatusLineNC cterm=NONE gui=none guibg=grey93 guifg=none
-hi ColorColumn gui=none guibg=grey93 guifg=none ctermbg=NONE
-hi LineNr guifg=grey74
-hi CursorLineNr guifg=grey35 gui=bold
+" hi SignColumn guibg=none
+" hi StatusLine cterm=NONE gui=bold guibg=grey93 guifg=none
+" hi StatusLineNC cterm=NONE gui=none guibg=grey93 guifg=none
+" hi ColorColumn gui=none guibg=#f5fdff guifg=none ctermbg=NONE
+" hi LineNr guifg=grey74
+" hi CursorLineNr guifg=grey35 gui=bold
+" " hi CocHighlightText gui=bold
+" hi CocHighlightText guibg=lightyellow
+" hi VertSplit gui=none cterm=NONE guibg=black guifg=black
+" hi Visual guibg=yellow
 
-" set background=dark
+set background=dark
 
 " " gruvbox theme
 " colorscheme gruvbox
 " highlight SignColumn ctermbg=235 guibg=#282828
 
-" colorscheme challenger_deep
-" " Only do this if current theme is challenger_deep
-" highlight SignColumn ctermbg=232 guibg=#100E23
-" " hi CocHighlightText guifg=plum
-" " hi CocHighlightText guifg=#91ddff
-" " hi CocHighlightText guifg=pink
-" " hi CocHighlightText ctermbg=236 guibg=#565575
-" hi CocHighlightText guifg=#65b2ff
-" hi goComment ctermfg=243 gui=none guifg=#767676
-" hi IncSearch cterm=underline ctermfg=253 gui=underline guifg=#cbe3e7
-" " hi goComment ctermfg=243 gui=none guifg=#91ddff
-" " hi goComment ctermfg=243 gui=none guifg=#ffe9aa
+colorscheme challenger_deep
+" Only do this if current theme is challenger_deep
+highlight SignColumn ctermbg=232 guibg=#100E23
+" hi CocHighlightText guifg=plum
+" hi CocHighlightText guifg=#91ddff
+" hi CocHighlightText guifg=pink
+" hi CocHighlightText ctermbg=236 guibg=#565575
+hi CocHighlightText guifg=#65b2ff
+hi goComment ctermfg=243 gui=none guifg=#767676
+hi IncSearch cterm=underline ctermfg=253 gui=underline guifg=#cbe3e7
+" hi goComment ctermfg=243 gui=none guifg=#91ddff
+" hi goComment ctermfg=243 gui=none guifg=#ffe9aa
 
 " set background=light
 " colorscheme vacme
 " hi MatchParen ctermfg=238 ctermbg=8 guifg=#424242 guibg=#EEEEA7
 " hi CocHighlightText ctermfg=238 ctermbg=8 guifg=#424242 guibg=#EEEEA7
 " hi goComment ctermfg=195 guifg=#EEFEFF
+
+" set background=light
+" colorscheme summerfruit256
+" hi SignColumn guibg=none
+" hi LineNr guibg=none guifg=lightgray gui=none
+" hi CursorLineNr cterm=underline ctermbg=153 guibg=#c0d9eb guifg=#438ec3 gui=none
+" hi TabLine gui=none guibg=white
+" hi TabLineSel gui=bold guifg=black guibg=white
+" hi TabLineFill gui=none guibg=white
+" hi Comment gui=none
+" hi StatusLine guibg=white guifg=black gui=bold
+" hi StatusLineNC guibg=white guifg=black gui=none
+" hi CocHighlightText guibg=#ffe9aa
 
 " hi Cursor guibg=red guifg=white
 
