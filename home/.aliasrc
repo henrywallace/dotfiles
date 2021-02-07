@@ -59,13 +59,13 @@ vr() {
 }
 
 alias j='jobs -l'
-alias l='ls -a'
-alias ll='ls -lah'
 if [ "$(uname -s)" = Linux ]; then
   alias ls='ls -F --color -H'
 elif [ "$(uname -s)" = Darwin ]; then
   alias ls='ls -FGH'
 fi
+alias l='ls -lah'
+alias ll='ls -laht'
 
 if [ "$(uname -s)" = Darwin ]; then
   alias make='gmake'
