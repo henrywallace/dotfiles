@@ -1,6 +1,6 @@
 #!/bin/bash
 
-. "$HOME"/.colors
+. ~/.colors
 
 # Quick access to editing config files.
 alias aa='v ~/.aliasrc'
@@ -12,18 +12,15 @@ if command -v nix-env &>/dev/null; then
   alias n='nix-env '
 fi
 
-# if echo "$SHELL" | grep -q zsh; then
-#   fg() {
-#     set -m
-#     case "$@" in
-#       '+') command fg %+ ;;
-#       '-') command fg %- ;;
-#       *)   command fg "$@" ;;
-#     esac
-#   }
-# fi
-
-alias rs='rsync --info=progress2 --recursive --archive --partial --append-verify --one-file-system'
+rs() {
+  rsync \
+    --info=progress2 \
+    --recursive \
+    --archive \
+    --partial \
+    --append-verify \
+    --one-file-system
+}
 
 
 # TODO: tar progress
