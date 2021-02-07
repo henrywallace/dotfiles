@@ -1,5 +1,10 @@
-theme = "slick"
-icons = "awesome5"
+[theme]
+name = "plain"
+[theme.overrides]
+separator = "-"
+
+[icons]
+name = "none"
 
 [[block]]
 block = "sound"
@@ -26,14 +31,16 @@ format_mem = "{Mup}%"
 block = "net"
 device = "wlp2s0"
 ssid = true
-# ip = true
+# format = "{ssid} {ip}"
+# format = ""
+ip = true
 speed_up = false
 speed_down = false
 # graph_up = true
 # graph_down = true
-signal_strength = true
+# signal_strength = true
 # speed_up = false
-# interval = 5
+interval = 1
 # use_bits = false
 #
 [[block]]
