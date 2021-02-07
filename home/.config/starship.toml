@@ -2,11 +2,15 @@ format = """\
 $hostname\
 $directory\
 $git_branch$git_state$git_status\
+$python \
 $cmd_duration\
 $line_break\
 $status\
 $jobs$character\
 """
+
+[python]
+format = '[($virtualenv)]($style)'
 
 [hostname]
 ssh_only = false
