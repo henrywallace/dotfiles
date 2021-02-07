@@ -1,4 +1,17 @@
 {
+  "diagnostic-languageserver.filetypes": {
+    "vim": ["vint"],
+    "sh": ["shellcheck"],
+    "dockerfile": ["hadolint"]
+  },
+  "yaml.schemas": {
+    "kubernetes": "k8s/**.yaml"
+  },
+  "diagnostic.infoSign": ":",
+  "diagnostic.warningSign": "?",
+  "diagnostic.errorSign": "!",
+  "diagnostic-languageserver.trace.server": "verbose",
+  "diagnostic-languageserver.debug": true,
   "python.jediEnabled": false,
   "python.autoUpdateLanguageServer": true,
   "python.linting.enabled": true,
@@ -6,27 +19,26 @@
   "python.linting.flake8Enabled": true,
   "python.linting.pylintEnabled": false,
   "coc.preferences.extensionUpdateCheck": "daily",
+  "coc.preferences.formatOnSaveFiletypes": [
+    "go",
+    "json",
+    "html",
+    "javascript",
+    "css",
+    "rust"
+  ],
   "languageserver": {
     "golang": {
       "command": "gopls",
-      "rootPatterns": [
-        "go.mod"
-      ],
-      "args": [
-        "-remote=auto",
-        "-debug=localhost:6061",
-        "serve"
-      ],
-      "filetypes": [
-        "go"
-      ],
+      "rootPatterns": ["go.mod"],
+      "disableWorkspaceFolders": true,
+      "filetypes": ["go"],
       "initializationOptions": {
-        "usePlaceholders": true
+        "analyses": {
+          "unusedparams": true,
+          "undeclaredname": true
+        }
       }
     }
-  },
-  "coc.preferences.formatOnSaveFiletypes": [
-    "go",
-    "json"
-  ]
+  }
 }
