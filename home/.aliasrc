@@ -53,6 +53,14 @@ else
 fi
 alias e='emacs -nw'  # always prefer terminal emacs: "no window"
 
+vr() {
+  recent=$1
+  if [ -z "$recent" ]; then
+    recent=0
+  fi
+  v -c "'$recent"
+}
+
 alias j='jobs -l'
 alias l='ls -a'
 alias ll='ls -lah'
