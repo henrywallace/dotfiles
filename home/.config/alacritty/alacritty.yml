@@ -1,6 +1,8 @@
+env:
+  TERM: xterm-256color
+
 font:
   normal:
-    # family: Monaco
     family: JetBrains Mono
     style: Regular
     # family: pokemon-font
