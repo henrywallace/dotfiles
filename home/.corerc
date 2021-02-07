@@ -25,6 +25,17 @@ case "$SHELL" in
   *bash) [ -f ~/.fzf.bash ] && . ~/.fzf.bash;;
 esac
 
+# https://github.com/stedolan/jq/pull/1397
+#   - color for `null`
+#   - color for `false`
+#   - color for `true`
+#   - color for numbers
+#   - color for strings
+#   - color for arrays
+#   - color for objects
+
+export JQ_COLORS='0;39:0;39:0;39:0;39:0;39:1;39:1;39'
+
 # if [ "$(uname -s)" = Darwin ]; then
 #   sudo launchctl limit maxfiles 65536 200000
 # fi
