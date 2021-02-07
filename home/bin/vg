@@ -1,0 +1,3 @@
+#!/bin/bash
+
+$EDITOR $(git diff --name-only --relative | fzf)
