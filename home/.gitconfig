@@ -1,7 +1,6 @@
 [user]
 	name = Henry Wallace
 	email = "henry@henrywallace.io"
-	; signingkey = "henry@henrywallace.io"
 
 [push]
 	default = simple
@@ -15,8 +14,11 @@
 	excludesfile = ~/.gitignore_global
 	hooksPath = ~/dotfiles/misc/git-hooks
 
-; [commit]
-; 	gpgsign = true
+[include]
+	path = ~/.diffeo_gitconfig
+
+[commit]
+	gpgsign = true
 
 [alias]
 	co = checkout
@@ -28,17 +30,12 @@
 	graphColors = red
 	abbrevCommit = true
 
-[url "git@github.com:"]
-	insteadOf = https://github.com/
-
 [absorb]
 	maxStack = 100
 
-; [pull]
-; 	ff = only
+[pull]
+	ff = only
 
-; [rerere]
-; 	enabled = true
 [filter "lfs"]
 	process = git-lfs filter-process
 	required = true
@@ -47,6 +44,3 @@
 
 [pull]
 	ff = only
-
-; [submodule]
-; 	recurse = true
