@@ -10,10 +10,10 @@
 # Please see https://i3wm.org/docs/userguide.html for a complete reference!
 
 # https://github.com/Airblader/i3#configuration
-for_window [class=".*"] border pixel 0
+# for_window [class=".*"] border pixel 0
 # smart_gaps on
-gaps inner 8
-gaps outer 8
+# gaps inner 8
+# gaps outer 8
 # gaps inner all set 20
 # gaps outer current plus 5
 # gaps horizontal current plus 40
