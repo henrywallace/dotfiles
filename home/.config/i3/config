@@ -26,8 +26,7 @@ bindsym $mod+n split v
 
 set $mod Mod1
 set $term alacritty
-set $status i3status
-set $browser firefox
+set $browser chromium
 
 font pango:JetBrains Mono 12
 
