@@ -146,7 +146,7 @@ set nojoinspaces
 
 " Continue comment sections on return, and format numbered lists.
 " https://stackoverflow.com/a/22577860/2601179
-set formatoptions+=cron
+set formatoptions+=ron
 
 " Show which line I'm currently on. This helps me focus as a human.
 " https://vim.fandom.com/wiki/Highlight_current_line
