@@ -129,17 +129,6 @@ scip() {
   sf "$1" | rg Hostname | awk '{print $2}'
 }
 
-# Style man pages like in the arch install. I really dig it.
-# man() {
-#   LESS_TERMCAP_md=$'\e[01;31m' \
-#   LESS_TERMCAP_me=$'\e[0m' \
-#   LESS_TERMCAP_se=$'\e[0m' \
-#   LESS_TERMCAP_so=$'\e[01;44;33m' \
-#   LESS_TERMCAP_ue=$'\e[0m' \
-#   LESS_TERMCAP_us=$'\e[01;32m' \
-#   MANWIDTH=128 command man "$@"
-# }
-
 # case "$SHELL" in
 #   *zsh)
 #     alias fg='\fg %'
@@ -160,7 +149,7 @@ alias ref='cd ~/projects/ref'
 alias ic='$EDITOR ~/.config/i3/config'
 alias ics='$EDITOR ~/.config/i3status/config'
 
-alias m=yay
+alias m=paru
 
 alias dw='dmesg -w'
 
@@ -170,9 +159,8 @@ alias lb='lsblk -o NAME,LABEL,FSTYPE,MOUNTPOINT,FSUSED,FSAVAIL,FSUSE%,SIZE,VENDO
 #
 # common things, based on machine type
 u() {
-  set -x
-  if command -v yay >/dev/null 2>&1; then
-    yay -Syu && echo
+  if command -v paru >/dev/null 2>&1; then
+    paru -Syu && echo
   fi
   if command -v brew >/dev/null 2>&1; then
     bup && echo
