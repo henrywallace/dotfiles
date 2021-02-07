@@ -12,10 +12,9 @@ Plug 'neoclide/coc.nvim', {'branch': 'release'}         " language server
 Plug 'terryma/vim-multiple-cursors' 			" multiple-cusors
 Plug 'zivyangll/git-blame.vim'                          " simple git blame
 Plug 'djoshea/vim-autoread' 				" autoreload buffers changed on disk
-Plug 'tpope/vim-surround' 				" modify surrounding chars
+Plug 'machakann/vim-sandwich'
 Plug 'tpope/vim-sleuth'
 Plug 'airblade/vim-gitgutter'
-" Plug 'timakro/vim-searchant'                            " highlight the current search result
 Plug 'haya14busa/incsearch.vim'                         " highlight all while incrementally searching
 
 " Language specific

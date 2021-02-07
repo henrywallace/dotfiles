@@ -10,15 +10,17 @@
   "diagnostic.infoSign": ":",
   "diagnostic.warningSign": "?",
   "diagnostic.errorSign": "!",
-  "diagnostic-languageserver.trace.server": "verbose",
+  "diagnostic-languageserver.formatFiletypes": {
+    "sh": "shfmt"
+  },
   "diagnostic-languageserver.debug": true,
+  "diagnostic-languageserver.trace.server": "verbose",
   "python.jediEnabled": false,
   "python.autoUpdateLanguageServer": true,
   "python.linting.enabled": true,
   "python.linting.lintOnSave": false,
   "python.linting.flake8Enabled": true,
   "python.linting.pylintEnabled": false,
-  "coc.preferences.extensionUpdateCheck": "daily",
   "coc.preferences.formatOnSaveFiletypes": [
     "go",
     "json",
@@ -35,9 +37,12 @@
       "filetypes": ["go"],
       "initializationOptions": {
         "analyses": {
+          "nonewvars": true,
           "unusedparams": true,
           "undeclaredname": true
-        }
+        },
+        "usePlaceholders": true,
+        "staticcheck": true
       }
     }
   }
