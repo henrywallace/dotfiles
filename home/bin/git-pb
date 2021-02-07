@@ -1,0 +1,13 @@
+#!/bin/bash
+
+
+recent_tags=$(git tag --sort=taggerdate | tail -4)
+for base in 'master' $recent_tags; do
+  for branch in $(git branch --merged "$base" | grep -v "$base"); do
+    num_commits=$(git rev-list --count --no-merges "$base..$branch")
+    if [ "$num_commits" -eq "0" ]; then
+      git branch -d "$branch"
+    fi
+  done
+done
+

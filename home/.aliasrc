@@ -499,7 +499,7 @@ rd() {
 }
 
 alias gm='git branch -m'
-alias gmp='git checkout master && git pull && gprune'
+alias gmp='git checkout master && git pull && git pb'
 alias gn='git checkout -b'
 
 alias gr='git rebase master'
