@@ -48,6 +48,8 @@ if command -v bat &>/dev/null; then
   export MANPAGER="sh -c 'col -b | less'"
 fi
 
+export PAGER=less
+
 export FZF_DEFAULT_OPTS='--height 24% --reverse --border'
 if command -v fd &>/dev/null; then
   export FZF_DEFAULT_COMMAND='fd --type f'
