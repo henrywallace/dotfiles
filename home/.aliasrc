@@ -303,13 +303,6 @@ alias rg='rg --no-heading --sort path -M1024'
 ports() {
   sudo lsof -i -n -P
 }
-# reload the shell
-rld() {
-  case "$SHELL" in
-    *zsh) . ~/.zshrc ;;
-    *bash) . ~/.bashrc ;;
-  esac
-}
 # search aliases, and print them out in columns
 ra() {
   alias | rg '"$@"' | rg "(\w+)='(.*)'" -r '$1%%$2' | column -t -s'%%'

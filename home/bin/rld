@@ -1,0 +1,7 @@
+#!/bin/bash
+
+# reload the shell
+case "$SHELL" in
+  *zsh) . ~/.zshrc ;;
+  *bash) . ~/.bashrc ;;
+esac
