@@ -515,7 +515,7 @@ alias lg='git log --reverse --oneline $(git merge-base master HEAD)..HEAD'
 alias gls='git log --stat $(git merge-base master HEAD)..HEAD'
 # alias gl='git log $(git merge-base master HEAD)..HEAD'
 alias gls='git log --stat'
-alias lr='git log -n1 --stat --relative'
+alias lr='git log -n1 --stat'
 alias lrp='git log -p -n1 --stat'
 
 alias gpl='gpg --list-secret-keys --keyid-format LONG'
