@@ -40,11 +40,11 @@ error_symbol = "[\\$](bold red)"
 
 [custom.git_stash]
 command = "stash-summary"
-prefix = "stash "
+# prefix = "stash "
 when = 'git rev-parse --is-inside-work-tree && [ -n "$(git stash list)" ]'
 
 [custom.git_commits]
-prefix = "commits "
+# prefix = "commits "
 command = "git log --oneline $(git merge-base master HEAD)..HEAD | wc -l"
 when = "git rev-parse --is-inside-work-tree"
 
