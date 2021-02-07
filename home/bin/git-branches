@@ -42,8 +42,13 @@ lastactive() {
 
 curr_branch=$(git branch | rg '\*\s+(.*)' -or '$1')
 
+branches=$(git branch --sort=-committerdate | sed 's/\* //')
+if [ "$1" == "-" ]; then
+  branches=$curr_branch
+fi
+
 i=0
-for b in $(git branch --sort=-committerdate | sed 's/\* //'); do
+for b in $branches; do
   if [ "$b" == "$curr_branch" ]; then
     echo "${i} $RED$BOLD${b}$NC%%$(lastactive "$b")%%$(diffstat "$b")" &
   else
@@ -51,4 +56,3 @@ for b in $(git branch --sort=-committerdate | sed 's/\* //'); do
   fi
   (( i++ ))
 done | sort -nk1 | sed -E 's/^[0-9]+ +//g' | column -t -s'%%'
-
