@@ -1,0 +1,3 @@
+#!/bin/bash
+
+gsutil -m -o GSUtil:parallel_composite_upload_threshold=150M rsync -r $@
