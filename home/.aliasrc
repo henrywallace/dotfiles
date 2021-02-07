@@ -477,7 +477,7 @@ compose() {
 con() {
   git diff --name-only --diff-filter=U \
     | xargs realpath --relative-to=. \
-    | xargs rg --no-heading -l "<<<<<<<"
+    | xargs command rg --count --with-filename "<<<<<<<"
 }
 alias g-='git checkout -'
 alias groot='git rev-parse --show-toplevel'
