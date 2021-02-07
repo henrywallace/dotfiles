@@ -1,0 +1,10 @@
+#!/bin/bash
+
+if [ -n "$1" ]; then
+  levels="$1"
+else
+  levels="2"
+fi
+for fn in $(find . -maxdepth $levels -xtype l); do
+  test -e $fn || echo "$fn##$DIM$(stat -c %z $fn | awk '{print $1}')$NC"
+done | column -t -s'##'

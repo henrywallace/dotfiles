@@ -1,0 +1,5 @@
+#!/bin/bash
+
+git diff --name-only --diff-filter=U \
+  | xargs realpath --relative-to=. \
+  | xargs command rg --count --with-filename "<<<<<<<"

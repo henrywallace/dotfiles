@@ -1,0 +1,18 @@
+#!/bin/bash
+
+# TRAPEXIT() {
+#   deactivate &> /dev/null
+# }
+# pe
+
+script=$1
+
+if [ -z "$script" ]; then
+  ipython
+  return
+fi
+
+if echo "$script" | grep -qv ';'; then
+  script="print($script)"
+fi
+eval python -c "'$script'"

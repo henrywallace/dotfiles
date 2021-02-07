@@ -1,0 +1,8 @@
+#!/bin/bash
+
+# git commit amend, with quick option for no-edit
+if [ "$1" = "-" ]; then
+  git commit --amend --no-edit --allow-empty
+else
+  git commit --amend --allow-empty
+fi

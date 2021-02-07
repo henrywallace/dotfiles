@@ -355,16 +355,6 @@ gimp() {
     | sort -nk1
 }
 
-blinks() {
-  if [ -n "$1" ]; then
-    levels="$1"
-  else
-    levels="2"
-  fi
-  for fn in $(find . -maxdepth $levels -xtype l); do
-    test -e $fn || echo "$fn##$DIM$(stat -c %z $fn | awk '{print $1}')$NC"
-  done | column -t -s'##'
-}
 
 arx() {
   tar cf - "$1" -P | pv -s "$(du -sb "$1" | awk '{print $1}')" | gzip > "$1.tar.gz"
@@ -388,43 +378,7 @@ pe() {
 de() {
   deactivate &> /dev/null
 }
-pp() {
-  # TRAPEXIT() {
-  #   deactivate &> /dev/null
-  # }
-  # pe
 
-  script=$1
-
-  if [ -z "$script" ]; then
-    ipython
-    return
-  fi
-
-  if echo "$script" | grep -qv ';'; then
-    script="print($script)"
-  fi
-  eval python -c "'$script'"
-}
-
-pi() {
-  # See also:
-  # https://stackoverflow.com/questions/4481005/get-wireless-ssid-through-shell-script-on-mac-os-x
-  # /System/Library/PrivateFrameworks/Apple80211.framework/Resources/airport -I
-  local addr="$ADDR"
-  [ -z "$addr" ] && addr="1.1.1.1"
-  if ping -c 2 "$addr"; then
-    echo "$BLUE${BOLD}Connected to the internet!$NC"
-    # TODO: Pick the first good wifi interface, instead of hardcoding one.
-    out=$(iw dev wlp2s0 info)
-    ssid=$(echo $out | rg ssid)
-    ty=$(echo $out | rg type)
-    echo $DIM
-    echo "$NC"
-  else
-    echo "$YELLOW${BOLD}Not connected to the internet.$NC"
-  fi
-}
 ipr() {
   ip route show | rg '^default.*src\s+((\d{1,4}\.?){4})' -or '$1' --color=never
 }
@@ -457,11 +411,6 @@ compose() {
 #
 # git
 #
-con() {
-  git diff --name-only --diff-filter=U \
-    | xargs realpath --relative-to=. \
-    | xargs command rg --count --with-filename "<<<<<<<"
-}
 alias g-='git checkout -'
 alias groot='git rev-parse --show-toplevel'
 alias ga='git add -u'
@@ -516,24 +465,4 @@ alias fold='git stash --keep-index && git stash'
 alias stl='git stash list'
 alias stp='git stash pop'
 
-# Rebase master or rebase back $1 commits.
-rb () {
-  if [ -z "$1" ]; then
-    git rebase --keep-empty -i "$(git merge-base master HEAD)"
-  elif echo "$1" | grep -Eq '^[0-9]+$'; then
-    echo git rebase -i "HEAD~$1"
-    git rebase --keep-empty -i "HEAD~$1"
-  else
-    echo git rebase -i "$1"
-    git rebase --keep-empty -i "$1"
-  fi
-}
-# git commit amend, with quick option for no-edit
-gca() {
-  if [ "$1" = "-" ]; then
-    git commit --amend --no-edit --allow-empty
-  else
-    git commit --amend --allow-empty
-  fi
-}
 alias gb=~/bin/git-branches
