@@ -26,6 +26,9 @@
 	c = commit
 	cm = commit --allow-empty -m
 
+[pull]
+	ff = only
+
 [log]
 	graphColors = red
 	abbrevCommit = true
