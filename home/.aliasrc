@@ -336,7 +336,13 @@ wd() {
 #
 # golang
 #
-alias goi="go install -v ./... && go mod tidy |& rg -v 'warning: ignoring symlink'"
+function goi() {
+  root=.
+  if [ -n "$1" ]; then
+    root="$1"
+  fi
+  go install -v "$root"/... && go mod tidy
+}
 alias gome='cd $FIRSTGOPATH/src/github.com/henrywallace'
 gdoc() {
   echo http://localhost:6060
