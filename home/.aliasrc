@@ -178,7 +178,6 @@ uu() {
   zup
   tup
   vup
-  cup
   gup
 }
 # vim update
@@ -186,7 +185,7 @@ vup() {
   if [ -d ~/.config/nvim ]; then
     ~/.config/nvim/setup
   fi
-  v +PlugUpgrade +PlugUpdate +PlugClean \
+  nvim +PlugUpgrade +PlugUpdate +PlugClean \
     +CocUpdateSync \
     +qall
 }
