@@ -24,15 +24,6 @@ augroup custom_git
   au FileType gitcommit set colorcolumn=72,80
 augroup END
 
-
-" Highlight current symbol under cursor.
-" - https://github.com/neoclide/coc-highlight#usage
-augroup custom_coc
-  au!
-  au CursorHold * silent call CocActionAsync('highlight')
-  au BufWritePre *.go :call CocAction('organizeImport')
-augroup END
-
 augroup custom_yaml
   au!
   au FileType yaml setlocal ts=2 sts=2 sw=2 expandtab

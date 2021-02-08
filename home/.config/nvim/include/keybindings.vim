@@ -65,9 +65,3 @@ nnoremap <c-f> :BLines<cr>
 nnoremap <c-r> :History<cr>
 nnoremap <c-p> :Files<cr>
 nnoremap <c-x> :Commands<cr>
-
-" Coc
-nmap gd <Plug>(coc-definition) zz
-nmap gy <Plug>(coc-type-definition)
-nmap <leader>gd :vsplit<cr><c-w><c-w><Plug>(coc-definition)
-nmap <leader>n <Plug>(coc-diagnostic-next-error)

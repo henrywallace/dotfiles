@@ -6,6 +6,8 @@ set updatetime=50
 " Show the cursor line for ease of knowing what I'm doing in this life.
 set cursorline
 
+set hidden
+
 " I am inordinately annoyed by previously saved file dialogs.
 set nobackup
 set noswapfile

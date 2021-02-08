@@ -187,7 +187,9 @@ vup() {
   fi
   nvim +PlugUpgrade +PlugUpdate +PlugClean \
     +CocUpdateSync \
+    +UpdateRemotePlugins \
     +qall
+  pip3 install --user pynvim --upgrade
 }
 gup() {
   # arch linux has managed release so gcloud components update will fail

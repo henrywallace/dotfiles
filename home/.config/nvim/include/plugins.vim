@@ -8,7 +8,6 @@ Plug 'google/vim-searchindex'         			" search match [1/n]
 Plug 'editorconfig/editorconfig-vim'                    " filetype format config
 Plug 'junegunn/fzf', { 'do': { -> fzf#install() } }	" fzf
 Plug 'junegunn/fzf.vim'
-Plug 'neoclide/coc.nvim', {'branch': 'release'}         " language server
 Plug 'terryma/vim-multiple-cursors' 			" multiple-cusors
 Plug 'zivyangll/git-blame.vim'                          " simple git blame
 Plug 'djoshea/vim-autoread' 				" autoreload buffers changed on disk
@@ -16,6 +15,11 @@ Plug 'machakann/vim-sandwich'
 Plug 'tpope/vim-sleuth'
 Plug 'airblade/vim-gitgutter'
 Plug 'haya14busa/incsearch.vim'                         " highlight all while incrementally searching
+Plug 'autozimu/LanguageClient-neovim', {
+    \ 'branch': 'next',
+    \ 'do': 'bash install.sh',
+    \ }
+Plug 'Shougo/deoplete.nvim', { 'do': ':UpdateRemotePlugins' }
 
 " Language specific
 Plug 'rust-lang/rust.vim'                               " rust
@@ -35,3 +39,4 @@ Plug 'phanviet/vim-monokai-pro'
 Plug 'liuchengxu/space-vim-dark'
 
 call plug#end()
+
