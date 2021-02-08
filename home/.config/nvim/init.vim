@@ -15,6 +15,7 @@ let g:LanguageClient_serverCommands = {
     \   },
     \ },
     \}
+let g:LanguageClient_hideVirtualTextsOnInsert = 1
 nmap <silent> gd <Plug>(lcn-definition)
 nmap <silent> gi <Plug>(lcn-implementation)
 nmap <silent> gr <Plug>(lcn-references)
@@ -28,7 +29,7 @@ autocmd BufWritePre *.go :call LanguageClient#textDocument_formatting_sync()
 let g:deoplete#enable_at_startup = 1
 
 call deoplete#custom#option({
-    \ 'auto_complete_delay': 20,
+    \ 'auto_complete_delay': 200,
     \ 'smart_case': v:true,
     \ 'max_list': 20,
     \ })
