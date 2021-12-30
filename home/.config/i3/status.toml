@@ -1,22 +1,48 @@
 [theme]
-name = "plain"
+name = "gruvbox-dark"
+# separator = " ------ "
 [theme.overrides]
-separator = "-"
+separator = "    "
 
 [icons]
-name = "none"
+name = "awesome5"
+[icons.overrides]
+# volume_half = "\uf027 "
+# volume_full = "\uf6a8 "
+time = "\uf073 "
+disk_drive = "F   "
+
+# [[block]]
+# block = "speedtest"
+
+# [[block]]
+# block = "pacman"
+# aur_command = "paru -Qu"
+
+
+[[block]]
+block = "uptime"
 
 [[block]]
 block = "sound"
+format = "{volume}"
+
+[[block]]
+block = "disk_space"
+info_type = "used"
+warning = 80.0
+alert = 95.0
+format = "\uf0a0 {percentage} ({used}/{total})"
 
 [[block]]
 block = "cpu"
 interval = 1
-format = "{utilization}%"
+format = "{utilization} ({frequency})"
 
 [[block]]
 block = "memory"
-format_mem = "{Mup}%"
+# format_mem = "{Mup}%"
+format_mem = "{mem_total_used_percents} ({mem_used;M}/{mem_total;M})"
 
 # [[block]]
 # block = "disk_space"
@@ -30,23 +56,19 @@ format_mem = "{Mup}%"
 [[block]]
 block = "net"
 device = "wlp2s0"
-ssid = true
+# ssid = true
 # format = "{ssid} {ip}"
+format = "{ssid} ({signal_strength}) {speed_down;M*b}/{speed_up;M*b}"
 # format = ""
-ip = true
-speed_up = false
-speed_down = false
+# ip = true
+# speed_up = false
+# speed_down = false
 # graph_up = true
 # graph_down = true
 # signal_strength = true
 # speed_up = false
-interval = 1
+# interval = 1
 # use_bits = false
-#
-[[block]]
-block = "battery"
-interval = 10
-format = "{percentage}% {time}"
 
 [[block]]
 block = "time"
@@ -54,4 +76,6 @@ interval = 1
 format = "%a %m/%d %r"
 
 [[block]]
-block = "uptime"
+block = "battery"
+# interval = 10
+format = "{power}  {percentage} {time}"
