@@ -1,0 +1,9 @@
+#!/bin/bash
+
+
+root=.
+if [ -n "$1" ]; then
+  root="$1"
+fi
+go install $@ "$root"/...
+go mod tidy

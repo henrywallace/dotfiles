@@ -3,7 +3,7 @@ env:
 
 font:
   normal:
-    family: JetBrains Mono
+    family: Hack Nerd Font
     style: Regular
     # family: pokemon-font
     # family: Tye Paloon
@@ -12,14 +12,8 @@ font:
     style: Italic
   size: 14
 
+# background_opacity: 0.95
 background_opacity: 1.0
-
-# window:
-  # startup_mode: "Maximized"
-  # decorations: "buttonless"
-
-# window:
-#   decorations: buttonless
 
 # Colors (Challenger Deep)
 colors-challenger-deep: &challenger-deep
@@ -76,5 +70,45 @@ colors-terminal-app: &terminal-app
     cyan:       "#00E5E5"
     white:      "#E5E5E5"
 
+colors-acme: &acme
+  # let g:terminal_color_0 = s:black[1]
+  # let g:terminal_color_1 = s:red[1]
+  # let g:terminal_color_2 = s:green[1]
+  # let g:terminal_color_3 = s:brown[1]
+  # let g:terminal_color_4 = s:blue[1]
+  # let g:terminal_color_5 = s:magenta[1]
+  # let g:terminal_color_6 = s:cyan[1]
+  # let g:terminal_color_7 = s:beige[1]
+  # let g:terminal_color_8 = s:black[1]
+  # let g:terminal_color_9 = s:red[1]
+  # let g:terminal_color_10 = s:green[1]
+  # let g:terminal_color_11 = s:brown[1]
+  # let g:terminal_color_12 = s:blue[1]
+  # let g:terminal_color_13 = s:magenta[1]
+  # let g:terminal_color_14 = s:cyan[1]
+  # let g:terminal_color_15 = s:pale_yellow[1]
+  primary:
+    background: "#ffffea"
+    foreground: "#000000"
+  normal:
+    black:      "#000000"
+    red:        "#880000"
+    green:      "#005500"
+    yellow:     "#663311"
+    blue:       "#004488"
+    magenta:    "#770077"
+    cyan:       "#007777"
+    white:      "#cccc95"
+  bright:
+    black:      "#000000"
+    red:        "#880000"
+    green:      "#005500"
+    yellow:     "#663311"
+    blue:       "#004488"
+    magenta:    "#770077"
+    cyan:       "#007777"
+    white:      "#cccc95"
+
 colors: *challenger-deep
 # colors: *terminal-app
+# colors: *acme

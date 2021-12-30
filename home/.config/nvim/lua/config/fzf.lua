@@ -1,0 +1,6 @@
+-- vim.cmd([[
+--   nnoremap <c-g> :Rg<cr>
+--   nnoremap <c-c> :History:<cr>
+--   nnoremap <c-p> :Files<cr>
+--   nnoremap <c-x> :Commands<cr>
+-- ]])

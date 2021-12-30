@@ -1,0 +1,141 @@
+#!/usr/bin/env python3
+
+# Switch to default branch, pull, and deleted already merged branches. Branches
+# are considered already merged, if they contain no commits not already present
+# on the default branch, recent release branches, or any custom base branches
+# manually specified with the --base flag.
+#
+# Example usages:
+#
+#   gmp
+#   gmp --dry-run
+#   gmp --log=debug
+#   gmp --base=my-deployed-branch
+
+import logging
+import argparse
+import subprocess
+import sys
+
+
+class CalledProcessError(subprocess.CalledProcessError):
+    def __str__(self):
+        out = self.stderr.strip()
+        if not out:
+            return "%s" % super()
+        else:
+            return "%s:\n\n%s" % (super(), out)
+
+
+def sh(cmd: str, output=False) -> str:
+    """Run the given command in shell mode, and return stdout and stderr
+    together as a string.
+
+    If output, then return string will be false, and output will not be
+    captured and instead be printed to stdout and stderr.
+
+    Raises CalledProcessError if command returned non-zero exit code.
+    """
+    logging.debug(f"sh: {cmd}")
+    try:
+        res = subprocess.run(
+            cmd,
+            shell=True,
+            text=True,
+            capture_output=not output,
+            check=True,
+        )
+    except subprocess.CalledProcessError as exc:
+        raise CalledProcessError(**exc.__dict__) from None
+    out = str(res.stdout).removesuffix("\n")
+    return out
+
+
+def base_branches() -> list[str]:
+    """Return branches that should be used as bases to check for branches that
+    are already contained within them.
+
+    The first branch in the list is the default branch for the origin remote.
+    """
+    branches = []
+
+    default = sh("git rev-parse --abbrev-ref origin/HEAD").removeprefix("origin/")
+    branches.append(default)
+
+    releases = sh(
+        "git branch --all --sort=-committerdate --list *release/* | head -10"
+    ).splitlines()
+    releases = [b.removeprefix("*").strip() for b in releases]
+    branches.extend(releases)
+
+    return branches
+
+
+def parse_args() -> argparse.Namespace:
+    parser = argparse.ArgumentParser(description="Process some integers.")
+    parser.add_argument(
+        "-n",
+        "--dry-run",
+        action="store_true",
+        help="only print branches to delete",
+    )
+    parser.add_argument(
+        "--log",
+        default="info",
+        metavar="LEVEL",
+        help="log level",
+    )
+    parser.add_argument(
+        "-b",
+        "--base",
+        metavar="BRANCH",
+        nargs=1,
+        action="append",
+        help="additional base branches to use",
+    )
+    args = parser.parse_args()
+    return args
+
+
+def main(args):
+    logging.basicConfig(
+        format="%(levelname)-6s  %(message)-48s  %(filename)s:%(lineno)d",
+        level=args.log.upper(),
+    )
+
+    bases = base_branches()
+    logging.debug(f"using base branches: {bases}")
+
+    if args.dry_run:
+        logging.info(f"switching to branch {bases[0]}")
+        logging.info("pulling from remote")
+    if not args.dry_run:
+        sh(f"git switch {bases[0]}", output=True)
+        sh(f"git pull --stat", output=True)
+
+    deleted = set()
+    for base in bases:
+        mergable = sh(f"git branch --merged {base}").splitlines()
+        mergable = [b.removeprefix("*").strip() for b in mergable]
+        mergable = [b for b in mergable if b not in bases]
+        for branch in mergable:
+            since = int(sh(f"git rev-list --count --no-merges {base}..{branch}"))
+            if since == 0 and branch not in deleted:
+                if args.dry_run:
+                    logging.info(
+                        f"deleting branch {branch} from {base.removeprefix('remotes/origin/')}",
+                        extra={"foo": "bar"},
+                    )
+                    deleted.add(branch)
+                else:
+                    sh(f"git branch -D {branch}", output=True)
+
+    return
+
+
+if __name__ == "__main__":
+    args = parse_args()
+    try:
+        main(args)
+    except KeyboardInterrupt:
+        sys.exit(130)

@@ -1,5 +1,7 @@
 #!/bin/bash
 
+root=$(git rev-parse --show-toplevel)
 git diff --name-only --diff-filter=U \
+  | xargs printf "$root/%s\n" \
   | xargs realpath --relative-to=. \
   | xargs command rg --count --with-filename "<<<<<<<"

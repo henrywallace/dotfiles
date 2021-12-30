@@ -19,14 +19,11 @@
 # This sample shows how to prevent push of commits where the log message starts
 # with "WIP" (work in progress).
 
-remote="$1"
-url="$2"
-
-echo running new pre-commit, w00t!
-
-bad_commits="$(git log $(git merge-base master HEAD)..HEAD --pretty=format:"%G? %h %s" | rg -v '^G ')"
+echo "running gpg commit signing pre-push git hook"
+main=$(git symbolic-ref refs/remotes/origin/HEAD | sed 's@^refs/remotes/origin/@@')
+bad_commits="$(git log "$(git merge-base "$main" HEAD)"..HEAD --pretty=format:"%G? %h %s" | rg -v '^G ')"
 if [ -n "$bad_commits" ]; then
-  echo "Some bad commits:"
+  echo "Some unsigned commits:"
   echo "$bad_commits"
   exit 0
 fi

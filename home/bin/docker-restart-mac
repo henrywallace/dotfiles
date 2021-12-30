@@ -1,0 +1,21 @@
+#!/bin/bash
+
+# Docker For Mac seems to have intermittent problems with hanging forever since
+# version 2.3, see [1]. The behavior is that containers can't be started, and
+# currently running ones can't be stopped.
+#
+# To get around this we kill the entire Docker For Mac application. This script
+# takes inspiration from [2].
+#
+# [1] https://github.com/docker/for-mac/issues/1835
+# [2] https://stackoverflow.com/questions/40080887/how-do-i-restart-docker-for-mac-from-the-terminal
+
+printf "Restarting Docker For Mac, kill %d running containers\n" "$(docker ps -q | wc -l)"
+osascript -e 'quit app "Docker"'
+open -a Docker
+while ! docker info &>/dev/null; do
+  printf "."
+  sleep 1
+done
+echo
+echo Docker For Mac is running

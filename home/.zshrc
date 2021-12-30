@@ -4,6 +4,9 @@
 # completion additional definitions.
 autoload -Uz compinit; compinit
 
+# Allow completing aliases.
+setopt completealiases
+
 # Base shell-agnostic rc.
 . ~/.corerc
 
@@ -54,6 +57,19 @@ autoload -Uz promptinit; promptinit
 # https://github.com/zsh-users/zsh-autosuggestions#key-bindings
 bindkey '^ ' autosuggest-accept
 bindkey '^@' autosuggest-accept
+
+gf() {
+    # | awk '{printf "\033[2m%2d\033[0m %s\n", NR, $0}' \
+  commit=$(git log --reverse --oneline "$(git merge-base "$(git symbolic-ref refs/remotes/origin/HEAD --short)" HEAD)"..HEAD \
+    | awk '{printf "%2d %s\n", NR, $0}' \
+    | tac \
+    | fzf \
+    | awk '{print $2}')
+  zle reset-prompt
+  echo git commit --fixup "$commit"
+}
+zle -N gf
+bindkey ^F gf
 
 # https://vi.stackexchange.com/a/10142
 set formatoptions+=r
@@ -121,3 +137,8 @@ if [ -f '/home/ubuntu/google-cloud-sdk/path.zsh.inc' ]; then . '/home/ubuntu/goo
 
 # The next line enables shell command completion for gcloud.
 if [ -f '/home/ubuntu/google-cloud-sdk/completion.zsh.inc' ]; then . '/home/ubuntu/google-cloud-sdk/completion.zsh.inc'; fi
+
+# # https://zsh.sourceforge.io/Doc/Release/Command-Execution.html#Command-Execution
+# command_not_found_handler() {
+#   echo "Command not found: $1" | pokemonsay -n
+# }

@@ -1,50 +1,68 @@
 format = """\
 $hostname\
 $directory\
-$git_branch$git_state$git_status\
-$python \
-$cmd_duration\
+$git_branch$git_commit$git_status$git_state\
+$kubernetes\
+$cmd_duration$status\
 $line_break\
-$status\
 $jobs$character\
 """
+
+add_newline = false
 
 [python]
 format = '[($virtualenv)]($style)'
 
 [hostname]
 ssh_only = false
-style = "blue"
+format = "[$hostname]($style) "
+style = "white dimmed"
+trim_at = "."
 
 [directory]
-style = "bold green"
+style = "purple bold"
+format = "[\\[$path\\]]($style) "
+
+[kubernetes]
+disabled = false
+format = '[$context:$namespace]($style) '
+style = "blue"
+[kubernetes.context_aliases]
+"-(?P<instance>.*)-" = "$instance"
 
 [git_branch]
-style = "purple"
-symbol = ""
-
+style = "bright white"
+format = "[$branch]($style) "
+[git_commit]
+tag_disabled = false
+only_detached = true
 [git_status]
 style = "dimmed"
+# [custom.git_stash]
+# command = "stash-summary"
+# # prefix = "stash "
+# when = 'git rev-parse --is-inside-work-tree && [ -n "$(git stash list)" ]'
+# [custom.git_commits]
+# # prefix = "commits "
+# command = "git log --oneline $(git merge-base master HEAD)..HEAD | wc -l"
+# when = "git rev-parse --is-inside-work-tree"
 
 [cmd_duration]
-min_time = 500
+min_time = 0
+format = "[$duration]($style) "
+style = "dimmed"
+show_milliseconds = true
+
+[status]
+disabled = false
+format = "[\\($common_meaning$signal_name:$status\\)]($style) "
+style = "dimmed"
 
 [jobs]
 symbol = "+"
-style = "bold blue"
+number_threshold = 2
+style = "blue"
 
 [character]
-success_symbol = "[\\$](bold green)"
-error_symbol = "[\\$](bold red)"
-
-
-[custom.git_stash]
-command = "stash-summary"
-# prefix = "stash "
-when = 'git rev-parse --is-inside-work-tree && [ -n "$(git stash list)" ]'
-
-[custom.git_commits]
-# prefix = "commits "
-command = "git log --oneline $(git merge-base master HEAD)..HEAD | wc -l"
-when = "git rev-parse --is-inside-work-tree"
-
+success_symbol = "[\\$](green)"
+error_symbol = "[\\$](red)"

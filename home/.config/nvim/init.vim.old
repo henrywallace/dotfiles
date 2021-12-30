@@ -1,0 +1,230 @@
+call plug#begin(stdpath('data') . '/plugged')
+
+" Miscellany
+Plug 'tpope/vim-eunuch'               			" rename, mkdir, sudo, etc.
+Plug 'editorconfig/editorconfig-vim'                    " filetype format config
+Plug 'junegunn/fzf', { 'do': { -> fzf#install() } }	" fzf
+Plug 'junegunn/fzf.vim'
+Plug 'terryma/vim-multiple-cursors' 			" multiple-cusors
+Plug 'zivyangll/git-blame.vim'                          " simple git blame
+Plug 'djoshea/vim-autoread' 				" autoreload buffers changed on disk
+Plug 'machakann/vim-sandwich'
+Plug 'tpope/vim-sleuth'
+" Plug 'airblade/vim-gitgutter'
+Plug 'haya14busa/incsearch.vim'                         " highlight all while incrementally searching
+" Plug 'neoclide/coc.nvim', {'branch': 'release'}
+Plug 'tpope/vim-fugitive'
+Plug 'Shougo/echodoc.vim'
+Plug 'cappyzawa/go-playground.nvim'
+Plug 'folke/zen-mode.nvim'
+
+" A e s t h e t i c s
+Plug 'challenger-deep-theme/vim', { 'as': 'challenger-deep' }
+Plug 'dracula/vim'
+Plug 'morhetz/gruvbox'
+Plug 'vim-scripts/summerfruit256.vim'
+Plug 'olivertaylor/vacme'
+Plug 'endel/vim-github-colorscheme'
+Plug 'phanviet/vim-monokai-pro'
+Plug 'liuchengxu/space-vim-dark'
+Plug 'ajgrf/parchment'
+Plug 'wojciechkepka/vim-github-dark'
+Plug 'projekt0n/github-nvim-theme'
+Plug 'nvim-lualine/lualine.nvim'
+
+call plug#end()
+
+" Leader
+let mapleader = ' '
+nnoremap <space> <nop>
+
+" let g:LanguageClient_serverCommands = {
+"     \ 'go': {
+"     \   'name': 'gopls',
+"     \   'command': ['gopls'],
+"     \   'initializationOptions': {
+"     \     'usePlaceholders': v:true,
+"     \   },
+"     \ },
+"     \}
+
+set completeopt-=preview
+
+" complete on tab
+" https://github.com/Shougo/deoplete.nvim/issues/816#issuecomment-409119497
+" inoremap <expr> <Tab>  pumvisible() ? "\<C-n>" : deoplete#mappings#manual_complete()
+" inoremap <expr> <S-Tab>  pumvisible() ? "\<C-p>" : "\<S-Tab>"
+
+" imap <expr><TAB>
+"      \ neosnippet#expandable_or_jumpable() ?
+"      \ "\<Plug>(neosnippet_expand_or_jump)" :
+"      \ pumvisible() ? "\<C-y>" :
+"      \ <SID>check_back_space() ? "\<TAB>" :
+"      \ deoplete#mappings#manual_complete()
+
+" let g:SuperTabDefaultCompletionType = "<c-n>"
+
+" command! -bang -nargs=* Rg call fzf#vim#grep("rg --column --line-number --no-heading --color=always --smart-case -- ".shellescape(<q-args>), 1, fzf#vim#with_preview(), <bang>0)',
+
+let g:fzf_preview_window = ['up']
+" let g:fzf_preview_window = []
+
+
+" To use echodoc, you must increase 'cmdheight' value.
+" set cmdheight=2
+" let g:echodoc_enable_at_startup = 1
+
+" Make sure pynvim still works while being in a virtualenv, without having to
+" re-install pynvim to each virtualenv.
+"
+" https://github.com/neovim/pynvim/issues/16#issuecomment-152417012
+let g:python_host_prog = '/usr/local/bin/python3'
+
+" " MINIMAP
+" let g:minimap_width = 10
+" let g:minimap_auto_start = 1
+" let g:minimap_auto_start_win_enter = 1
+" let g:minimap_git_colors = 1
+
+
+augroup custom
+  au!
+  " Open a file in the same location as it was opened last time.
+  " - https://stackoverflow.com/a/774599/2601179
+  if &filetype !=# 'gitcommit'
+    au BufReadPost * if line("'\"") > 0 && line("'\"") <= line("$") | exe "normal! g`\"" | endif
+  endif
+  " Strip whitespaces on save.
+  " - https://unix.stackexchange.com/a/75431/162041.
+  au BufWritePre * :%s/\s\+$//e
+augroup END
+
+" Reload .vimrc on changes.
+augroup custom_vim
+  au!
+  au BufWritePost $MYVIMRC source $MYVIMRC
+augroup END
+
+augroup custom_git
+  au!
+  " Enable spell checking during git commit.
+  au FileType gitcommit setlocal spell
+augroup END
+
+augroup custom_yaml
+  au!
+  au FileType yaml setlocal ts=2 sts=2 sw=2 expandtab
+augroup END
+
+
+" Reload the current file.
+"nnoremap <s-r> :source %<cr>
+
+" Move cursor to bottom after yanking.
+" https://stackoverflow.com/a/3806683/2601179
+vmap y y`]
+
+
+" Show current enclosing scope; usually.
+" https://vi.stackexchange.com/a/12429
+nnoremap <leader>l :echo getline(search('\v^[[:alpha:]$_]', "bn", 1, 100))<cr>
+
+" Show git blame for current line. Simpler and less obtrusive.
+nnoremap <leader>b :<C-u>call gitblame#echo()<cr>
+
+" show highlight group under cursor
+nnoremap <leader>hg :echo "hi<" . synIDattr(synID(line("."),col("."),1),"name") . '> trans<'
+\ . synIDattr(synID(line("."),col("."),0),"name") . "> lo<"
+\ . synIDattr(synIDtrans(synID(line("."),col("."),1)),"name") . ">"<cr>
+
+
+function! s:find_git_root()
+  return system('git rev-parse --show-toplevel 2> /dev/null')[:-2]
+endfunction
+function! s:pwd()
+  return system('dirname %')
+endfunction
+
+command! ProjectFiles execute 'Files' s:find_git_root()
+command! ProjectRg execute 'Rg' s:find_git_root()
+command! DirRg execute 'Rg' s:pwd()
+
+
+" Primary motivated by git gutter, and coc
+" - https://github.com/airblade/vim-gitgutter
+" - https://github.com/neoclide/coc.nvim
+set updatetime=300
+
+" I am inordinately annoyed by previously saved file dialogs.
+set nobackup
+set noswapfile
+set nowritebackup
+
+" This causes neovim to use the system clipboard for all yanking operations,
+" instead of needing to use the '+' or '*' registers explicitly.
+set clipboard+=unnamedplus
+
+" Continue comment sections on return, and format numbered lists.
+" - https://stackoverflow.com/a/22577860/2601179
+" - https://stackoverflow.com/a/4783237/2601179
+" set formatoptions+=ront
+set formatoptions=croqn1jp
+set textwidth=79
+set comments=fb:-,fb:*
+" set formatlistpat="^\s*[\d*-]\+[\]:.)}\t ]\s*"
+"
+" Don't allow double spaces after sentences with rewrapping.
+" https://stackoverflow.com/a/4760477/2528719
+set nojoinspaces
+
+" No wrapping of lines.
+set nowrap
+
+" There's no need to do syntax highlighting past this many columns. The default
+" of 3000 is a bit and degrades performance.
+set synmaxcol=200
+
+" When scrolling, always keep the cursor N lines from the edges.
+"set scrolloff=10
+
+" Markdown code fence syntax highlighting.
+let g:markdown_fenced_languages = ['go', 'sh', 'py=python', 'json', 'yaml']
+
+
+" colorscheme vacme
+" hi LineNr guifg=#8F7634 guibg=#FFFFEC
+" hi ColorColumn guibg=#EAEBDB
+" hi GitGutterAdd guifg=#009900 guibg=#FFFFEC
+" hi GitGutterChange guifg=#bbbb00 guibg=#FFFFEC
+" hi GitGutterDelete guifg=#ff2222 guibg=#FFFFEC
+" hi goComment guifg=#8F7634
+
+colorscheme challenger_deep
+highlight SignColumn ctermbg=232 guibg=#100E23
+" hi CocHighlightText guifg=#34b2ff
+" hi CocHighlightText gui=bold guifg=pink
+hi CocHighlightText gui=underline,bold guifg=none
+" hi CocHighlightText gui=underline,bold guifg=#ffe9aa
+hi goComment ctermfg=243 gui=none guifg=#767676
+hi IncSearch cterm=underline ctermfg=153 gui=underline guifg=#cbe3e7
+hi CocFloating guibg=midnightblue
+hi MatchParen gui=bold guifg=pink
+hi CursorLine gui=none guifg=none guibg=#100E23
+" hi Folded guifg=none guibg=black
+hi Folded gui=none guifg=none guibg=black
+hi Search gui=reverse guifg=none guibg=none
+" hi IncSearch gui=
+
+" colorscheme gruvbox
+
+" colorscheme ghdark
+
+" colorscheme github_dark
+" hi StatusLine guibg=none
+
+" " Disable Searchant highlight when incsearch.vim highlights also disable
+" autocmd CursorMoved * call SearchantStop()
+" function SearchantStop()
+"   :ex
+"   ecute "normal \<Plug>SearchantStop"
+" endfunction

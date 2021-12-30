@@ -82,18 +82,13 @@ ta() {
     tmux attach -t "$@"
   fi
 }
-alias cul='curl $@ | le'
 alias jql='jq . -C | le'
 # Curl in site, and stream through jq.
 cu() {
   curl -s "$1" | jql
 }
 # Define a nice pager.
-if command -v bat >/dev/null 2>&1; then
-  alias le='bat -p'
-else
-  alias le='less -FXR'
-fi
+alias le='less -FXR'
 
 alias dfs='cd ~/dotfiles'
 
@@ -177,19 +172,19 @@ uu() {
   u
   zup
   tup
-  vup
   gup
+  cup
 }
-# vim update
-vup() {
-  if [ -d ~/.config/nvim ]; then
-    ~/.config/nvim/setup
-  fi
-  nvim +PlugUpgrade +PlugUpdate +PlugClean \
-    +CocUpdateSync \
-    +UpdateRemotePlugins \
-    +qall
-  pip3 install --user pynvim --upgrade
+cup() {
+  go=(
+    github.com/github/vulcanizer/cmd/vulcanizer
+    github.com/golangci/golangci-lint/cmd/golangci-lint
+    github.com/nametake/golangci-lint-langserver
+  )
+  for repo in "${go[@]}"; do
+    echo "$repo"
+    go install "$repo@latest"
+  done
 }
 gup() {
   # arch linux has managed release so gcloud components update will fail
@@ -280,7 +275,7 @@ bup() {
   brew upgrade --cask
   brew cleanup
 }
-cup() {
+rup() {
   set -x
   # rustup update nightly
   # cargo +nightly install-update -a
@@ -338,13 +333,6 @@ wd() {
 #
 # golang
 #
-function goi() {
-  root=.
-  if [ -n "$1" ]; then
-    root="$1"
-  fi
-  go install -v "$root"/... && go mod tidy
-}
 alias gome='cd $FIRSTGOPATH/src/github.com/henrywallace'
 gdoc() {
   echo http://localhost:6060
@@ -410,61 +398,115 @@ compose() {
   mdpreview "$1"
 }
 
-#
-# git
-#
-alias g-='git checkout -'
-alias groot='git rev-parse --show-toplevel'
-alias ga='git add -u'
-alias a='git add -u'
-# alias gp='git pull --rebase'
-# alias gua='git reset --soft HEAD@{1} && git reset'
-alias re='git reset'
+vp() {
+  fzf --preview 'bat --color=always -p {}' | xargs "$EDITOR"
+}
+vg() {
+  git diff --name-only --relative | fzf | xargs "$EDITOR"
+}
 
+
+##
+## git
+##
+alias lr='git log -n1 --no-merges --stat'
+alias lrp='lr -p'
+alias gs='git status'
+alias gS='git status -uno'
+alias ga='git add -u'
 alias gd='git diff'
 alias gdc='git diff --cached'
-alias gdd='git diff $(git merge-base master HEAD)'
-alias gds='echo; git diff --stat; echo'
-alias gf='git diff --name-only $(git merge-base master HEAD)'
-
-alias dirty='git diff --name-only --relative'
-rd() {
-  rg $@ $(git diff --name-only --relative $(git merge-base master HEAD))
-}
-
-alias gm='git branch -m'
-alias gmp='git checkout master && git pull && git pb'
-alias gn='git checkout -b'
-
-alias gr='git rebase master'
-alias rc='git rebase --continue'
-alias gk='git commit --allow-empty -m "CHECKPOINT"'
-
-alias pu='git push origin HEAD'
-alias fpu='git push -f origin HEAD'
-
-alias gs='git status'
 alias gap='git add -p'
-alias lg='git log --reverse --oneline $(git merge-base master HEAD)..HEAD'
-alias gls='git log --stat $(git merge-base master HEAD)..HEAD'
-# alias gl='git log $(git merge-base master HEAD)..HEAD'
-alias gls='git log --stat'
-alias lr='git log -n1 --stat'
-alias lrp='git log -p -n1 --stat'
-
-alias gpl='gpg --list-secret-keys --keyid-format LONG'
-
-# git stash
-p() {
-  if [ -z "$1" ]; then
-    git stash show -p
-    return
-  fi
-  git stash show -p "stash@{$1}"
+alias gl='git log $(git merge-base $(git symbolic-ref refs/remotes/origin/HEAD --short) HEAD)..HEAD'
+alias re='git reset'
+alias rc='git rebase --continue'
+alias g-='git checkout -'
+alias gm='git branch -m'
+alias gn='git checkout -b'
+alias gr='git rebase $(git symbolic-ref refs/remotes/origin/HEAD --short)'
+alias stp='git stash pop -q && git status'
+alias gp='git push --force-with-lease'
+lg() {
+  # name=HEAD
+  # if [ -n "$1" ]; then
+  #   name="$1"
+  # fi
+  out=$(git log --color=always --reverse --oneline "$(git merge-base "$(git symbolic-ref refs/remotes/origin/HEAD --short)" HEAD)"..HEAD)
+  # if [ "$num_commits" != "0" ]; then
+  echo "$out" | awk '{printf "\033[2m%2d\033[0m %s\n", NR, $0}'
+  echo
+  num_commits="$(echo "$out" | wc -l)"
+  printf "Number of commits: %d\n" "$num_commits"
+  git diff "$(git merge-base "$(git symbolic-ref refs/remotes/origin/HEAD --short)" HEAD)"..HEAD --stat | tail -1 | xargs
+  # fi
 }
-alias st='git stash --keep-index'
-alias fold='git stash --keep-index && git stash'
-alias stl='git stash list'
-alias stp='git stash pop'
+gb() {
+  git branch --sort=-committerdate --format='%(HEAD) %(color:dim)%(objectname:short)%(color:reset)  %(align:42,left)%(color:bold)%(refname:short)%(color:reset)%(end)  %(color:green)%(committerdate:relative)%(color:reset)'
+}
+cb() {
+  preview() {
+    commit=$(echo "$1" | cut -f1 -d" ")
+    git log --reverse --oneline "$(git merge-base "$(git symbolic-ref refs/remotes/origin/HEAD --short)" "$commit")".."$commit"
+    echo sup
+  }
+  # declare -f preview
+  # | fzf --preview='commit=$(echo {} | cut -f1 -d" "); git log --reverse --oneline $(git merge-base $(git symbolic-ref refs/remotes/origin/HEAD --short) $commit)..$commit' \
+  gb \
+    | rg '^(\s|\*)*' -r '' \
+    | fzf --preview-window=right:50% --preview="eval $(declare -f preview); preview {}" \
+    | awk '{print $2}' \
+    | xargs git checkout
+  git diff --stat "$(git merge-base "$(git symbolic-ref refs/remotes/origin/HEAD --short)" HEAD)"..HEAD| tail -1 | xargs
+}
+p() {
+  size=$(git stash list | wc -l | xargs)
+  printf "Stash size: %s\n" "$size"
+  i=0
+  if [ -n "$1" ]; then
+    i="$1"
+  fi
+  printf "Stash index: %d\n" "$i"
+  git stash show -p "stash@{$i}"
+}
+st() {
+  size=$(git stash list | wc -l | xargs)
+  printf "Stash size: %s\n" "$size"
+  printf "Recent stashes\n"
+  git stash list --color=always --date=local | head -4
+}
 
-alias gb=~/bin/git-branches
+# alias gb=~/bin/git-branches
+#alias groot='git rev-parse --show-toplevel'
+#alias a='git add -u'
+## alias gp='git pull --rebase'
+## alias gua='git reset --soft HEAD@{1} && git reset'
+
+#alias gdc='git diff --cached'
+#alias gdd='git diff $(git merge-base master HEAD)'
+#alias gds='echo; git diff --stat; echo'
+#alias gf='git diff --name-only $(git merge-base master HEAD)'
+
+#alias dirty='git diff --name-only --relative'
+#rd() {
+#  rg $@ $(git diff --name-only --relative $(git merge-base master HEAD))
+#}
+
+#alias gmp='git checkout $(git symbolic-ref refs/remotes/origin/HEAD --short) && git pull && git pb'
+
+#alias rc='git rebase --continue'
+#alias gk='git commit --allow-empty -m "CHECKPOINT"'
+
+#alias pu='git push origin HEAD'
+#alias fpu='git push -f origin HEAD'
+
+#alias gls='git log --stat $(git merge-base master HEAD)..HEAD'
+## alias gl='git log $(git merge-base master HEAD)..HEAD'
+#alias gls='git log --stat'
+
+#alias gpl='gpg --list-secret-keys --keyid-format LONG'
+
+## git stash
+#alias st='git stash --keep-index'
+#alias fold='git stash --keep-index && git stash'
+#alias stl='git stash list'
+#alias stp='git stash pop'

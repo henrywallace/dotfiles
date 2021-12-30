@@ -29,6 +29,7 @@ fi
 if [[ "$(uname -s)" == "Darwin" ]]; then
   PATH=$HOME/.cask/bin:$PATH
   PATH=/usr/local/bin:$PATH
+  PATH=/usr/local/opt/helm@2/bin:$PATH
 fi
 
 # gcloud
@@ -42,3 +43,5 @@ fi
 # https://wiki.archlinux.org/index.php/Node.js_#Allow_user-wide_installations
 PATH="$HOME/.node_modules/bin:$PATH"
 export npm_config_prefix=~/.node_modules
+
+PATH=$PATH:~/.local/share/nvim/lsp_servers

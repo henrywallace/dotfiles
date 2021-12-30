@@ -1,48 +1,72 @@
 {
-  "diagnostic-languageserver.filetypes": {
-    "vim": ["vint"],
-    "sh": ["shellcheck"],
-    "dockerfile": ["hadolint"]
-  },
-  "yaml.schemas": {
-    "kubernetes": "k8s/**.yaml"
-  },
-  "diagnostic.infoSign": ":",
+  "coc.preferences.formatOnSaveFiletypes": ["json", "python", "go", "lua"],
+
+  "coc.preferences.colorSupport": false,
+
+  "diagnostic.errorSign": "✘",
   "diagnostic.warningSign": "?",
-  "diagnostic.errorSign": "!",
-  "diagnostic-languageserver.formatFiletypes": {
-    "sh": "shfmt"
-  },
-  "diagnostic-languageserver.debug": true,
-  "diagnostic-languageserver.trace.server": "verbose",
-  "python.jediEnabled": false,
-  "python.autoUpdateLanguageServer": true,
-  "python.linting.enabled": true,
-  "python.linting.lintOnSave": false,
-  "python.linting.flake8Enabled": true,
-  "python.linting.pylintEnabled": false,
-  "coc.preferences.formatOnSaveFiletypes": [
-    "go",
-    "json",
-    "html",
-    "javascript",
-    "css",
-    "rust"
+  "diagnostic.infoSign": "i",
+  "diagnostic.enableMessage": "always",
+
+  "lua.enable": true,
+
+  "go.goplsPath": "/usr/local/bin/gopls",
+  "go.goplsArgs": [
+    "-remote=auto",
+    "-logfile=auto",
+    "-debug=:6666",
+    "-remote.debug=:6667",
+    "-rpc.trace"
   ],
+  "go.goplsOptions": {
+    "staticcheck": true,
+    "analyses": {
+      "nilness": true,
+      "unusedwrite": true
+    }
+  },
+
+  "diagnostic-languageserver.filetypes": {
+    "vim": "vint",
+    "sh": "shellcheck",
+    "dockerfile": "hadolint"
+  },
+
+  "python.pythonPath": "python3",
+  "python.formatting.provider": "black",
+
   "languageserver": {
-    "golang": {
-      "command": "gopls",
-      "rootPatterns": ["go.mod"],
-      "disableWorkspaceFolders": true,
+    "golangci-lint-languageserver": {
+      "command": "golangci-lint-langserver",
       "filetypes": ["go"],
       "initializationOptions": {
-        "analyses": {
-          "nonewvars": true,
-          "unusedparams": true,
-          "undeclaredname": true
-        },
-        "usePlaceholders": true,
-        "staticcheck": true
+        "command": [
+          "golangci-lint",
+          "run",
+          "--out-format",
+          "json",
+          "--enable",
+          "asciicheck",
+          "bidichk",
+          "bodyclose",
+          "contextcheck",
+          "cyclop",
+          "dupl",
+          "durationcheck",
+          "errorlint",
+          "exhaustive",
+          "exhaustivestruct",
+          "exportloopref",
+          "gocognit",
+          "gosec",
+          "makezero",
+          "misspell",
+          "nilerr",
+          "nilnil",
+          "prealloc",
+          "promlinter",
+          "thelper"
+        ]
       }
     }
   }

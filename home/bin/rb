@@ -2,7 +2,7 @@
 
 # Rebase master or rebase back $1 commits.
 if [ -z "$1" ]; then
-  git rebase --keep-empty -i "$(git merge-base master HEAD)"
+  git rebase --keep-empty -i "$(git merge-base "$(git symbolic-ref refs/remotes/origin/HEAD --short)" HEAD)"
 elif echo "$1" | grep -Eq '^[0-9]+$'; then
   echo git rebase -i "HEAD~$1"
   git rebase --keep-empty -i "HEAD~$1"
