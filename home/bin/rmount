@@ -1,0 +1,18 @@
+#!/bin/bash
+
+set -e
+
+fusermount -u ~/mnt/gcs-devdev-backup || true
+fusermount -u ~/mnt/gdrive-attobop || true
+
+eval $(opam env)
+gcsfuse \
+  --implicit-dirs \
+  --limit-bytes-per-sec -1 \
+  --limit-ops-per-sec -1 \
+  --stat-cache-capacity 10000 \
+  --local-file-cache \
+  devdev-backup ~/mnt/gcs-devdev-backup
+google-drive-ocamlfuse ~/mnt/gdrive-attobop
+
+mount -l | rg /home/henrywallace/mnt/
