@@ -230,7 +230,7 @@ augroup END
 
 vim.o.termguicolors = true
 
-vim.o.wrap = false
+vim.o.wrap = true
 
 -- When there's more than one match, complete the longest common prefix among
 -- them and show the rest of the options.
