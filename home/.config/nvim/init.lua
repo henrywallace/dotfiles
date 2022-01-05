@@ -232,6 +232,8 @@ vim.o.termguicolors = true
 
 vim.o.wrap = true
 
+vim.o.list = true
+
 -- When there's more than one match, complete the longest common prefix among
 -- them and show the rest of the options.
 vim.o.wildmode = 'list:longest,full'
