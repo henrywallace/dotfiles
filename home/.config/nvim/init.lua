@@ -43,6 +43,15 @@ require('packer').startup(function()
       end
   }
   use {
+    "SmiteshP/nvim-gps",
+    requires = "nvim-treesitter/nvim-treesitter",
+    config = function()
+      require("nvim-gps").setup({
+        disable_icons = true,
+      })
+    end,
+  }
+  use {
     'famiu/feline.nvim',
     config = [[require('config.feline')]],
   }
@@ -51,14 +60,11 @@ require('packer').startup(function()
     config = [[require('config.github-theme')]]
   }
   use {
-  	"SmiteshP/nvim-gps",
-  	requires = "nvim-treesitter/nvim-treesitter",
-    config = [[require("nvim-gps").setup()]],
-  }
-  use {
     'lewis6991/gitsigns.nvim',
     requires = { 'nvim-lua/plenary.nvim' },
-    config = [[require('config.gitsigns')]],
+    config = function()
+      require('config.gitsigns')
+    end,
   }
   -- use {
   --   "folke/which-key.nvim",
