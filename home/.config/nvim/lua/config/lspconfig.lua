@@ -146,6 +146,15 @@ local servers = {
   },
   pyright,
   diagnosticls,
+  rls = {
+    settings = {
+      rust = {
+        -- unstable_features = true,
+        -- build_on_save = false,
+        all_features = true,
+      },
+    },
+  },
   sumneko_lua = {
     settings = {
       Lua = {
@@ -190,4 +199,4 @@ for lsp, s in pairs(servers) do
   require('lspconfig')[lsp].setup(setup)
 end
 
-vim.cmd([[au BufWritePre *.go lua vim.lsp.buf.formatting()]])
+vim.cmd([[au BufWritePre *.go,*.rs lua vim.lsp.buf.formatting()]])
