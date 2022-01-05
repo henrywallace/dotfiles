@@ -2,14 +2,20 @@
 
 set -ex
 
-bup() {
-	if brew ls --versions "$1"; then
-		brew upgrade "$1"
-	else
-		brew install "$1"
+up() {
+	if command -v brew >&/dev/null; then
+		if brew ls --versions "$1"; then
+			brew upgrade "$1"
+		else
+			brew install "$1"
+		fi
+	fi
+	if command -v paru >&/dev/null; then
+		paru -S "$1"
 	fi
 }
 
-bup lua-language-server
-bup gopls
-bup pyright
+up lua-language-server
+up gopls
+up pyright
+up diagnostic-languageserver
