@@ -180,7 +180,7 @@ for lsp, s in pairs(servers) do
     capabilities = caps,
     -- handlers = lsp_status.extensions[lsp].setup(),
     flags = {
-      debounce_text_changes = 200,
+      debounce_text_changes = 100,
     },
   }
   for k, v in pairs(s) do
