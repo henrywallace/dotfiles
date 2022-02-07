@@ -100,10 +100,17 @@ require('packer').startup(function()
   --   requires = {'kyazdani42/nvim-web-devicons', opt = true},
   --   config = [[require('config.lualine')]],
   -- }
-  use {
-    'norcalli/nvim-colorizer.lua',
-    config = [[require('colorizer').setup()]],
-  }
+  -- use {
+  --   'norcalli/nvim-colorizer.lua',
+  --   config = function()
+  --     require('colorizer').setup({
+  --       ['*'] = {
+  --         RGB = false,
+  --         names = false,
+  --       },
+  --     })
+  --   end,
+  -- }
   use {
       'nvim-treesitter/nvim-treesitter',
       run = ':TSUpdate',
