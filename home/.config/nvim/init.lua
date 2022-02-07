@@ -12,7 +12,7 @@ end
 --   augroup end
 -- ]]
 
-vim.g.light_theme = false
+vim.g.light_theme = vim.env.EDITOR_THEME or false
 
 require('packer').startup(function()
   use 'wbthomason/packer.nvim' -- Package manager
