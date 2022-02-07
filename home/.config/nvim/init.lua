@@ -309,6 +309,10 @@ vim.o.formatoptions = 'croqn1jp'
 vim.o.textwidth = 79
 vim.o.comments='fb:-,fb:*'
 
+-- For compatibility with rg --vimgrep
+vim.o.grepformat = '%f:%l:%c:%m'
+vim.o.errorformat = '%f:%l:%c:%m'..','..vim.o.errorformat
+
 -- Move between windows more easily.
 vim.cmd([[
   nnoremap <c-h> <c-w><left>
