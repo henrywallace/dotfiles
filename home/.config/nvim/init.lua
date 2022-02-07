@@ -230,7 +230,7 @@ vim.g.mapleader = ' '
 vim.o.cursorline = true
 
 -- Edit arg or word under cursor.
--- vim.cmd([[nnoremap f ciw]])
+vim.cmd([[nnoremap f ciw]])
 
 -- https://neovim.io/doc/user/options.html#'number'
 vim.o.number = true
@@ -252,7 +252,11 @@ vim.o.termguicolors = true
 
 vim.o.wrap = false
 
-vim.o.list = true
+-- Move cursor to bottom after yanking.
+-- https://stackoverflow.com/a/3806683/2601179
+vim.cmd([[
+  vmap y y`]
+]])
 
 -- When there's more than one match, complete the longest common prefix among
 -- them and show the rest of the options.
