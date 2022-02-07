@@ -3,6 +3,8 @@ require('github-theme').setup {
   comment_style = 'NONE',
 }
 
+vim.cmd([[hi TODO gui=bold guibg=none guifg=gray]])
+
 -- Customizations
 if vim.g.light_theme then
   -- hi illuminatedWord guibg=#ffffdd
@@ -37,6 +39,6 @@ else
     hi DiffAdd guifg=#56d364 guibg=none
     hi DiffChange guifg=#e3b341 guibg=none
     hi DiffDelete guifg=#f85149 guibg=none
-    hi NormalFloat guibg=#002155
+    hi NormalFloat guibg=#30363d gui=bold
   ]])
 end
