@@ -276,8 +276,8 @@ vim.cmd([[
 vim.cmd([[nnoremap <leader>j :wr<cr>]])
 
 -- Open up file viewer.
--- vim.cmd([[nnoremap <c-m> :Explore<cr>]])
-vim.cmd([[nnoremap <c-m> :NvimTreeFindFileToggle<cr>]])
+vim.cmd([[nnoremap <c-m> :Explore<cr>]])
+-- vim.cmd([[nnoremap <c-m> :NvimTreeFindFileToggle<cr>]])
 
 -- Move up and down with jk keys.
 vim.cmd([[
