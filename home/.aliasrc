@@ -436,9 +436,8 @@ lg() {
   echo "$out" | awk '{printf "\033[2m%2d\033[0m %s\n", NR, $0}'
   echo
   num_commits="$(echo "$out" | wc -l)"
-  printf "Number of commits: %d\n" "$num_commits"
   git diff "$(git merge-base "$(git symbolic-ref refs/remotes/origin/HEAD --short)" HEAD)"..HEAD --stat | tail -1 | xargs
-  # fi
+  # git diff --color=always --reverse --oneline "$(git merge-base "$(git symbolic-ref refs/remotes/origin/HEAD --short)" HEAD)"..HEAD --stat
 }
 gb() {
   git branch --sort=-committerdate --format='%(HEAD) %(color:dim)%(objectname:short)%(color:reset)  %(align:42,left)%(color:bold)%(refname:short)%(color:reset)%(end)  %(color:green)%(committerdate:relative)%(color:reset)'
