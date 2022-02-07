@@ -14,7 +14,10 @@
 	excludesfile = ~/.gitignore_global
 	hooksPath = ~/dotfiles/misc/git-hooks
 
-[include]
+[checkout]
+	defaultRemote = origin
+
+[includeIf "gitdir:~/diffeo/**"]
 	path = ~/.diffeo_gitconfig
 
 [alias]
