@@ -66,6 +66,13 @@ require('packer').startup(function()
     config = [[require('config.github-theme')]]
   }
   use {
+    'lewis6991/spellsitter.nvim',
+    config = function()
+      require('spellsitter').setup()
+      vim.o.spell = true
+    end
+  }
+  use {
     'lewis6991/gitsigns.nvim',
     requires = { 'nvim-lua/plenary.nvim' },
     config = function()
