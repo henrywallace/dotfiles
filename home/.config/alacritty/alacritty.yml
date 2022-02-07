@@ -12,7 +12,8 @@ font:
     style: Italic
   size: 12
 
-# background_opacity: 0.95
+window:
+  opacity: 0.95
 
 # Colors (Challenger Deep)
 colors-challenger-deep: &challenger-deep
