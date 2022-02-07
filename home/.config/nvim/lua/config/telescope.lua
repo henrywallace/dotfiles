@@ -22,11 +22,11 @@ require('telescope').setup {
 vim.api.nvim_set_keymap(
   'n',
   '<c-r>',
-  ":lua require('telescope.builtin').oldfiles(require('telescope.themes').get_ivy())<cr>",
+  ":lua require('telescope.builtin').oldfiles(require('telescope.themes').get_ivy{previewer=false})<cr>",
   {noremap = true, silent = true}
 )
 vim.cmd([[
-  nnoremap <c-f> :lua require('telescope.builtin').current_buffer_fuzzy_find(require('telescope.themes').get_ivy())<cr>
+  nnoremap <c-f> :lua require('telescope.builtin').current_buffer_fuzzy_find(require('telescope.themes').get_ivy{previewer=false})<cr>
   nnoremap <c-d> :lua require('telescope.builtin').live_grep{ search_dirs = {vim.fn.expand('%:p:h')} } }<cr>
   nnoremap <c-x> :lua require('telescope.builtin').commands()<cr>
   nnoremap <c-p> :lua require('telescope.builtin').find_files{ search_dirs = {vim.fn.expand('%:p:h')} }<cr>
