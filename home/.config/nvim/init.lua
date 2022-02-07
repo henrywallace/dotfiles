@@ -310,6 +310,10 @@ vim.cmd([[
   inoremap <c-a> <c-o><s-^>
 ]])
 
+vim.diagnostic.config({
+    virtual_text = false,
+})
+
 -- -- Open a file in the same location as it was opened last time.
 -- -- https://stackoverflow.com/a/774599/2601179
 -- vim.cmd([[
