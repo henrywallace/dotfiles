@@ -150,6 +150,33 @@ local servers = {
   },
   pyright = {},
   diagnosticls = {},
+  golangci_lint_ls = {
+    init_options = {
+      command = {
+        "golangci-lint",
+        "run",
+        "--out-format=json",
+        "--enable=revive",
+        "--enable=exhaustivestruct",
+        "--enable=asciicheck",
+        "--enable=bidichk",
+        "--enable=bodyclose",
+        "--enable=contextcheck",
+        "--enable=durationcheck",
+        "--enable=dupl",
+        "--enable=errname",
+        "--enable=exhaustive",
+        "--enable=exportloopref",
+        "--enable=gocritic",
+        "--enable=godot",
+        "--enable=gosec",
+        "--enable=misspell",
+        "--enable=nilerr",
+        "--enable=promlinter",
+        "--enable=unparam",
+      },
+    },
+  },
   rust_analyzer = {
     settings = {
       ["rust-analyzer"] = {
@@ -166,6 +193,14 @@ local servers = {
             "--target-dir=/tmp/rust-analyzer-check", -- avoid cargo lock contention
           },
         },
+      },
+    },
+  },
+  yamlls = {
+    settings = {
+      schema = {
+        ["https://json.schemastore.org/github-workflow.json"] = "/.github/workflows/*",
+
       },
     },
   },
