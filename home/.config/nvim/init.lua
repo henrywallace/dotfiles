@@ -21,6 +21,7 @@ require('packer').startup(function()
   use 'google/vim-searchindex'
   use 'ggandor/lightspeed.nvim'
   use 'McAuleyPenney/tidy.nvim'
+  use 'editorconfig/editorconfig-vim'
   -- use 'chaoren/vim-wordmotion'
   use {
     'ethanholz/nvim-lastplace',
