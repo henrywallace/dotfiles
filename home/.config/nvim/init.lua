@@ -53,6 +53,7 @@ require('packer').startup(function()
     config = function()
       require("nvim-gps").setup({
         disable_icons = true,
+        separator = '.',
       })
     end,
   }
