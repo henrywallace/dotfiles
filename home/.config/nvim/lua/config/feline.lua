@@ -122,7 +122,7 @@ components.active[1] = {
     {
         provider = function() return gps.get_location() end,
         enabled = function() return gps.is_available() end,
-        hl = {fg = require('colors').get('blue', 2), style = "italic"},
+        hl = {fg = require('colors').get('blue', 2)},
         left_sep = ' ',
         right_sep = ' ',
     },
@@ -136,20 +136,20 @@ components.inactive[1] = {
     },
 }
 
-local colors
+local theme
 if vim.g.light_theme then
-  colors = {
+  theme = {
       bg = '#ddf4ff',
       fg = '#58a6ff',
   }
 else
-  colors = {
+  theme = {
       bg = '#051d4d',
       fg = '#58a6ff',
   }
 end
 
-require('feline').setup {
-    colors = colors,
+require('feline').setup({
     components = components,
-}
+    theme = theme,
+})
