@@ -87,10 +87,14 @@ vim.cmd([[
   augroup end
 ]])
 
+-- https://github.com/neovim/nvim-lspconfig/wiki/UI-Customization#show-line-diagnostics-automatically-in-hover-window
+vim.cmd [[autocmd CursorHold,CursorHoldI * lua vim.diagnostic.open_float(nil, {focus=false})]]
+
 vim.diagnostic.config({
-  virtual_text = {
-    prefix = '•',
-  }
+  -- virtual_text = {
+  --   prefix = '•',
+  -- }
+  virtual_text = false,
 })
 
 -- vim.cmd([[hi DiagnosticVirtualTextError guifg=]])
@@ -144,19 +148,30 @@ local servers = {
      "-remote.debug=:0",
     },
   },
-  pyright,
-  diagnosticls,
-  rls = {
+  pyright = {},
+  diagnosticls = {},
+  rust_analyzer = {
     settings = {
-      rust = {
-        -- unstable_features = true,
-        -- build_on_save = false,
-        all_features = true,
+      ["rust-analyzer"] = {
+        lruCapacity = 32,
+        checkOnSave = {
+          allFeatures = true,
+          overrideCommand = {
+            "cargo",
+            "clippy",
+            "--workspace",
+            "--message-format=json",
+            "--all-targets",
+            "--all-features",
+            "--target-dir=/tmp/rust-analyzer-check", -- avoid cargo lock contention
+          },
+        },
       },
     },
   },
   sumneko_lua = {
     settings = {
+      -- TODO: Format on save.
       Lua = {
         runtime = {
           -- Tell the language server which version of Lua you're using (most
