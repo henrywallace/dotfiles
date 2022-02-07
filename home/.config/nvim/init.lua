@@ -25,24 +25,28 @@ require('packer').startup(function()
   -- use 'chaoren/vim-wordmotion'
   use {
     'ethanholz/nvim-lastplace',
-    config = [[require('nvim-lastplace').setup()]],
+    config = function()
+      require('nvim-lastplace').setup {
+        lastplace_ignore_filetype = {},
+      }
+    end,
   }
-  use {
-      'kyazdani42/nvim-tree.lua',
-      requires = {
-        'kyazdani42/nvim-web-devicons',
-      },
-      config = function()
-        require'nvim-tree'.setup {
-          hijack_cursor = true,
-          update_cwd = true,
-          update_focused_file = {
-            enable = true,
-            update_cwd = true,
-          },
-        }
-      end
-  }
+  -- use {
+  --     'kyazdani42/nvim-tree.lua',
+  --     requires = {
+  --       'kyazdani42/nvim-web-devicons',
+  --     },
+  --     config = function()
+  --       require'nvim-tree'.setup {
+  --         hijack_cursor = true,
+  --         update_cwd = true,
+  --         update_focused_file = {
+  --           enable = true,
+  --           update_cwd = true,
+  --         },
+  --       }
+  --     end
+  -- }
   use {
     "SmiteshP/nvim-gps",
     requires = "nvim-treesitter/nvim-treesitter",
