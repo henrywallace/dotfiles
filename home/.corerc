@@ -72,14 +72,14 @@ fi
 
 # Set bespoke EDITOR_THEME to light or dark depending on the time of day,
 # assuming a static time-zone.
-hour=$(TZ=America/New_York date +%H)
-if [ 6 -le "$hour" ] && [ "$hour" -le 19 ]; then
-  export EDITOR_THEME=LIGHT
-else
-  export EDITOR_THEME=DARK
-fi
+# hour=$(TZ=America/New_York date +%H)
+# if [ 6 -le "$hour" ] && [ "$hour" -le 19 ]; then
+#   export EDITOR_THEME=LIGHT
+# else
+#   export EDITOR_THEME=DARK
+# fi
 # override
-EDITOR_THEME=DARK
+# EDITOR_THEME=DARK
 # EDITOR_THEME=LIGHT
 
 if command -v bat >/dev/null 2>&1; then
