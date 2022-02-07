@@ -266,7 +266,12 @@ vim.cmd([[nnoremap <c-m> :NvimTreeFindFileToggle<cr>]])
 vim.cmd([[
   nnoremap <s-j> <c-e>
   nnoremap <s-k> <c-y>
+  nnoremap <s-h> zh
+  nnoremap <s-l> zl
 ]])
+
+vim.o.scrolloff = 4
+vim.o.sidescrolloff = 4
 
 -- Argument rewrapping, and add trailing commas.
 vim.cmd([[nnoremap <leader>a :ArgWrap<cr>]])
