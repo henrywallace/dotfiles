@@ -237,7 +237,7 @@ augroup END
 
 vim.o.termguicolors = true
 
-vim.o.wrap = true
+vim.o.wrap = false
 
 vim.o.list = true
 
