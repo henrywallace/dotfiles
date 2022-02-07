@@ -30,8 +30,8 @@ set $browser firefox
 # set $browser google-chrome-stable
 # for_window [class="Google-chrome"] border none
 
-# font pango:JetBrains Mono 12
-font pango:Roboto Bold 11
+font pango:JetBrains Mono 12
+# font pango:Roboto Bold 11
 
 bindsym $mod+Return exec $term
 bindsym $mod+o exec $browser
@@ -187,8 +187,9 @@ bindsym $mod+Shift+r restart
 # Start i3bar to display a workspace bar (plus the system information i3status
 # finds out, if available)
 bar {
-    font pango:Roboto, Font Awesome 5 Free 11
-    position bottom
+    font pango:Roboto, Font Awesome 5 Free 12
+    # font pango:Hack 12
+    position top
     status_command i3status-rs ~/.config/i3/status.toml
     # colors {
     #     separator #666666

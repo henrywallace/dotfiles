@@ -1,16 +1,18 @@
 [theme]
-name = "gruvbox-dark"
+name = "native"
 # separator = " ------ "
 [theme.overrides]
 separator = "    "
 
-[icons]
-name = "awesome5"
-[icons.overrides]
-# volume_half = "\uf027 "
-# volume_full = "\uf6a8 "
-time = "\uf073 "
-disk_drive = "F   "
+# [icons]
+# name = "awesome5"
+# [icons.overrides]
+# # volume_half = "\uf027 "
+# # volume_full = "\uf6a8 "
+# time = "\uf073 "
+# disk_drive = "F   "
+
+icons = "none"
 
 # [[block]]
 # block = "speedtest"
