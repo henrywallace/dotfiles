@@ -68,8 +68,12 @@ require('packer').startup(function()
   use {
     'lewis6991/spellsitter.nvim',
     config = function()
-      require('spellsitter').setup()
-      vim.o.spell = true
+      vim.o.spell = false
+      require('spellsitter').setup {
+        enable = {
+          "gitcommit",
+        }
+      }
     end
   }
   use {
