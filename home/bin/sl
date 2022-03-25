@@ -1,7 +1,7 @@
-#/bin/bash
+#!/bin/bash
 
-if [ -n "$DISPLAY" ]; then
-  XSECURELOCK_PASSWORD_PROMPT=time_hex xsecurelock
-else
-  physlock
-fi
+# if [ -n "$DISPLAY" ]; then
+XSECURELOCK_PASSWORD_PROMPT=time_hex xsecurelock
+# else
+#   physlock
+# fi
