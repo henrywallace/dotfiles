@@ -1,5 +1,6 @@
 **/.secretrc
 **/*diffeo*
+**/.salesforcerc
 **/.customrc
 **/.config/nvim/.netrwhist
 **/.config/nvim/spell
