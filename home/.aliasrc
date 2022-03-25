@@ -405,19 +405,6 @@ alias gn='git checkout -b'
 alias gr='git rebase $(git symbolic-ref refs/remotes/origin/HEAD --short)'
 alias stp='git stash pop -q && git status'
 alias gp='git push --force-with-lease'
-lg() {
-  # name=HEAD
-  # if [ -n "$1" ]; then
-  #   name="$1"
-  # fi
-  out=$(git log --color=always --reverse --oneline "$(git merge-base "$(git symbolic-ref refs/remotes/origin/HEAD --short)" HEAD)"..HEAD)
-  # if [ "$num_commits" != "0" ]; then
-  echo "$out" | awk '{printf "\033[2m%2d\033[0m %s\n", NR, $0}'
-  echo
-  num_commits="$(echo "$out" | wc -l)"
-  git diff "$(git merge-base "$(git symbolic-ref refs/remotes/origin/HEAD --short)" HEAD)"..HEAD --stat | tail -1 | xargs
-  # git diff --color=always --reverse --oneline "$(git merge-base "$(git symbolic-ref refs/remotes/origin/HEAD --short)" HEAD)"..HEAD --stat
-}
 gb() {
   git branch --sort=-committerdate --format='%(HEAD) %(color:dim)%(objectname:short)%(color:reset)  %(align:42,left)%(color:bold)%(refname:short)%(color:reset)%(end)  %(color:green)%(committerdate:relative)%(color:reset)'
 }
