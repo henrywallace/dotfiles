@@ -275,7 +275,8 @@ path() {
   echo "$PATH" | tr ':' '\n'
 }
 
-alias rg='rg --no-heading --sort path -M1024'
+# alias rg='rg --no-heading --sort path -M1024'
+
 ports() {
   sudo lsof -i -n -P
 }
