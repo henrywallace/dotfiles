@@ -18,7 +18,12 @@ require('telescope').setup {
   },
 }
 
--- vim.api.nvim_set_keymap('n', '<c-r>', ":lua require('telescope').extensions.frecency.frecency()<cr>", {noremap = true, silent = true})
+-- vim.api.nvim_set_keymap(
+--   'n',
+--   '<c-r>',
+--   ":lua require('telescope').extensions.frecency.frecency(require('telescope.themes').get_ivy{previewer=false})<cr>",
+--   {noremap = true, silent = true}
+-- )
 vim.api.nvim_set_keymap(
   'n',
   '<c-r>',
