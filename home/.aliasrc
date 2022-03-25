@@ -88,7 +88,7 @@ cu() {
   curl -s "$1" | jql
 }
 # Define a nice pager.
-alias le='less -FXR'
+alias le='less -FRSXF'
 
 alias dfs='cd ~/dotfiles'
 
