@@ -7,10 +7,10 @@ font:
     style: Regular
     # family: pokemon-font
     # family: Tye Paloon
-  italic:
-    family: JetBrainsMono Nerd Font Mono
-    style: Italic
-  size: 12
+  # italic:
+  #   family: JetBrainsMono Nerd Font Mono
+  #   style: Italic
+  size: 14
 
 window:
   opacity: 0.95
