@@ -132,7 +132,9 @@ components.inactive[1] = {
     {
         provider = print_fname,
         icon = '',
-        hl = {fg = require('colors').get('gray', 4)},
+        hl = {
+            fg = require('colors').get('gray', 4),
+        },
     },
 }
 
