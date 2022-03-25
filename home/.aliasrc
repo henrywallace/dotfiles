@@ -150,31 +150,13 @@ alias dw='dmesg -w'
 
 alias lb='lsblk -o NAME,LABEL,FSTYPE,MOUNTPOINT,FSUSED,FSAVAIL,FSUSE%,SIZE,VENDOR'
 
-# Update things.
-#
-# common things, based on machine type
-u() {
-  if command -v paru >/dev/null 2>&1; then
-    paru -Syu && echo
-  fi
-  if command -v brew >/dev/null 2>&1; then
-    bup && echo
-  fi
-  # Weirdly, mac has apt: "apt - annotation processing tool"
-  if [ "$(uname -s)" != Darwin ] && command -v apt >/dev/null 2>&1; then
-    sudo apt update && sudo apt full-upgrade && sudo apt auto-remove
-  fi
-  if command -v nix-env &>/dev/null; then
-    nix-env --upgrade
-  fi
-}
-uu() {
-  u
-  zup
-  tup
-  gup
-  cup
-}
+# uu() {
+#   u
+#   zup
+#   tup
+#   gup
+#   cup
+# }
 cup() {
   go=(
     github.com/github/vulcanizer/cmd/vulcanizer
@@ -271,9 +253,6 @@ alias xc='xclip -i -sel clip'
 #
 bup() {
   set -x
-  brew upgrade
-  brew upgrade --cask
-  brew cleanup
 }
 rup() {
   set -x

@@ -1,0 +1,28 @@
+#!/bin/bash
+
+set -ex
+
+if command -v brew >/dev/null 2>&1; then
+  # First do a reset on any git conflicts. Unfortunately this appears to happen
+  # nearly every time. And it breaks other upgrades. So we just reset before
+  # upgrading, by default.
+  # brew update-reset
+  brew upgrade
+  brew upgrade --cask
+  brew cleanup
+  brew doctor
+  exit 0
+fi
+
+if command -v paru >/dev/null 2>&1; then
+  paru -Syu && echo
+fi
+
+# Weirdly, mac has apt: "apt - annotation processing tool"
+if [ "$(uname -s)" != Darwin ] && command -v apt >/dev/null 2>&1; then
+  sudo apt update && sudo apt full-upgrade && sudo apt auto-remove
+fi
+
+if command -v nix-env &>/dev/null; then
+  nix-env --upgrade
+fi
