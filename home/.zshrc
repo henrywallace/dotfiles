@@ -58,18 +58,6 @@ autoload -Uz promptinit; promptinit
 bindkey '^ ' autosuggest-accept
 bindkey '^@' autosuggest-accept
 
-gf() {
-    # | awk '{printf "\033[2m%2d\033[0m %s\n", NR, $0}' \
-  commit=$(git log --reverse --oneline "$(git merge-base "$(git symbolic-ref refs/remotes/origin/HEAD --short)" HEAD)"..HEAD \
-    | awk '{printf "%2d %s\n", NR, $0}' \
-    | tac \
-    | fzf \
-    | awk '{print $2}')
-  zle reset-prompt
-  echo git commit --fixup "$commit"
-}
-zle -N gf
-bindkey ^F gf
 
 # https://vi.stackexchange.com/a/10142
 set formatoptions+=r
