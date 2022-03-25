@@ -144,7 +144,7 @@ if vim.g.light_theme then
   }
 else
   theme = {
-      bg = '#051d4d',
+      bg = require('colors').get('gray', 7),
       fg = '#58a6ff',
   }
 end
