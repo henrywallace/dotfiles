@@ -1,13 +1,13 @@
-require('lsp_signature').setup {
-  hint_enable = false,
-  handler_opts = {
-    border = 'none',
-  },
-  -- use whichever side has more space
-  floating_window_above_cur_line = false,
-  -- floating window will not auto-close until finish all parameters
-  fix_pos = true,
-}
+-- require('lsp_signature').setup {
+--   hint_enable = false,
+--   handler_opts = {
+--     border = 'none',
+--   },
+--   -- use whichever side has more space
+--   floating_window_above_cur_line = false,
+--   -- floating window will not auto-close until finish all parameters
+--   fix_pos = true,
+-- }
 
 require('trouble').setup {
   auto_close = true,
@@ -100,7 +100,7 @@ vim.diagnostic.config({
 -- vim.cmd([[hi DiagnosticVirtualTextError guifg=]])
 
 local on_attach = function(client, bufnr)
-  require('lsp_signature').on_attach()
+  -- require('lsp_signature').on_attach()
   -- lsp_status.on_attach(client)
 
   local opts = { noremap = true, silent = true }
