@@ -1,4 +1,4 @@
-#!/bin/bash
+#!/bin/sh
 
 . ~/.colors
 
@@ -48,7 +48,7 @@ if command -v nvim &>/dev/null; then
 else
   alias v=vim
 fi
-alias e='emacs -nw'  # always prefer terminal emacs: "no window"
+# alias e='emacs -nw'  # always prefer terminal emacs: "no window"
 
 vr() {
   recent=$1
@@ -145,10 +145,6 @@ alias ic='$EDITOR ~/.config/i3/config'
 alias ics='$EDITOR ~/.config/i3status/config'
 
 alias m=paru
-
-alias dw='dmesg -w'
-
-alias lb='lsblk -o NAME,LABEL,FSTYPE,MOUNTPOINT,FSUSED,FSAVAIL,FSUSE%,SIZE,VENDOR'
 
 # uu() {
 #   u
@@ -389,51 +385,32 @@ vg() {
 ##
 ## git
 ##
+
 alias lr='git log -n1 --no-merges --stat'
-alias lrp='lr -p'
+alias lrp='git log -n1 --no-merges --stat -p'
+alias gl='git log $(git merge-base $(git symbolic-ref refs/remotes/origin/HEAD --short) HEAD)..HEAD'
+
 alias gs='git status'
 alias gS='git status -uno'
+
 alias ga='git add -u'
+alias gap='git add -p'
+alias re='git reset'
+
 alias gd='git diff'
 alias gdc='git diff --cached'
-alias gap='git add -p'
-alias gl='git log $(git merge-base $(git symbolic-ref refs/remotes/origin/HEAD --short) HEAD)..HEAD'
-alias re='git reset'
+alias gD='git diff --no-ext-diff'
+alias gDc='git diff --no-ext-diff --cached'
+
+
 alias rc='git rebase --continue'
+alias gr='git rebase $(git symbolic-ref refs/remotes/origin/HEAD --short)'
+
 alias g-='git checkout -'
 alias gm='git branch -m'
 alias gn='git checkout -b'
-alias gr='git rebase $(git symbolic-ref refs/remotes/origin/HEAD --short)'
 alias stp='git stash pop -q && git status'
-alias gp='git push --force-with-lease'
-gb() {
-  git branch --sort=-committerdate --format='%(HEAD) %(color:dim)%(objectname:short)%(color:reset)  %(align:42,left)%(color:bold)%(refname:short)%(color:reset)%(end)  %(color:green)%(committerdate:relative)%(color:reset)'
-}
-cb() {
-  preview() {
-    commit=$(echo "$1" | cut -f1 -d" ")
-    git log --reverse --oneline "$(git merge-base "$(git symbolic-ref refs/remotes/origin/HEAD --short)" "$commit")".."$commit"
-    echo sup
-  }
-  # declare -f preview
-  # | fzf --preview='commit=$(echo {} | cut -f1 -d" "); git log --reverse --oneline $(git merge-base $(git symbolic-ref refs/remotes/origin/HEAD --short) $commit)..$commit' \
-  gb \
-    | rg '^(\s|\*)*' -r '' \
-    | fzf --preview-window=right:50% --preview="eval $(declare -f preview); preview {}" \
-    | awk '{print $2}' \
-    | xargs git checkout
-  git diff --stat "$(git merge-base "$(git symbolic-ref refs/remotes/origin/HEAD --short)" HEAD)"..HEAD| tail -1 | xargs
-}
-p() {
-  size=$(git stash list | wc -l | xargs)
-  printf "Stash size: %s\n" "$size"
-  i=0
-  if [ -n "$1" ]; then
-    i="$1"
-  fi
-  printf "Stash index: %d\n" "$i"
-  git stash show -p "stash@{$i}"
-}
+
 st() {
   size=$(git stash list | wc -l | xargs)
   printf "Stash size: %s\n" "$size"

@@ -1,0 +1,10 @@
+#!/bin/bash
+
+size=$(git stash list | wc -l | xargs)
+printf "Stash size: %s\n" "$size"
+i=0
+if [ -n "$1" ]; then
+  i="$1"
+fi
+printf "Stash index: %d\n" "$i"
+git stash show -p "stash@{$i}"

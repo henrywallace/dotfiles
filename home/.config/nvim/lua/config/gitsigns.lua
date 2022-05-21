@@ -8,7 +8,7 @@ require('gitsigns').setup {
   },
   current_line_blame = true,
   current_line_blame_opts = {
-    virt_text = true,
+    virt_text = false,
     virt_text_pos = 'eol', -- 'eol' | 'overlay' | 'right_align'
     delay = 500,
     ignore_whitespace = true,
@@ -19,6 +19,7 @@ require('gitsigns').setup {
   },
 }
 
--- vim.cmd([[set statusline+=%{get(b:,'gitsigns_status','')}]])
-
-vim.cmd([[nnoremap <leader>n :Gitsigns next_hunk<cr>]])
+vim.cmd([[nnoremap <leader>h :Gitsigns preview_hunk<cr>]])
+vim.cmd([[nnoremap <leader>b :Gitsigns blame_line<cr>]])
+vim.cmd([[nnoremap ]c :Gitsigns next_hunk<cr>]])
+vim.cmd([[nnoremap [c :Gitsigns prev_hunk<cr>]])

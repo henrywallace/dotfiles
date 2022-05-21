@@ -32,7 +32,10 @@ cmp.setup {
       luasnip.lsp_expand(args.body)
     end,
   },
-  mapping = {
+  view = {
+    entries = 'native',
+  },
+  mapping = cmp.mapping.preset.insert({
     ['<C-p>'] = cmp.mapping.select_prev_item(),
     ['<C-n>'] = cmp.mapping.select_next_item(),
     ['<C-d>'] = cmp.mapping.scroll_docs(-4),
@@ -43,25 +46,25 @@ cmp.setup {
       behavior = cmp.ConfirmBehavior.Replace,
       select = true,
     },
-    ['<Tab>'] = function(fallback)
-      if cmp.visible() then
-        cmp.select_next_item()
-      elseif luasnip.expand_or_jumpable() then
-        luasnip.expand_or_jump()
-      else
-        fallback()
-      end
-    end,
-    ['<S-Tab>'] = function(fallback)
-      if cmp.visible() then
-        cmp.select_prev_item()
-      elseif luasnip.jumpable(-1) then
-        luasnip.jump(-1)
-      else
-        fallback()
-      end
-    end,
-  },
+    -- ['<Tab>'] = function(fallback)
+    --   if cmp.visible() then
+    --     cmp.select_next_item()
+    --   elseif luasnip.expand_or_jumpable() then
+    --     luasnip.expand_or_jump()
+    --   else
+    --     fallback()
+    --   end
+    -- end,
+    -- ['<S-Tab>'] = function(fallback)
+    --   if cmp.visible() then
+    --     cmp.select_prev_item()
+    --   elseif luasnip.jumpable(-1) then
+    --     luasnip.jump(-1)
+    --   else
+    --     fallback()
+    --   end
+    -- end,
+  }),
   formatting = {
     format = lspkind.cmp_format({
       with_text = true, -- do not show text alongside icons
@@ -74,10 +77,11 @@ cmp.setup {
       end
     })
   },
-  sources = {
+  sources = cmp.config.sources({
     { name = 'nvim_lsp' },
     { name = 'luasnip' },
-  },
+    { name = 'buffer' },
+  }),
 }
 -- https://github.com/hrsh7th/nvim-cmp/issues/598#issuecomment-984930668
 vim.cmd([[
@@ -107,7 +111,7 @@ local on_attach = function(client, bufnr)
   vim.api.nvim_buf_set_keymap(bufnr, 'n', 'gD', '<cmd>lua vim.lsp.buf.declaration()<CR>', opts)
   vim.api.nvim_buf_set_keymap(bufnr, 'n', 'gd', '<cmd>lua vim.lsp.buf.definition()<CR>', opts)
   vim.api.nvim_buf_set_keymap(bufnr, 'n', '<leader>gd', '<cmd>vsplit<CR><c-w><c-w>lua vim.lsp.buf.definition()<CR>', opts)
-  vim.api.nvim_buf_set_keymap(bufnr, 'n', 'gr', '<cmd>TroubleToggle lsp_references<CR>', opts)
+  vim.api.nvim_buf_set_keymap(bufnr, 'n', 'gr', '<cmd>TroubleToggle lsp_references<cr>', opts)
   vim.api.nvim_buf_set_keymap(bufnr, 'n', 'rn', '<cmd>lua vim.lsp.buf.rename()<CR>', opts)
   vim.api.nvim_buf_set_keymap(bufnr, 'n', 'gi', '<cmd>lua vim.lsp.buf.implementation()<CR>', opts)
   vim.api.nvim_buf_set_keymap(bufnr, 'n', '[d', '<cmd>lua vim.diagnostic.goto_prev()<CR>', opts)
@@ -120,7 +124,9 @@ caps = require('cmp_nvim_lsp').update_capabilities(caps)
 -- caps = vim.tbl_extend('keep', caps or {}, lsp_status.capabilities)
 
 
-require('diagnosticls-configs').init {}
+require('diagnosticls-configs').init{
+  on_attach = on_attach,
+}
 require('diagnosticls-configs').setup {
   sh = {
     linter = require('diagnosticls-configs.linters.shellcheck'),
@@ -149,31 +155,43 @@ local servers = {
     },
   },
   pyright = {},
-  diagnosticls = {},
+  -- diagnosticls = {
+  -- },
   golangci_lint_ls = {
     init_options = {
       command = {
         "golangci-lint",
         "run",
         "--out-format=json",
-        "--enable=revive",
-        "--enable=exhaustivestruct",
-        "--enable=asciicheck",
+        "--disable-all",
+
         "--enable=bidichk",
         "--enable=bodyclose",
         "--enable=contextcheck",
-        "--enable=durationcheck",
+        "--enable=deadcode",
         "--enable=dupl",
+        "--enable=durationcheck",
+        "--enable=errcheck",
         "--enable=errname",
         "--enable=exhaustive",
         "--enable=exportloopref",
         "--enable=gocritic",
-        "--enable=godot",
         "--enable=gosec",
+        "--enable=ineffassign",
         "--enable=misspell",
         "--enable=nilerr",
         "--enable=promlinter",
+        "--enable=revive",
+        "--enable=staticcheck",
+        "--enable=structcheck",
+        "--enable=typecheck",
         "--enable=unparam",
+        "--enable=unused",
+        "--enable=varcheck",
+        "--enable=wastedassign",
+
+        "--exclude-use-default=false",
+        "--exclude=redundant type from array, slice, or map composite literal",
       },
     },
   },

@@ -10,7 +10,7 @@ if command -v brew >/dev/null 2>&1; then
   brew upgrade
   brew upgrade --cask
   brew cleanup
-  brew doctor
+  # brew doctor
   exit 0
 fi
 

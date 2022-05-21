@@ -30,6 +30,9 @@ if vim.g.light_theme then
   ]])
 else
   vim.cmd([[
+    " hi Comment guifg=#aff5b4
+    " hi Comment guifg=#9ecbff
+    hi Comment guifg=#8b949e
     hi StatusLine guibg=#284566
     hi ColorColumn guibg=#2c313a
     hi GitSignsCurrentLineBlame guibg=none guifg=#484f58

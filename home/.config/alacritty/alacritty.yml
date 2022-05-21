@@ -3,7 +3,7 @@ env:
 
 font:
   normal:
-    family: JetBrainsMono Nerd Font Mono
+    family: Hack Nerd Font
     style: Regular
     # family: pokemon-font
     # family: Tye Paloon
@@ -13,7 +13,10 @@ font:
   size: 14
 
 window:
-  opacity: 0.95
+  opacity: 0.99
+
+key_bindings:
+  - { key: M, mods: Control, chars: "\x1b[109;5u" }
 
 # Colors (Challenger Deep)
 colors-challenger-deep: &challenger-deep

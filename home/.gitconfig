@@ -14,6 +14,9 @@
 	excludesfile = ~/.gitignore_global
 	hooksPath = ~/dotfiles/misc/git-hooks
 
+[diff]
+	external = difft --background=dark
+
 [checkout]
 	defaultRemote = origin
 
@@ -23,8 +26,7 @@
 [alias]
 	co = checkout
 	cp = cherry-pick
-	c = commit
-	cm = commit --allow-empty -m
+	rl = reflog --date=relative
 
 [pull]
 	ff = only

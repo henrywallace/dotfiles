@@ -2,6 +2,8 @@
 
 set -ex
 
+# TODO: brewIn() { if brew ls --versions "$1"; then brew upgrade "$1"; else brew install "$1"; fi }
+
 up() {
 	if command -v brew >&/dev/null; then
 		brew upgrade "$@"
@@ -14,11 +16,8 @@ up \
 	lua-language-server\
 	gopls \
 	pyright \
-	diagnostic-languageserver \
 	rust-analyzer
 
-# TODO:
-# paru:vint-git
-
+yarn global upgrade -s diagnostic-languageserver
 go install github.com/nametake/golangci-lint-langserver@latest
-go install github.com/golangci/golangci-lint/cmd/golangci-lint@v1.42.1
+go install github.com/golangci/golangci-lint/cmd/golangci-lint@latest
