@@ -1,9 +1,17 @@
 local actions = require('telescope.actions')
 
+path_display = function(opts, path)
+  -- local tail = require("telescope.utils").path_tail(path)
+  -- return string.format("%s (%s)", tail, path)
+  -- print(vim.inspect(path))
+  return vim.fn.fnamemodify(path, ":~")
+end
+
+
 require('telescope').setup {
   defaults = {
     -- sorting_strategy = 'ascending',
-    -- path_display = {"smart"},
+    path_display = path_display,
     mappings = {
       i = {
         ['<esc>'] = actions.close,
@@ -30,11 +38,36 @@ vim.api.nvim_set_keymap(
   ":lua require('telescope.builtin').oldfiles(require('telescope.themes').get_ivy{previewer=false})<cr>",
   {noremap = true, silent = true}
 )
+
+search_dirs = function()
+  local Job = require'plenary.job'
+  local job = Job:new({
+    command = 'git',
+    args = {'rev-parse', '--show-toplevel'}
+  })
+  job:sync()
+  local res = job:result()
+  local git_root = res[1]
+  -- print(vim.inspect(res))
+  -- print(vim.inspect(git_root))
+  return {
+    git_root
+  }
+end
+
+-- search_dirs()
+
+vim.api.nvim_set_keymap(
+  'n',
+  '<c-p>',
+  [[:lua require('telescope.builtin').find_files(require('telescope.themes').get_ivy{prompt_title = nil, previewer = false, search_dirs = search_dirs()})<cr>]],
+  {noremap = true, silent = true}
+)
+
 vim.cmd([[
   nnoremap <c-f> :lua require('telescope.builtin').current_buffer_fuzzy_find(require('telescope.themes').get_ivy{previewer=false})<cr>
   nnoremap <c-d> :lua require('telescope.builtin').live_grep{ search_dirs = {vim.fn.expand('%:p:h')} }<cr>
   nnoremap <c-x> :lua require('telescope.builtin').commands(require('telescope.themes').get_ivy())<cr>
-  nnoremap <c-p> :lua require('telescope.builtin').find_files(require('telescope.themes').get_ivy{previewer = false})<cr>
   nnoremap <c-g> :lua require('telescope.builtin').live_grep(require('telescope.themes').get_ivy())<cr>
 ]])
 -- nnoremap <c-f> :Telescope current_buffer_fuzzy_find<cr>

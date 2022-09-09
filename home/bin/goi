@@ -3,7 +3,10 @@
 
 root=.
 if [ -n "$1" ]; then
-  root="$1"
+  if [ "$1" == "--" ]; then
+    root="$1"
+  fi
+  shift
 fi
-go install $@ "$root"/...
+go install -v "$@" "$root"/...
 go mod tidy

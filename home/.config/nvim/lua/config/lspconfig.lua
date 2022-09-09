@@ -40,7 +40,7 @@ cmp.setup {
     ['<C-n>'] = cmp.mapping.select_next_item(),
     ['<C-d>'] = cmp.mapping.scroll_docs(-4),
     ['<C-f>'] = cmp.mapping.scroll_docs(4),
-    ['<C-Space>'] = cmp.mapping.complete(),
+    -- ['<C-Space>'] = cmp.mapping.complete(),
     ['<C-e>'] = cmp.mapping.close(),
     ['<CR>'] = cmp.mapping.confirm {
       behavior = cmp.ConfirmBehavior.Replace,
@@ -81,6 +81,8 @@ cmp.setup {
     { name = 'nvim_lsp' },
     { name = 'luasnip' },
     { name = 'buffer' },
+    { name = 'nvim_lsp_signature_help' },
+    { name = 'path' },
   }),
 }
 -- https://github.com/hrsh7th/nvim-cmp/issues/598#issuecomment-984930668
@@ -104,12 +106,14 @@ vim.diagnostic.config({
 -- vim.cmd([[hi DiagnosticVirtualTextError guifg=]])
 
 local on_attach = function(client, bufnr)
-  -- require('lsp_signature').on_attach()
+  -- require('lsp_signature').on_attach({bind=true}, bufnr)
   -- lsp_status.on_attach(client)
 
   local opts = { noremap = true, silent = true }
   vim.api.nvim_buf_set_keymap(bufnr, 'n', 'gD', '<cmd>lua vim.lsp.buf.declaration()<CR>', opts)
   vim.api.nvim_buf_set_keymap(bufnr, 'n', 'gd', '<cmd>lua vim.lsp.buf.definition()<CR>', opts)
+  -- vim.api.nvim_buf_set_keymap(bufnr, 'n', '<space>gd', ':vsplit<cr> | lua vim.lsp.buf.definition()<cr>', opts)
+  vim.api.nvim_buf_set_keymap(bufnr, 'n', '<space>gd', ':vsplit<cr><c-w>w <bar> :vsplit', opts)
   vim.api.nvim_buf_set_keymap(bufnr, 'n', '<leader>gd', '<cmd>vsplit<CR><c-w><c-w>lua vim.lsp.buf.definition()<CR>', opts)
   vim.api.nvim_buf_set_keymap(bufnr, 'n', 'gr', '<cmd>TroubleToggle lsp_references<cr>', opts)
   vim.api.nvim_buf_set_keymap(bufnr, 'n', 'rn', '<cmd>lua vim.lsp.buf.rename()<CR>', opts)
@@ -121,8 +125,6 @@ end
 
 local caps = vim.lsp.protocol.make_client_capabilities()
 caps = require('cmp_nvim_lsp').update_capabilities(caps)
--- caps = vim.tbl_extend('keep', caps or {}, lsp_status.capabilities)
-
 
 require('diagnosticls-configs').init{
   on_attach = on_attach,
@@ -135,10 +137,6 @@ require('diagnosticls-configs').setup {
     linter = require('diagnosticls-configs.linters.vint'),
   },
 }
-
--- vim.g.Illuminate_ftHighlightGroups = {
---   ['vim:blacklist'] = {'vimVar', 'goVar'},
--- }
 
 local runtime_path = vim.split(package.path, ';')
 table.insert(runtime_path, "lua/?.lua")
@@ -158,38 +156,38 @@ local servers = {
   -- diagnosticls = {
   -- },
   golangci_lint_ls = {
+    -- cmd = {"golangci-lint-langserver", "-debug"},
     init_options = {
       command = {
         "golangci-lint",
         "run",
         "--out-format=json",
+      	"--allow-parallel-runners",  -- https://github.com/nametake/golangci-lint-langserver/issues/17
         "--disable-all",
-
-        "--enable=bidichk",
+        -- "--enable=bidichk",
         "--enable=bodyclose",
-        "--enable=contextcheck",
-        "--enable=deadcode",
-        "--enable=dupl",
-        "--enable=durationcheck",
+        -- "--enable=contextcheck",
+        -- "--enable=deadcode",
+        -- "--enable=dupl",
+        -- "--enable=durationcheck",
         "--enable=errcheck",
-        "--enable=errname",
-        "--enable=exhaustive",
-        "--enable=exportloopref",
-        "--enable=gocritic",
-        "--enable=gosec",
-        "--enable=ineffassign",
-        "--enable=misspell",
+        -- "--enable=errname",
+        -- "--enable=exhaustive",
+        -- "--enable=exportloopref",
+        -- "--enable=gocritic",
+        -- "--enable=gosec",
+        -- "--enable=ineffassign",
+        -- "--enable=misspell",
         "--enable=nilerr",
-        "--enable=promlinter",
+        -- "--enable=promlinter",
         "--enable=revive",
-        "--enable=staticcheck",
-        "--enable=structcheck",
-        "--enable=typecheck",
+        -- "--enable=staticcheck",
+        -- "--enable=structcheck",
+        -- "--enable=typecheck",
         "--enable=unparam",
         "--enable=unused",
-        "--enable=varcheck",
-        "--enable=wastedassign",
-
+        -- "--enable=varcheck",
+        -- "--enable=wastedassign",
         "--exclude-use-default=false",
         "--exclude=redundant type from array, slice, or map composite literal",
       },

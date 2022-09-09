@@ -5,20 +5,29 @@ end
 
 require('packer').startup(function()
   use 'wbthomason/packer.nvim'         -- package manager
+
+  use 'google/vim-searchindex'         -- display match number k of n
   use 'FooSoft/vim-argwrap'            -- fold args surrounded by parentheses
   use 'tpope/vim-commentary'           -- comment lines visual regions
-  use 'google/vim-searchindex'         -- display match number k of n
-  use 'McAuleyPenney/tidy.nvim'        -- trim whitespace on save
   use 'editorconfig/editorconfig-vim'  -- set tabshift based on editorconfig
-  use 'sheerun/vim-polyglot'                -- syntax support for all languages
+  use 'sheerun/vim-polyglot'
+
   use {
-    'ethanholz/nvim-lastplace',        -- return to last place in file on open
+    'ethanholz/nvim-lastplace', -- return to last place in file on open
     config = function()
       require('nvim-lastplace').setup {
         lastplace_ignore_filetype = {"quickfix", "nofile", "help"},
       }
     end,
   }
+
+  use({
+    "mcauley-penney/tidy.nvim",
+    config = function()
+        require("tidy").setup()
+    end
+  })
+
   use {
     "SmiteshP/nvim-gps",         -- status line component for cursor's scope
     requires = "nvim-treesitter/nvim-treesitter",
@@ -29,14 +38,17 @@ require('packer').startup(function()
       })
     end,
   }
+
   use {
     'famiu/feline.nvim',         -- status line
     config = [[require('config.feline')]],
   }
+
   use {
     'projekt0n/github-nvim-theme',  -- github colorscheme
     config = [[require('config.github-theme')]]
   }
+
   use {
     'lewis6991/spellsitter.nvim',   -- spellcheck with treesitter support
     config = function()
@@ -48,6 +60,7 @@ require('packer').startup(function()
       }
     end
   }
+
   use {
     'lewis6991/gitsigns.nvim',      -- git integration
     requires = { 'nvim-lua/plenary.nvim' },
@@ -55,13 +68,15 @@ require('packer').startup(function()
       require('config.gitsigns')
     end,
   }
+
   use {
     'kyazdani42/nvim-tree.lua',     -- filesystem browser
     config = function()
       require('nvim-tree').setup{
         view = {
-          side = 'bottom'
-          -- width = 40,
+          side = 'right',
+          width = 40,
+          -- height = 20,
         },
         actions = {
           open_file = {
@@ -78,25 +93,37 @@ require('packer').startup(function()
       }
     end
   }
+
   use {
       'nvim-treesitter/nvim-treesitter',    -- beyond-regex syntax queries
       run = ':TSUpdate',
       config = [[require('config.treesitter')]],
   }
   use {
+    "folke/twilight.nvim",
+    config = function()
+      require("twilight").setup {
+      }
+    end
+  }
+
+  use {
     'nvim-telescope/telescope.nvim',        -- fuzzy finder, etc.
     requires = {'nvim-lua/plenary.nvim'},
     config = [[require('config.telescope')]],
   }
+
   use {
     'neovim/nvim-lspconfig',
-    'ray-x/lsp_signature.nvim',
+    -- 'ray-x/lsp_signature.nvim',
     'hrsh7th/nvim-cmp',
     'hrsh7th/cmp-nvim-lsp',
-    'RRethy/vim-illuminate',
+    'hrsh7th/cmp-nvim-lsp-signature-help',
+    'hrsh7th/cmp-path',
+    -- 'RRethy/vim-illuminate',
     'saadparwaiz1/cmp_luasnip',
     'L3MON4D3/LuaSnip',
-    'onsails/lspkind-nvim',      -- lsp completion pictogramsj
+    'onsails/lspkind-nvim',      -- lsp completion pictograms
     'nvim-lua/lsp-status.nvim',
     'creativenull/diagnosticls-configs-nvim',
     'https://gitlab.com/yorickpeterse/nvim-pqf',
@@ -107,6 +134,7 @@ require('packer').startup(function()
     config = function()
     end
   }
+
   -- Automatically set up your configuration after cloning packer.nvim
   -- Must be last.
   if packer_bootstrap then
@@ -124,9 +152,11 @@ vim.cmd([[nnoremap <space> <nop>]])
 vim.g.mapleader = ' '
 
 vim.g.light_theme = vim.env.EDITOR_THEME or false
+vim.o.termguicolors = true
 
 vim.o.hidden = true
 
+-- Highlight the current row of the cursor.
 -- https://neovim.io/doc/user/options.html#'cursorline'
 vim.o.cursorline = true
 
@@ -149,9 +179,20 @@ augroup colorcolumn
 augroup END
 ]])
 
-vim.o.termguicolors = true
+-- vim.o.list = true
 
 vim.o.wrap = false
+
+-- local new_profile = function()
+--   return "profile.log"
+-- end
+-- vim.api.nvim_create_autocmd({"VimEnter"}, {
+--   command = vim.cmd([[
+--     profile start profile.log
+--     profile func *
+--     profile file *
+--   ]])
+-- })
 
 -- Move cursor to bottom after yanking.
 -- https://stackoverflow.com/a/3806683/2601179
@@ -162,7 +203,6 @@ vim.cmd([[
 -- When there's more than one match, complete the longest common prefix among
 -- them and show the rest of the options.
 vim.o.wildmode = 'list:longest,full'
-
 vim.o.completeopt = 'menu,menuone,noselect'
 
 -- Split windows.
@@ -229,17 +269,3 @@ vim.cmd([[
   inoremap <c-e> <c-o><s-$>
   inoremap <c-a> <c-o><s-^>
 ]])
-
-function format_range_operator()
-  local old_func = vim.go.operatorfunc
-  _G.op_func_formatting = function()
-    local start = vim.api.nvim_buf_get_mark(0, '[')
-    local finish = vim.api.nvim_buf_get_mark(0, ']')
-    vim.lsp.buf.range_formatting({}, start, finish)
-    vim.go.operatorfunc = old_func
-    _G.op_func_formatting = nil
-  end
-  vim.go.operatorfunc = 'v:lua.op_func_formatting'
-  vim.api.nvim_feedkeys('g@', 'n', false)
-end
-vim.api.nvim_set_keymap("n", "gm", "<cmd>lua format_range_operator()<CR>", {noremap = true})

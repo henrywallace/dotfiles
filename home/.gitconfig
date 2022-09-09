@@ -4,6 +4,7 @@
 
 [push]
 	default = simple
+	autoSetupRemote = true
 
 [core]
 	# Don't set editor, but instead just use $EDITOR
@@ -13,9 +14,11 @@
 	# https://stackoverflow.com/a/11262153
 	excludesfile = ~/.gitignore_global
 	hooksPath = ~/dotfiles/misc/git-hooks
+	fsmonitor = true
+	untrackedcache = true
 
-[diff]
-	external = difft --background=dark
+; [diff]
+; 	external = difft --background=dark
 
 [checkout]
 	defaultRemote = origin
@@ -38,9 +41,6 @@
 [url "git@github.com:henrywallace"]
 	insteadOf = https://github.com/henrywallace
 
-[absorb]
-	maxStack = 100
-
 [rebase]
 	autosquash = true
 
@@ -49,3 +49,13 @@
 	required = true
 	clean = git-lfs clean -- %f
 	smudge = git-lfs smudge -- %f
+
+[absorb]
+	maxStack = 100
+
+[tig "color"]
+	cursor = yellow
+
+; [submodule]
+; 	recurse = true
+; 	fetchJobs = 16

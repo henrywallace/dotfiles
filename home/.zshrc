@@ -90,6 +90,11 @@ if [ -f "$ZSH_SYNTAX_HIGHLIGHTING" ]; then
   . "$ZSH_SYNTAX_HIGHLIGHTING"
 fi
 
+ZSH_COMPLETIONS=~/.zsh/zsh-completions
+if [ -d "$ZSH_COMPLETIONS" ]; then
+  fpath=($ZSH_COMPLETIONS $fpath)
+fi
+
 # Use emacs mode.
 bindkey -e
 

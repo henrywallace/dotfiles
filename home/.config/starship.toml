@@ -2,7 +2,6 @@ format = """\
 $hostname\
 $directory\
 $git_branch$git_commit$git_status$git_state\
-$kubernetes\
 $cmd_duration$status\
 $line_break\
 $jobs$character\
@@ -56,7 +55,7 @@ show_milliseconds = true
 [status]
 disabled = false
 format = "[\\($common_meaning$signal_name:$status\\)]($style) "
-style = "dimmed"
+style = "fg:bright-yellow"
 
 [jobs]
 symbol = "+"

@@ -14,6 +14,7 @@ font:
 
 window:
   opacity: 0.99
+  # decorations: transparent
 
 key_bindings:
   - { key: M, mods: Control, chars: "\x1b[109;5u" }

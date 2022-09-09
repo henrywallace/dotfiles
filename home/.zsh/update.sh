@@ -2,8 +2,9 @@
 
 repos="
 https://github.com/zsh-users/zsh-autosuggestions
-https://github.com/sindresorhus/pure
 https://github.com/zdharma/fast-syntax-highlighting
+https://github.com/zsh-users/zsh-completions
+https://github.com/sindresorhus/pure
 "
 for repo in $repos; do
   [ -z "$repo" ] && continue

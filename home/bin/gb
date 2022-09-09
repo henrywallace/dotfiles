@@ -1,5 +1,20 @@
 #!/bin/bash
 
+: "${COLOR:=always}"
+
+out=$(
 git branch \
-  --sort=-committerdate \
-  --format='%(HEAD) %(color:dim)%(objectname:short)%(color:reset)  %(align:42,left)%(color:bold)%(refname:short)%(color:reset)%(end)  %(color:green)%(committerdate:relative)%(color:reset)'
+    --color=$COLOR \
+    --sort=-committerdate \
+    --format='%(HEAD) %(color:dim)%(objectname:short)%(color:reset)  %(align:42,left)%(color:bold)%(refname:short)%(color:reset)%(end)  %(color:green)%(committerdate:relative)%(color:reset)' \
+)
+limit=12
+if [ -n "$1" ]; then
+  # TODO: Gah! Why is bash so hard to get right!? Fix this suffix stripping.
+  limit="${1/%"-"}"
+fi
+echo "$out" | head -"$limit"
+n="$(echo "$out" | wc -l)"
+if [ "$n" -gt "$limit" ]; then
+  echo -e "\033[95m[...$((n - limit)) more branches...]\033[0m"
+fi

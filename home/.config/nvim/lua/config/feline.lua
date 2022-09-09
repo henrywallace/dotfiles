@@ -25,7 +25,7 @@ local print_fname = function(_, opts)
         filename = vim.fn.fnamemodify(filename, ':~')
     end
 
-    local t = opts.short_tail or 2
+    local t = opts.short_tail or 3
     if opts.short or true then
         local parts = vim.split(filename, "/")
         local w = opts.short_width or 1
@@ -55,7 +55,10 @@ components.active[1] = {
     {
         provider = print_fname,
         icon = '',
-        hl = {style = 'bold'},
+        hl = {
+            fg = require('colors').get('red', 1),
+            -- style = 'bold',
+        },
         right_sep = ' ',
     },
     {

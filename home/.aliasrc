@@ -1,41 +1,11 @@
 #!/bin/sh
 
-. ~/.colors
+alias sc='sudo systemctl '
+alias scu='systemctl --user '
+alias scr='sc daemon-reload; scu daemon-reload'
 
-# Quick access to editing config files.
-alias aa='v ~/.aliasrc'
-alias bb='v ~/.bashrc'
-alias vv='v ~/.vimrc'
-alias zz='v ~/.zshrc'
-
-if command -v nix-env &>/dev/null; then
-  alias n='nix-env '
-fi
-
-rs() {
-  rsync \
-    --info=progress2 \
-    --recursive \
-    --archive \
-    --partial \
-    --append-verify \
-    --one-file-system
-}
-
-
-# TODO: tar progress
-# https://superuser.com/a/665181/577047
-# tar cf - /folder-with-big-files -P | pv -s $(du -sb /folder-with-big-files | awk '{print $1}') | gzip > big-files.tar.gz
-
-if command -v systemctl &>/dev/null; then
-  alias sc='sudo systemctl '
-  alias scu='systemctl --user '
-  alias scr='sc daemon-reload; scu daemon-reload'
-fi
-if command -v journalctl &>/dev/null; then
-  alias jc='sudo journalctl '
-  alias jcu='journalctl --user '
-fi
+alias jc='sudo journalctl '
+alias jcu='journalctl --user '
 
 alias cp='cp -i'
 alias mv='mv -i'
@@ -43,11 +13,7 @@ alias rm='rm -i'
 alias df='df -h'
 alias ln='ln -i'
 
-if command -v nvim &>/dev/null; then
-  alias v=nvim
-else
-  alias v=vim
-fi
+alias v=nvim
 # alias e='emacs -nw'  # always prefer terminal emacs: "no window"
 
 vr() {
@@ -386,9 +352,9 @@ vg() {
 ## git
 ##
 
-alias lr='git log -n1 --no-merges --stat'
-alias lrp='git log -n1 --no-merges --stat -p'
-alias gl='git log $(git merge-base $(git symbolic-ref refs/remotes/origin/HEAD --short) HEAD)..HEAD'
+alias lr='git log -n1 --no-merges --stat --abbrev=7'
+alias lrp='git log -n1 --no-merges --stat --abbrev=7 -p'
+# alias gl='git log $(git merge-base $(git symbolic-ref refs/remotes/origin/HEAD --short) HEAD)..HEAD'
 
 alias gs='git status'
 alias gS='git status -uno'

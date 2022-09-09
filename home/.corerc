@@ -1,9 +1,5 @@
 #!/bin/bash
 
-if [ -f ~/.nix-profile/etc/profile.d/nix.sh ]; then
-  . ~/.nix-profile/etc/profile.d/nix.sh
-fi
-
 . ~/.pathrc
 . ~/.aliasrc
 [ -f ~/.diffeorc ] && . ~/.diffeorc
@@ -11,20 +7,18 @@ fi
 [ -f ~/.customrc ] && . ~/.customrc
 
 
-if command -v alacritty &>/dev/null; then
-  # In particular, this is useful for i3-sensible-terminal which will loop
-  # through various terminals, checking this env first. i3 will use the
-  # i3-sensible-terminal command whenever a config error occurs.
-  export TERMINAL=alacritty
-fi
+# In particular, this is useful for i3-sensible-terminal which will loop
+# through various terminals, checking this env first. i3 will use the
+# i3-sensible-terminal command whenever a config error occurs.
+export TERMINAL=alacritty
 
 export GPG_TTY=$(tty)
 
 # fzf
-case "$SHELL" in
-  *zsh) [ -f ~/.fzf.zsh ] && . ~/.fzf.zsh;;
-  *bash) [ -f ~/.fzf.bash ] && . ~/.fzf.bash;;
-esac
+# case "$SHELL" in
+#   *zsh) [ -f ~/.fzf.zsh ] && . ~/.fzf.zsh;;
+#   *bash) [ -f ~/.fzf.bash ] && . ~/.fzf.bash;;
+# esac
 
 # https://github.com/stedolan/jq/pull/1397
 #   - color for `null`
@@ -45,16 +39,15 @@ export CGO_CPPFLAGS="$CGO_CPPFLAGS -Wno-unused-result"
 export GOTMPDIR=/tmp/go/
 [ -d $GOTMPDIR ] || mkdir -p $GOTMPDIR
 export MANWIDTH=100
-if command -v bat &>/dev/null; then
-  export MANPAGER="sh -c 'col -b | less'"
-fi
+# if command -v bat &>/dev/null; then
+#   export MANPAGER="sh -c 'col -b | less'"
+# fi
 
 export PAGER=less
 
 export FZF_DEFAULT_OPTS='--height 24% --reverse --border'
-if command -v fd &>/dev/null; then
-  export FZF_DEFAULT_COMMAND='fd --type f'
-fi
+export FZF_DEFAULT_COMMAND='fd --type f'
+
 # # https://github.com/junegunn/fzf/issues/174#issuecomment-104317985
 # export FZF_DEFAULT_OPTS='--bind alt-j:down,alt-k:up'
 
@@ -62,14 +55,7 @@ fi
 # https://stackoverflow.com/a/5578718
 export ALTERNATE_EDITOR=""
 
-if command -v nvim &>/dev/null; then
-  export EDITOR=nvim
-elif command -v vim &>/dev/null; then
-  export EDITOR=vim
-elif command -v vi &>/dev/null; then
-  export EDITOR=vi
-fi
-
+export EDITOR=nvim
 
 # Set bespoke EDITOR_THEME to light or dark depending on the time of day,
 # assuming a static time-zone.
@@ -83,13 +69,11 @@ fi
 # EDITOR_THEME=DARK
 # EDITOR_THEME=LIGHT
 
-if command -v bat >/dev/null 2>&1; then
-  export BAT_THEME="ansi"
-fi
+export BAT_THEME="ansi"
 
-if [ "$(uname -s)" = Darwin ]; then
-  defaults write -g InitialKeyRepeat -int 10 # normal minimum is 15 (225 ms)
-  defaults write -g KeyRepeat -int 1 # normal minimum is 2 (30 ms)
-fi
+# if [ "$(uname -s)" = Darwin ]; then
+#   defaults write -g InitialKeyRepeat -int 10 # normal minimum is 15 (225 ms)
+#   defaults write -g KeyRepeat -int 1 # normal minimum is 2 (30 ms)
+# fi
 
 export JQ_COLORS="0;37:0;39:0;39:0;39:0;32:1;39:1;39"

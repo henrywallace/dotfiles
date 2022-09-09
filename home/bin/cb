@@ -7,7 +7,7 @@ preview() {
 }
 # declare -f preview
 # | fzf --preview='commit=$(echo {} | cut -f1 -d" "); git log --reverse --oneline $(git merge-base $(git symbolic-ref refs/remotes/origin/HEAD --short) $commit)..$commit' \
-gb \
+COLOR=auto gb \
   | rg '^(\s|\*)*' -r '' \
   | fzf --preview-window=right:50% --preview="eval $(declare -f preview); preview {}" \
   | awk '{print $2}' \

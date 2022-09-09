@@ -1,0 +1,8 @@
+#!/bin/bash
+
+brew update-reset
+brew upgrade
+
+update-lsp
+
+nvim +PackerSync

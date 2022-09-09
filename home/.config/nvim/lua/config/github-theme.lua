@@ -39,7 +39,7 @@ else
     hi CocHighlightText gui=underline,bold guifg=none
     hi illuminatedWord guibg=#284566
     hi illuminatedCurWord guibg=none
-    hi DiffAdd guifg=#56d364 guibg=none
+    hi DiffAdd guifg=#2ea043 guibg=none
     hi DiffChange guifg=#e3b341 guibg=none
     hi DiffDelete guifg=#f85149 guibg=none
     hi NormalFloat guibg=#30363d gui=bold
