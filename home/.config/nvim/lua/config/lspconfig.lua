@@ -146,10 +146,20 @@ table.insert(runtime_path, "lua/?/init.lua")
 local servers = {
   gopls = {
     cmd = {
-      "gopls",
+     "gopls",
      "-remote=auto",
      "-debug=:0",
      "-remote.debug=:0",
+    },
+  },
+  sqls = {
+    settings = {
+      sqls = {
+        connections = {
+          driver = "postgresql",
+          dataSourceName = 'host=127.0.0.1 port=5432',
+        },
+      },
     },
   },
   pyright = {},
@@ -212,6 +222,7 @@ local servers = {
       },
     },
   },
+  jsonls = {},
   yamlls = {
     settings = {
       schema = {
