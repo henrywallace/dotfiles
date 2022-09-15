@@ -16,8 +16,9 @@ up \
 	lua-language-server\
 	gopls \
 	pyright \
-	rust-analyzer
+	rust-analyzer \
+	sqls
 
-yarn global upgrade -s diagnostic-languageserver
+yarn global upgrade -s diagnostic-languageserver vscode-langservers-extracted
 go install github.com/nametake/golangci-lint-langserver@latest
 go install github.com/golangci/golangci-lint/cmd/golangci-lint@latest
