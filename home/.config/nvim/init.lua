@@ -13,6 +13,24 @@ require('packer').startup(function()
   use 'sheerun/vim-polyglot'
 
   use {
+    'phaazon/hop.nvim',
+    branch = 'v2', -- optional but strongly recommended
+    config = function()
+      -- you can configure Hop the way you like here; see :h hop-config
+      require'hop'.setup { }
+      vim.api.nvim_set_keymap('', 'f', ":HopWord<cr>", {})
+      -- vim.api.nvim_set_keymap('', 'F', ":HopPattern<cr>", {})
+    end
+  }
+
+  -- use {
+  --   "folke/which-key.nvim",
+  --   config = function()
+  --     require("which-key").setup { }
+  --   end
+  -- }
+
+  use {
     'ethanholz/nvim-lastplace', -- return to last place in file on open
     config = function()
       require('nvim-lastplace').setup {
@@ -160,8 +178,8 @@ vim.o.hidden = true
 -- https://neovim.io/doc/user/options.html#'cursorline'
 vim.o.cursorline = true
 
--- Edit arg or word under cursor.
-vim.cmd([[nnoremap f ciw]])
+-- -- Edit arg or word under cursor.
+vim.cmd([[nnoremap F ciw]])
 
 -- https://neovim.io/doc/user/options.html#'number'
 vim.o.number = true
