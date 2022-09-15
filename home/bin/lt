@@ -1,0 +1,3 @@
+#!/bin/bash
+
+exa --git -l -s modified -F --color=always -r --no-permissions --no-user | head
