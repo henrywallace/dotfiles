@@ -1,0 +1,13 @@
+#!/bin/bash
+
+red=$(tput setaf 1)
+bold=$(tput bold)
+reset=$(tput sgr0)
+
+ref=HEAD
+gitdir=$(git rev-parse --git-dir)
+if [ -f "$gitdir/REBASE_HEAD" ]; then
+  echo "${red}${bold}REBASE HEAD${reset}"
+  ref="$(cat "$gitdir/REBASE_HEAD")"
+fi
+git log -n1 --no-merges --stat --abbrev=7 "$ref" "$@"

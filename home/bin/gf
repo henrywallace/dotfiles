@@ -1,10 +1,5 @@
 #!/bin/bash
 
-  # | awk '{printf "%2d %s\n", NR, $0}' \
-  # | tac \
-commit=$(NO_STAT=yes lg | rg -v "fixup!" | sed '$d' | fzf --ansi | awk '{print $2}')
-# zle reset-prompt
-echo git commit --fixup "$commit"
+commit=$(NO_STAT=yes lg | rg -v "fixup!" | sed '$d' | fzf --ansi --height 20 | awk '{print $2}')
+echo "git commit --fixup $commit"
 git commit --fixup "$commit"
-# zle -N gf
-# bindkey ^F gf

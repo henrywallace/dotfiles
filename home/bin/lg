@@ -1,15 +1,11 @@
 #!/usr/bin/env bash
 
-# name=HEAD
-# if [ -n "$1" ]; then
-#   name="$1"
-# fi
-out=$(git log --color=always --reverse --oneline "$(git merge-base "$(git symbolic-ref refs/remotes/origin/HEAD --short)" HEAD)"..HEAD)
-# if [ "$num_commits" != "0" ]; then
+default_branch=$(git symbolic-ref refs/remotes/origin/HEAD --short)
+if [ -z "$BASE_BRANCH" ]; then
+  BASE_BRANCH="$(git merge-base "$default_branch" HEAD)"
+fi
+
+out=$(git log --color=always --reverse --oneline "$BASE_BRANCH"..HEAD)
 echo "$out" | awk '{printf "\033[2m%2d\033[0m %s\n", NR, $0}'
 echo
-num_commits="$(echo "$out" | wc -l)"
-if [ -z $NO_STAT ]; then
-	git diff "$(git merge-base "$(git symbolic-ref refs/remotes/origin/HEAD --short)" HEAD)"..HEAD --stat | tail -1
-fi
-# git diff --color=always --reverse --oneline "$(git merge-base "$(git symbolic-ref refs/remotes/origin/HEAD --short)" HEAD)"..HEAD --stat
+git diff "$BASE_BRANCH"..HEAD --stat | tail -1

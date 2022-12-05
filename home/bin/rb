@@ -1,8 +1,31 @@
 #!/bin/bash
 
-# Rebase master or rebase back $1 commits.
+# Interactive rebase helper
+#
+# Usage:
+#
+# Interactive rebase over the most common ancestor between the current branch,
+# and the default branch. For most branches, this is just rebasing over the
+# default branch, but in some cases it can lead to
+#
+#   rb
+#
+# Interactive rebase back onto the nth ancestor of the current commit. So in
+# the following example, we would be rebasing over the
+#
+#   rb 2
+#
+# Interactive rebase onto the given branch name.
+#
+#   rb my-branch
+
+default_branch=$(git symbolic-ref refs/remotes/origin/HEAD --short)
+if [ -z "$BASE_BRANCH" ]; then
+  BASE_BRANCH="$(git merge-base "$default_branch" HEAD)"
+fi
+
 if [ -z "$1" ]; then
-  git rebase --keep-empty -i "$(git merge-base "$(git symbolic-ref refs/remotes/origin/HEAD --short)" HEAD)"
+  git rebase --keep-empty -i "$BASE_BRANCH"
 elif echo "$1" | grep -Eq '^[0-9]+$'; then
   echo git rebase -i "HEAD~$1"
   git rebase --keep-empty -i "HEAD~$1"

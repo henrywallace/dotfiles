@@ -1,0 +1,3 @@
+#!/bin/bash
+
+bat -p "$(which "$1")"
