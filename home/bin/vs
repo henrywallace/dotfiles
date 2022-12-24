@@ -1,8 +1,0 @@
-#!/bin/sh
-
-set -e
-
-line=$(sk --height '32%' --reverse --ansi -i -c 'rg --color=always --line-number "{}"')
-path=$(echo "$line" | cut -d':' -f1)
-line=$(echo "$line" | cut -d':' -f2)
-vim "$path" "+$line"

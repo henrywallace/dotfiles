@@ -1,11 +1,20 @@
 #!/usr/bin/env bash
 
-default_branch=$(git symbolic-ref refs/remotes/origin/HEAD --short)
-if [ -z "$BASE_BRANCH" ]; then
-  BASE_BRANCH="$(git merge-base "$default_branch" HEAD)"
+HEAD='HEAD'
+if [ -n "$1" ]; then
+  HEAD="$1"
 fi
 
-out=$(git log --color=always --reverse --oneline "$BASE_BRANCH"..HEAD)
+
+default_branch=$(git symbolic-ref refs/remotes/origin/HEAD --short)
+if [ -z "$BASE_BRANCH" ]; then
+  BASE_BRANCH="$(git merge-base "$default_branch" "$HEAD")"
+fi
+
+# echo "HEAD=$HEAD"
+# echo "BASE_BRANCH=$BASE_BRANCH"
+
+out=$(git log --color=always --reverse --oneline "$BASE_BRANCH".."$HEAD")
 echo "$out" | awk '{printf "\033[2m%2d\033[0m %s\n", NR, $0}'
 echo
-git diff "$BASE_BRANCH"..HEAD --stat | tail -1
+git diff "$BASE_BRANCH".."$HEAD" --stat | tail -1

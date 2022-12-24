@@ -13,25 +13,15 @@ alias rm='rm -i'
 alias df='df -h'
 alias ln='ln -i'
 
-alias v=nvim
-# alias e='emacs -nw'  # always prefer terminal emacs: "no window"
-
-vr() {
-  recent=$1
-  if [ -z "$recent" ]; then
-    recent=0
-  fi
-  v -c "'$recent"
-}
-
 alias j='jobs -l'
-if [ "$(uname -s)" = Linux ]; then
-  alias ls='ls -F --color -H'
-elif [ "$(uname -s)" = Darwin ]; then
-  alias ls='ls -FGH'
-fi
-alias l='ls -lah'
-alias ll='ls -laht'
+# if [ "$(uname -s)" = Linux ]; then
+#   alias ls='ls -F --color -H'
+# elif [ "$(uname -s)" = Darwin ]; then
+#   alias ls='ls -FGH'
+# fi
+alias ls='exa'
+alias l='ls'
+alias ll='exa -l --sort modified --git'
 
 if [ "$(uname -s)" = Darwin ]; then
   alias make='gmake'
@@ -340,28 +330,13 @@ compose() {
   mdpreview "$1"
 }
 
-vp() {
-  fzf --preview 'bat --color=always -p {}' | xargs "$EDITOR"
-}
-vg() {
-  git diff --name-only --relative | fzf | xargs "$EDITOR"
-}
-
-
 ##
 ## git
 ##
 
-alias lr='git log -n1 --no-merges --stat --abbrev=7'
-alias lrp='git log -n1 --no-merges --stat --abbrev=7 -p'
 # alias gl='git log $(git merge-base $(git symbolic-ref refs/remotes/origin/HEAD --short) HEAD)..HEAD'
 
-alias gs='git status'
-alias gS='git status -uno'
-
-alias ga='git add -u'
-alias gap='git add -p'
-alias re='git reset'
+alias gS='git show --stat -p'
 
 alias gd='git diff'
 alias gdc='git diff --cached'

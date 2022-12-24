@@ -4,7 +4,7 @@
 
 out=$(
 git branch \
-    --color=$COLOR \
+    --color="$COLOR" \
     --sort=-committerdate \
     --format='%(HEAD) %(color:dim)%(objectname:short)%(color:reset)  %(align:42,left)%(color:bold)%(refname:short)%(color:reset)%(end)  %(color:green)%(committerdate:relative)%(color:reset)' \
 )
