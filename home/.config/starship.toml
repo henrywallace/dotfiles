@@ -1,8 +1,8 @@
 format = """\
 $hostname\
 $directory\
-$git_branch$git_commit$git_status$git_state\
 $cmd_duration$status\
+$git_branch$git_state\
 $line_break\
 $jobs$character\
 """
@@ -19,7 +19,7 @@ style = "white dimmed"
 trim_at = "."
 
 [directory]
-style = "purple bold"
+style = "blue bold"
 format = "[\\[$path\\]]($style) "
 
 [kubernetes]
@@ -32,14 +32,14 @@ style = "blue"
 [git_branch]
 style = "bright white"
 format = "[$branch]($style) "
-[git_commit]
-tag_disabled = false
-only_detached = true
-[git_status]
-style = "dimmed"
+# [git_commit]
+# tag_disabled = false
+# only_detached = true
+# [git_status]
+# style = "dimmed"
 # [custom.git_stash]
 # command = "stash-summary"
-# # prefix = "stash "
+# prefix = "stash "
 # when = 'git rev-parse --is-inside-work-tree && [ -n "$(git stash list)" ]'
 # [custom.git_commits]
 # # prefix = "commits "
