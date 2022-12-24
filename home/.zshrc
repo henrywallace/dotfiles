@@ -58,16 +58,6 @@ autoload -Uz promptinit; promptinit
 bindkey '^ ' autosuggest-accept
 bindkey '^@' autosuggest-accept
 
-
-# https://vi.stackexchange.com/a/10142
-set formatoptions+=r
-# set comments-=mb:*
-# set comments+=fb:*
-
-# prompt pure
-# PURE_CMD_MAX_EXEC_TIME=2
-# PURE_PROMPT_SYMBOL='%%'
-
 eval "$(starship init zsh)"
 
 # Don't add anything to $PATH if it's there already.
@@ -84,7 +74,7 @@ if [ -f "$ZSH_AUTOSUGGESTIONS" ]; then
   . "$ZSH_AUTOSUGGESTIONS"
 fi
 
-# Fish-like syntax hlghlighting.
+# Fish-like syntax highlighting.
 ZSH_SYNTAX_HIGHLIGHTING=~/.zsh/fast-syntax-highlighting/fast-syntax-highlighting.plugin.zsh
 if [ -f "$ZSH_SYNTAX_HIGHLIGHTING" ]; then
   . "$ZSH_SYNTAX_HIGHLIGHTING"
@@ -108,8 +98,6 @@ bindkey "^[[1;OD" backward-word
 
 bindkey "^[[3" backward-delete-char
 
-# bindkey "^[[3~"
-
 # History.
 HISTFILE=~/.zsh_history
 HISTSIZE=10000000  # 10^7
@@ -118,20 +106,4 @@ setopt APPEND_HISTORY     # append hist after each session
 setopt EXTENDED_HISTORY   # save timestamp
 setopt HIST_REDUCE_BLANKS # dont save blanks
 
-
 [ -f ~/.fzf.zsh ] && source ~/.fzf.zsh
-
-if [[ "$(uname -s)" == "Darwin" ]]; then
-  export PATH="/usr/local/opt/node@10/bin:$PATH"
-fi
-
-# The next line updates PATH for the Google Cloud SDK.
-if [ -f '/home/ubuntu/google-cloud-sdk/path.zsh.inc' ]; then . '/home/ubuntu/google-cloud-sdk/path.zsh.inc'; fi
-
-# The next line enables shell command completion for gcloud.
-if [ -f '/home/ubuntu/google-cloud-sdk/completion.zsh.inc' ]; then . '/home/ubuntu/google-cloud-sdk/completion.zsh.inc'; fi
-
-# # https://zsh.sourceforge.io/Doc/Release/Command-Execution.html#Command-Execution
-# command_not_found_handler() {
-#   echo "Command not found: $1" | pokemonsay -n
-# }
