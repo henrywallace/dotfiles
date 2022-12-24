@@ -24,7 +24,14 @@ require('telescope').setup {
       ignore_patterns = {"*.git/*", "*/tmp/*"},
     },
   },
+  pickers = {
+    colorscheme = {
+      enable_preview = true,
+    },
+  },
 }
+
+require('telescope').load_extension('fzf')
 
 -- vim.api.nvim_set_keymap(
 --   'n',
@@ -66,9 +73,10 @@ vim.api.nvim_set_keymap(
 
 vim.cmd([[
   nnoremap <c-f> :lua require('telescope.builtin').current_buffer_fuzzy_find(require('telescope.themes').get_ivy{previewer=false})<cr>
-  nnoremap <c-d> :lua require('telescope.builtin').live_grep{ search_dirs = {vim.fn.expand('%:p:h')} }<cr>
   nnoremap <c-x> :lua require('telescope.builtin').commands(require('telescope.themes').get_ivy())<cr>
   nnoremap <c-g> :lua require('telescope.builtin').live_grep(require('telescope.themes').get_ivy())<cr>
+  nnoremap <c-s> :Telescope lsp_document_symbols<cr>
+  " nnoremap <c-d> :lua require('telescope.builtin').live_grep{ search_dirs = {vim.fn.expand('%:p:h')} }<cr>
 ]])
 -- nnoremap <c-f> :Telescope current_buffer_fuzzy_find<cr>
 

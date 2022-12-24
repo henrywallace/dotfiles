@@ -1,5 +1,6 @@
 require('github-theme').setup {
-  theme_style = vim.g.light_theme and 'light' or 'dark',
+  -- theme_style = vim.g.light_theme and 'light' or 'dark',
+  theme_style = 'dark',
   comment_style = 'NONE',
 }
 
@@ -19,8 +20,9 @@ if vim.g.light_theme then
     hi Visual guibg=#fff8c5 guifg=none
     hi CocMenuSel guibg=#fff8c5 guifg=none
     hi NormalFloat guibg=#ffffdd
-    hi illuminatedWord guibg=#ffffdd
-    hi illuminatedCurWord guibg=none
+    hi IlluminatedWordText gui=none guibg=#ffffdd
+    hi IlluminatedWordRead gui=none guibg=#ffffdd
+    hi IlluminatedWordWrite gui=none guibg=#ffffdd
     hi LspSignatureActiveParameter gui=bold guibg=none
     hi Search guibg=#dafbe1
     hi IncSearch gui=bold guibg=#dafbe1 guifg=none
@@ -32,16 +34,18 @@ else
   vim.cmd([[
     " hi Comment guifg=#aff5b4
     " hi Comment guifg=#9ecbff
+
     hi Comment guifg=#8b949e
     hi StatusLine guibg=#284566
     hi ColorColumn guibg=#2c313a
-    hi GitSignsCurrentLineBlame guibg=none guifg=#484f58
-    hi CocHighlightText gui=underline,bold guifg=none
-    hi illuminatedWord guibg=#284566
-    hi illuminatedCurWord guibg=none
+    " hi GitSignsCurrentLineBlame guibg=none guifg=#484f58
+    " hi CocHighlightText gui=underline,bold guifg=none
+    hi IlluminatedWordText gui=none guibg=#284566
+    hi IlluminatedWordRead gui=none guibg=#284566
+    hi IlluminatedWordWrite gui=none guibg=#284566
     hi DiffAdd guifg=#2ea043 guibg=none
     hi DiffChange guifg=#e3b341 guibg=none
     hi DiffDelete guifg=#f85149 guibg=none
-    hi NormalFloat guibg=#30363d gui=bold
+    " hi NormalFloat guibg=#30363d gui=bold
   ]])
 end

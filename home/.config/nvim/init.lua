@@ -7,27 +7,34 @@ require('packer').startup(function()
   use 'wbthomason/packer.nvim'         -- package manager
 
   use 'google/vim-searchindex'         -- display match number k of n
+
   use 'FooSoft/vim-argwrap'            -- fold args surrounded by parentheses
+
   use 'tpope/vim-commentary'           -- comment lines visual regions
+
   use 'editorconfig/editorconfig-vim'  -- set tabshift based on editorconfig
+
   use 'sheerun/vim-polyglot'
 
   use {
     'phaazon/hop.nvim',
-    branch = 'v2', -- optional but strongly recommended
+    branch = 'v2',
     config = function()
-      -- you can configure Hop the way you like here; see :h hop-config
       require'hop'.setup { }
       vim.api.nvim_set_keymap('', 'f', ":HopWord<cr>", {})
-      -- vim.api.nvim_set_keymap('', 'F', ":HopPattern<cr>", {})
+    end
+  }
+
+  use {
+    'petertriho/nvim-scrollbar',
+    config = function()
+      require('config.scrollbar')
     end
   }
 
   -- use {
-  --   "folke/which-key.nvim",
-  --   config = function()
-  --     require("which-key").setup { }
-  --   end
+  --   'kevinhwang91/nvim-ufo',
+  --   requires = 'kevinhwang91/promise-async',
   -- }
 
   use {
@@ -46,25 +53,46 @@ require('packer').startup(function()
     end
   })
 
+  -- use {
+  --   'famiu/feline.nvim',         -- status line
+  --   config = [[require('config.feline')]],
+  -- }
   use {
-    "SmiteshP/nvim-gps",         -- status line component for cursor's scope
-    requires = "nvim-treesitter/nvim-treesitter",
+    'nvim-lualine/lualine.nvim',
+    requires = { 'nvim-tree/nvim-web-devicons' },
     config = function()
-      require("nvim-gps").setup({
-        disable_icons = true,
-        separator = '.',
-      })
+      require('config.lualine')
     end,
   }
 
   use {
-    'famiu/feline.nvim',         -- status line
-    config = [[require('config.feline')]],
+    'm-demare/hlargs.nvim',
+    requires = { 'nvim-treesitter/nvim-treesitter' },
+    config = function()
+      require('hlargs').setup {}
+      vim.cmd([[hi link Hlargs @parameter]])
+    end
   }
 
+  -- Themes
   use {
     'projekt0n/github-nvim-theme',  -- github colorscheme
-    config = [[require('config.github-theme')]]
+    -- config = [[require('config.github-theme')]]
+  }
+  use {
+    'Mofiqul/dracula.nvim',
+    -- config = [[require('config.dracula')]],
+  }
+  use {
+    'folke/tokyonight.nvim',
+    config = [[require('config.tokyonight')]],
+  }
+  use { "catppuccin/nvim", as = "catppuccin" }
+  use {
+    "EdenEast/nightfox.nvim",
+    config = function()
+      require('nightfox').compile()
+    end
   }
 
   use {
@@ -87,14 +115,52 @@ require('packer').startup(function()
     end,
   }
 
+    use {
+      "nvim-neorg/neorg",
+      ft = "norg",
+      after = {
+        "nvim-treesitter",
+      },
+      requires = "nvim-lua/plenary.nvim",
+      -- run = ":Neorg sync-parsers",
+      config = function()
+          require('neorg').setup {
+            load = {
+              ["core.defaults"] = {},
+            },
+          }
+      end,
+  }
+
   use {
     'kyazdani42/nvim-tree.lua',     -- filesystem browser
     config = function()
       require('nvim-tree').setup{
+        renderer = {
+          add_trailing = true,
+          group_empty = true,
+          full_name = true,
+          highlight_git = true,
+          highlight_opened_files = "name",
+          icons = {
+            git_placement = "after",
+          },
+        },
         view = {
+          -- float = {
+          --   enable = true,
+          --   open_win_config = {
+          --     width = 48,
+          --     -- col = 80,
+          --     relative = "cursor"
+          --   },
+          -- },
+          adaptive_size = true,
+          centralize_selection = true,
+          -- width = 80,
           side = 'right',
-          width = 40,
-          -- height = 20,
+          preserve_window_proportions = true,
+        --   -- height = 20,
         },
         actions = {
           open_file = {
@@ -113,15 +179,102 @@ require('packer').startup(function()
   }
 
   use {
-      'nvim-treesitter/nvim-treesitter',    -- beyond-regex syntax queries
+    'rmagatti/goto-preview',
+    config = function()
+      require('goto-preview').setup {
+        -- post_open_hook = function (_, win)
+        --     -- Close the current preview window with <Esc>
+        --     vim.keymap.set(
+        --         'n',
+        --         '<Esc>',
+        --         function()
+        --             vim.api.nvim_win_close(win, true)
+        --         end,
+        --         { buffer = true }
+        --     )
+        -- end,
+        -- }
+        vim.cmd([[
+          nnoremap gp <cmd>lua require('goto-preview').goto_preview_definition()<CR>
+          nnoremap gP <cmd>lua require('goto-preview').close_all_win()<CR>
+          " nnoremap gT <cmd>lua require('goto-preview').goto_preview_type_definition()<CR>
+          " nnoremap gI <cmd>lua require('goto-preview').goto_preview_implementation()<CR>
+          " nnoremap gR <cmd>lua require('goto-preview').goto_preview_references()<CR>
+        ]])
+      }
+  end,
+  }
+
+  use {
+      'nvim-treesitter/nvim-treesitter',
       run = ':TSUpdate',
       config = [[require('config.treesitter')]],
   }
+  use 'nvim-treesitter/playground'
+  use {
+    'nvim-treesitter/nvim-treesitter-context',
+    config = function()
+    end
+  }
+  use {
+    'nvim-treesitter/nvim-treesitter-textobjects',
+    config = function()
+      require'nvim-treesitter.configs'.setup {
+        textobjects = {
+          move = {
+            enable = true,
+            set_jumps = true,
+            goto_next_start = {
+              ["]m"] = "@function.outer",
+              ["]]"] = { query = "@class.outer", desc = "Next class start" },
+            },
+            goto_next_end = {
+              ["]M"] = "@function.outer",
+              ["]["] = "@class.outer",
+            },
+            goto_previous_start = {
+              ["[m"] = "@function.outer",
+              ["[["] = "@class.outer",
+            },
+            goto_previous_end = {
+              ["[M"] = "@function.outer",
+              ["[]"] = "@class.outer",
+            },
+          },
+        },
+      }
+    end,
+  }
+
+  use {
+    'RRethy/nvim-treesitter-textsubjects',
+    config = function ()
+      require'nvim-treesitter.configs'.setup {
+        textsubjects = {
+            enable = true,
+            prev_selection = ',', -- (Optional) keymap to select the previous selection
+            keymaps = {
+              ['.'] = 'textsubjects-smart',
+              [';'] = 'textsubjects-container-outer',
+              ['i;'] = 'textsubjects-container-inner',
+            },
+         },
+      }
+    end
+  }
+
+  use {
+    'j-hui/fidget.nvim',
+    config = function()
+      require("fidget").setup{}
+    end
+  }
+
+
   use {
     "folke/twilight.nvim",
     config = function()
-      require("twilight").setup {
-      }
+      require("twilight").setup()
     end
   }
 
@@ -130,28 +283,85 @@ require('packer').startup(function()
     requires = {'nvim-lua/plenary.nvim'},
     config = [[require('config.telescope')]],
   }
+  use {'nvim-telescope/telescope-fzf-native.nvim', run = 'make' }
+
+
+
 
   use {
-    'neovim/nvim-lspconfig',
-    -- 'ray-x/lsp_signature.nvim',
+    "folke/trouble.nvim",
+    requires = "nvim-tree/nvim-web-devicons",
+    config = function()
+      require('trouble').setup {
+        auto_close = true,
+      }
+      vim.cmd([[nnoremap <leader>l :TroubleToggle<cr>]])
+    end,
+  }
+
+  use {
     'hrsh7th/nvim-cmp',
     'hrsh7th/cmp-nvim-lsp',
     'hrsh7th/cmp-nvim-lsp-signature-help',
     'hrsh7th/cmp-path',
-    -- 'RRethy/vim-illuminate',
     'saadparwaiz1/cmp_luasnip',
     'L3MON4D3/LuaSnip',
-    'onsails/lspkind-nvim',      -- lsp completion pictograms
+    'onsails/lspkind-nvim',
+    -- 'lukas-reineke/cmp-under-comparator',
+    -- config = function()
+    --   require('config.cmp')
+    -- end,
+  }
+
+  -- use {
+  --   'abecodes/tabout.nvim',
+  --   -- wants = {'nvim-treesitter'}, -- or require if not used so far
+	  -- -- after = {'nvim-cmp'}, -- if a completion plugin is using tabs load it before
+  --   config = function()
+  --     require('tabout').setup {
+  --       tabkey = '<tab>',
+  --       -- backwards_tabkey = '',
+  --     }
+  --   end
+  -- }
+
+  use({
+    "https://git.sr.ht/~whynothugo/lsp_lines.nvim",
+    config = function()
+      require("lsp_lines").setup()
+    end,
+  })
+
+  use {
+    'neovim/nvim-lspconfig',
+    'RRethy/vim-illuminate',
     'nvim-lua/lsp-status.nvim',
     'creativenull/diagnosticls-configs-nvim',
-    'https://gitlab.com/yorickpeterse/nvim-pqf',
-    {
-      "folke/trouble.nvim",
-      requires = "kyazdani42/nvim-web-devicons",
-    },
-    config = function()
-    end
+    -- config = function()
+    --   require('config.lspconfig')
+    -- end
   }
+
+  -- use {
+  --   "utilyre/barbecue.nvim",
+  --   requires = {
+  --     "neovim/nvim-lspconfig",
+  --     "smiteshp/nvim-navic",
+  --     "kyazdani42/nvim-web-devicons", -- optional
+  --   },
+  --   config = function()
+  --     require("barbecue").setup {
+  --       symbols = {
+  --         separator = ">"
+  --       },
+  --     }
+  --     vim.cmd([[
+  --       hi NavicText guifg=#8b949e
+  --       hi NavicSeparator guifg=#6e7681
+  --     ]])
+  --   end,
+  -- }
+
 
   -- Automatically set up your configuration after cloning packer.nvim
   -- Must be last.
@@ -160,11 +370,19 @@ require('packer').startup(function()
   end
 end)
 
-vim.cmd([[nnoremap <space>l :TroubleToggle<cr>]])
-vim.diagnostic.config({
-    virtual_text = false,
-})
+vim.o.mouse = false
+
+require('config.cmp')
 require('config.lspconfig')
+
+-- vim.cmd([[nnoremap <space>l :TroubleToggle<cr>]])
+-- vim.diagnostic.config({
+--     virtual_text = false,
+-- })
+-- require('config.lspconfig')
+
+-- Load colors, and highlight fixes for treesitter.
+require('colors')
 
 vim.cmd([[nnoremap <space> <nop>]])
 vim.g.mapleader = ' '
@@ -179,7 +397,7 @@ vim.o.hidden = true
 vim.o.cursorline = true
 
 -- -- Edit arg or word under cursor.
-vim.cmd([[nnoremap F ciw]])
+vim.cmd([[nnoremap R ciw]])
 
 -- https://neovim.io/doc/user/options.html#'number'
 vim.o.number = true
@@ -259,6 +477,10 @@ vim.cmd([[
   vnoremap <c-down>:m '>+1<cr>gv
 ]])
 
+vim.cmd([[
+  autocmd BufWritePre *.go :silent! lua vim.lsp.buf.code_action({ context = { only = { "source.organizeImports" } }, apply = true })
+]])
+
 -- Continue comment sections on return, and format numbered lists.
 -- https://stackoverflow.com/a/22577860/2601179
 -- https://stackoverflow.com/a/4783237/2601179
@@ -286,4 +508,12 @@ vim.cmd([[
 vim.cmd([[
   inoremap <c-e> <c-o><s-$>
   inoremap <c-a> <c-o><s-^>
+]])
+
+vim.cmd([[nnoremap <leader>h :TSHighlightCapturesUnderCursor<cr>]])
+
+vim.cmd([[
+  " hi TreesitterContext guibg=#30363d
+  hi TreesitterContext guibg=none gui=none
+  hi TreesitterContextBottom guibg=none gui=underline guisp=gray
 ]])

@@ -1,4 +1,4 @@
-local gps = require("nvim-gps")
+-- local gps = require("nvim-gps")
 
 local components = {
     active = {},
@@ -122,22 +122,22 @@ components.active[1] = {
         icon = '~',
         hl = {fg = require('colors').get('gray', 4)},
     },
-    {
-        provider = function() return gps.get_location() end,
-        enabled = function() return gps.is_available() end,
-        hl = {fg = require('colors').get('blue', 2)},
-        left_sep = ' ',
-        right_sep = ' ',
-    },
+    -- {
+    --     provider = function() return gps.get_location() end,
+    --     enabled = function() return gps.is_available() end,
+    --     hl = {fg = require('colors').get('blue', 2)},
+    --     left_sep = ' ',
+    --     right_sep = ' ',
+    -- },
 }
 
 components.inactive[1] = {
     {
         provider = print_fname,
         icon = '',
-        hl = {
-            fg = require('colors').get('gray', 4),
-        },
+        -- hl = {
+        --     fg = require('colors').get('gray', 4),
+        -- },
     },
 }
 
