@@ -10,7 +10,9 @@
 # In particular, this is useful for i3-sensible-terminal which will loop
 # through various terminals, checking this env first. i3 will use the
 # i3-sensible-terminal command whenever a config error occurs.
-export TERMINAL=alacritty
+export TERM=alacritty
+
+export XDG_CONFIG_HOME=~/.config
 
 export GPG_TTY=$(tty)
 

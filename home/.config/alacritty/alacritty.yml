@@ -3,17 +3,18 @@ env:
 
 font:
   normal:
-    family: Hack Nerd Font
+    # family: Hack Nerd Font
+    # family: Menlo
+    family: JetBrainsMono Nerd Font Mono
     style: Regular
-    # family: pokemon-font
-    # family: Tye Paloon
-  # italic:
-  #   family: JetBrainsMono Nerd Font Mono
-  #   style: Italic
+  italic:
+    family: JetBrainsMono Nerd Font Mono
+    style: Italic
   size: 14
 
 window:
-  opacity: 0.99
+  # opacity: 0.95
+  opacity: 1.0
   # decorations: transparent
 
 key_bindings:
@@ -74,6 +75,29 @@ colors-terminal-app: &terminal-app
     cyan:       "#00E5E5"
     white:      "#E5E5E5"
 
+colors-github: &github
+  primary:
+    background: '#2d333b'
+    foreground: '#adbac7'
+  normal:
+    black:   '#2d333b'
+    red:     '#f47067'
+    green:   '#8ddb8c'
+    yellow:  '#f69d50'
+    blue:    '#6cb6ff'
+    magenta: '#dcbdfb'
+    cyan:    '#96d0ff'
+    white:   '#adbac7'
+  bright:
+    black:   '#768390'
+    red:     '#f47067'
+    green:   '#8ddb8c'
+    yellow:  '#f69d50'
+    blue:    '#6cb6ff'
+    magenta: '#dcbdfb'
+    cyan:    '#96d0ff'
+    white:   '#adbac7'
+
 colors-acme: &acme
   # let g:terminal_color_0 = s:black[1]
   # let g:terminal_color_1 = s:red[1]
@@ -113,6 +137,130 @@ colors-acme: &acme
     cyan:       "#007777"
     white:      "#cccc95"
 
-colors: *challenger-deep
+# Colors (Gruvbox dark)
+colors-gruvbox: &gruvbox
+  primary:
+    # hard contrast background - '#1d2021'
+    background:        &gruvbox_dark_bg '#282828'
+    # soft contrast background - '#32302f'
+    foreground:        '#ebdbb2'
+    bright_foreground: '#fbf1c7'
+    dim_foreground:    '#a89984'
+  cursor:
+    text:   CellBackground
+    cursor: CellForeground
+  vi_mode_cursor:
+    text:   CellBackground
+    cursor: CellForeground
+  # search:
+  #   matches:
+  #     foreground: '#000000'
+  #     background: '#ffffff'
+  #   focused_match:
+  #    foreground: CellBackground
+  #    background: CellForeground
+  #   bar:
+  #     background: ''
+  #     foreground: ''
+  # line_indicator:
+  #   foreground: None
+  #   background: None
+  selection:
+    text:       CellBackground
+    background: CellForeground
+  bright:
+    black:   '#928374'
+    red:     '#fb4934'
+    green:   '#b8bb26'
+    yellow:  '#fabd2f'
+    blue:    '#83a598'
+    magenta: '#d3869b'
+    cyan:    '#8ec07c'
+    white:   '#ebdbb2'
+  normal:
+    black:   *gruvbox_dark_bg
+    red:     '#cc241d'
+    green:   '#98971a'
+    yellow:  '#d79921'
+    blue:    '#458588'
+    magenta: '#b16286'
+    cyan:    '#689d6a'
+    white:   '#a89984'
+  dim:
+    black:   '#32302f'
+    red:     '#9d0006'
+    green:   '#79740e'
+    yellow:  '#b57614'
+    blue:    '#076678'
+    magenta: '#8f3f71'
+    cyan:    '#427b58'
+    white:   '#928374'
+  indexed_colors:
+    - { index:  66, color: '#458588' }
+    - { index:  72, color: '#689d6a' }
+    - { index: 106, color: '#98971a' }
+    - { index: 108, color: '#8ec07c' }
+    - { index: 109, color: '#83a598' }
+    - { index: 124, color: '#cc241d' }
+    - { index: 132, color: '#b16286' }
+    - { index: 142, color: '#b8bb26' }
+    - { index: 166, color: '#d65d0e' }
+    - { index: 167, color: '#fb4934' }
+    - { index: 172, color: '#d79921' }
+    - { index: 175, color: '#d3869b' }
+    - { index: 208, color: '#fe8019' }
+    - { index: 214, color: '#fabd2f' }
+    - { index: 223, color: '#ebdbb2' }
+    - { index: 229, color: '#fbf1c7' }
+    - { index: 234, color: '#1d2021' }
+    - { index: 235, color: '#282828' }
+    - { index: 236, color: '#32302f' }
+    - { index: 237, color: '#3c3836' }
+    - { index: 239, color: '#504945' }
+    - { index: 241, color: '#665c54' }
+    - { index: 243, color: '#7c6f64' }
+    - { index: 245, color: '#928374' }
+    - { index: 246, color: '#a89984' }
+    - { index: 248, color: '#bdae93' }
+    - { index: 250, color: '#d5c4a1' }
+
+# TokyoNight Alacritty Colors
+colors-tokyonight-moon: &tokyonight-moon
+  # Default colors
+  primary:
+    background: '0x222436'
+    foreground: '0xc8d3f5'
+
+  # Normal colors
+  normal:
+    black:   '0x1b1d2b'
+    red:     '0xff757f'
+    green:   '0xc3e88d'
+    yellow:  '0xffc777'
+    blue:    '0x82aaff'
+    magenta: '0xc099ff'
+    cyan:    '0x86e1fc'
+    white:   '0x828bb8'
+
+  # Bright colors
+  bright:
+    black:   '0x444a73'
+    red:     '0xff757f'
+    green:   '0xc3e88d'
+    yellow:  '0xffc777'
+    blue:    '0x82aaff'
+    magenta: '0xc099ff'
+    cyan:    '0x86e1fc'
+    white:   '0xc8d3f5'
+
+  indexed_colors:
+    - { index: 16, color: '0xff966c' }
+    - { index: 17, color: '0xc53b53' }
+
+
+colors: *tokyonight-moon
+# colors: *challenger-deep
 # colors: *terminal-app
 # colors: *acme
+# colors: *github
+# colors: *gruvbox
