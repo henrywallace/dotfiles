@@ -23,6 +23,8 @@ zstyle ':completion:*' list-colors "${(@s.:.)LS_COLORS}"
 # Allow completing inside of words.
 setopt completeinword
 
+eval "$(/opt/homebrew/bin/brew shellenv)"
+
 # Bash-style delete backword
 autoload -Uz select-word-style
 select-word-style whitespace
