@@ -12,7 +12,7 @@ require('packer').startup(function()
 
   use 'tpope/vim-commentary'           -- comment lines visual regions
 
-  use 'editorconfig/editorconfig-vim'  -- set tabshift based on editorconfig
+  use 'gpanders/editorconfig.nvim'
 
   use 'sheerun/vim-polyglot'
 
