@@ -30,17 +30,16 @@ end
 
 local caps = require('cmp_nvim_lsp').default_capabilities()
 
-require('diagnosticls-configs').init{
-  on_attach = on_attach,
-}
-require('diagnosticls-configs').setup {
-  sh = {
-    linter = require('diagnosticls-configs.linters.shellcheck'),
-  },
-  vim = {
-    linter = require('diagnosticls-configs.linters.vint'),
-  },
-}
+local null_ls = require("null-ls")
+null_ls.setup({
+    debug = true,
+    sources = {
+        null_ls.builtins.diagnostics.shellcheck,
+        null_ls.builtins.diagnostics.hadolint,
+        null_ls.builtins.diagnostics.golangci_lint,
+    },
+})
+
 
 local runtime_path = vim.split(package.path, ';')
 table.insert(runtime_path, "lua/?.lua")
@@ -58,46 +57,6 @@ local servers = {
   },
   sqls = {},
   pyright = {},
-  -- diagnosticls = {
-  -- },
-  -- golangci_lint_ls = {
-  --   -- cmd = {"golangci-lint-langserver", "-debug"},
-  --   init_options = {
-  --     command = {
-  --       "golangci-lint",
-  --       "run",
-  --       "--out-format=json",
-  --     	"--allow-parallel-runners",  -- https://github.com/nametake/golangci-lint-langserver/issues/17
-  --       "--disable-all",
-  --       -- "--enable=bidichk",
-  --       -- "--enable=bodyclose",
-  --       -- "--enable=contextcheck",
-  --       -- "--enable=deadcode",
-  --       -- "--enable=dupl",
-  --       -- "--enable=durationcheck",
-  --       "--enable=errcheck",
-  --       -- "--enable=errchkjson",
-  --       -- "--enable=errname",
-  --       -- "--enable=exhaustive",
-  --       -- "--enable=exportloopref",
-  --       -- "--enable=gocritic",
-  --       -- "--enable=gosec",
-  --       -- "--enable=ineffassign",
-  --       -- "--enable=misspell",
-  --       -- "--enable=nilerr",
-  --       -- "--enable=promlinter",
-  --       "--enable=revive",
-  --       -- "--enable=staticcheck",
-  --       -- "--enable=structcheck",
-  --       -- "--enable=unparam",
-  --       -- "--enable=unused",
-  --       -- "--enable=varcheck",
-  --       -- "--enable=wastedassign",
-  --       "--exclude-use-default=false",
-  --       "--exclude=redundant type from array, slice, or map composite literal",
-  --     },
-  --   },
-  -- },
   rust_analyzer = {
     settings = {
       ["rust-analyzer"] = {
@@ -126,7 +85,7 @@ local servers = {
       },
     },
   },
-  sumneko_lua = {
+  lua_ls = {
     settings = {
       -- TODO: Format on save.
       Lua = {

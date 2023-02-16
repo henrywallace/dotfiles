@@ -16,15 +16,10 @@ require('packer').startup(function(use)
   use 'wbthomason/packer.nvim'         -- package manager
   use 'lewis6991/impatient.nvim'
   use 'google/vim-searchindex'         -- display match number k of n
-
   use 'FooSoft/vim-argwrap'            -- fold args surrounded by parentheses
-
   use 'tpope/vim-commentary'           -- comment lines visual regions
-
   use 'gpanders/editorconfig.nvim'
-
   use 'sheerun/vim-polyglot'
-
   use {
     'phaazon/hop.nvim',
     branch = 'v2',
@@ -33,7 +28,21 @@ require('packer').startup(function(use)
       vim.api.nvim_set_keymap('', 'f', ":HopWord<cr>", {})
     end
   }
-
+  use {
+    "shortcuts/no-neck-pain.nvim",
+    tag = "*",
+    config = function()
+      require('no-neck-pain').setup({
+          enableOnVimEnter = false,
+          width = 128,
+          integrations = {
+            NvimTree = {
+              position = 'right',
+            },
+          },
+      })
+    end,
+  }
   use {
     'petertriho/nvim-scrollbar',
     config = function()
@@ -45,7 +54,6 @@ require('packer').startup(function(use)
   --   'kevinhwang91/nvim-ufo',
   --   requires = 'kevinhwang91/promise-async',
   -- }
-
   use {
     'ethanholz/nvim-lastplace', -- return to last place in file on open
     config = function()
@@ -54,14 +62,12 @@ require('packer').startup(function(use)
       }
     end,
   }
-
   use({
     "mcauley-penney/tidy.nvim",
     config = function()
         require("tidy").setup()
     end
   })
-
   -- use {
   --   'famiu/feline.nvim',         -- status line
   --   config = [[require('config.feline')]],
@@ -82,7 +88,6 @@ require('packer').startup(function(use)
       vim.cmd([[hi link Hlargs @parameter]])
     end
   }
-
   -- Themes
   use {
     'projekt0n/github-nvim-theme',  -- github colorscheme
@@ -143,7 +148,13 @@ require('packer').startup(function(use)
 
   use {
     'kyazdani42/nvim-tree.lua',     -- filesystem browser
+    requires = {
+      'nvim-tree/nvim-web-devicons', -- optional, for file icons
+    },
     config = function()
+      vim.g.loaded_netrw = 1
+      vim.g.loaded_netrwPlugin = 1
+      vim.opt.termguicolors = true
       require('nvim-tree').setup{
         renderer = {
           add_trailing = true,
@@ -153,7 +164,19 @@ require('packer').startup(function(use)
           highlight_opened_files = "name",
           icons = {
             git_placement = "after",
+            glyphs = {
+              git = {
+                unstaged = "*",
+                staged = "+",
+                unmerged = "!",
+                renamed = "R",
+                untracked = "?",
+                deleted = "x",
+                ignored = "I",
+              },
+            },
           },
+          symlink_destination = false,
         },
         view = {
           -- float = {
@@ -165,9 +188,12 @@ require('packer').startup(function(use)
           --   },
           -- },
           adaptive_size = true,
+          width = {
+            max = 50,
+          },
           centralize_selection = true,
           -- width = 80,
-          side = 'right',
+          side = 'left',
           preserve_window_proportions = true,
         --   -- height = 20,
         },
@@ -345,10 +371,14 @@ require('packer').startup(function(use)
     'neovim/nvim-lspconfig',
     'RRethy/vim-illuminate',
     'nvim-lua/lsp-status.nvim',
-    'creativenull/diagnosticls-configs-nvim',
     -- config = function()
     --   require('config.lspconfig')
     -- end
+  }
+
+  use {
+    'jose-elias-alvarez/null-ls.nvim',
+    requires = { 'nvim-lua/plenary.nvim' },
   }
 
   -- use {
@@ -419,6 +449,7 @@ augroup colorcolumn
   au FileType go set colorcolumn=80,100
   " Commit subject lines get hacked off if more than 72.
   au FileType gitcommit set colorcolumn=72
+	au FileType gitcommit set spell
   " prefix: len('pick 6f684cf6fa ') = 16
   au Filetype gitrebase set colorcolumn=88
 augroup END
