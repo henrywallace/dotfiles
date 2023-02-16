@@ -6,7 +6,7 @@ reset=$(tput sgr0)
 
 ref=HEAD
 gitdir=$(git rev-parse --git-dir)
-if [ -f "$gitdir/REBASE_HEAD" ]; then
+if [ -e "$gitdir/rebase-merge" ]; then
   echo "${red}${bold}REBASE HEAD${reset}"
   ref="$(cat "$gitdir/REBASE_HEAD")"
 fi
