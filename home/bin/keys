@@ -1,0 +1,6 @@
+#!/bin/bash
+
+# gui prefs min is 15 (225 ms)
+defaults write -g InitialKeyRepeat -int 10
+# gui prefs min is 2 (30 ms)
+defaults write -g KeyRepeat -int 1
