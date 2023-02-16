@@ -1,11 +1,20 @@
-local install_path = vim.fn.stdpath('data')..'/site/pack/packer/start/packer.nvim'
-if vim.fn.empty(vim.fn.glob(install_path)) > 0 then
-  packer_bootstrap = vim.fn.system({'git', 'clone', '--depth', '1', 'https://github.com/wbthomason/packer.nvim', install_path})
+-- https://github.com/wbthomason/packer.nvim#bootstrapping
+local ensure_packer = function()
+  local fn = vim.fn
+  local install_path = fn.stdpath('data')..'/site/pack/packer/start/packer.nvim'
+  if fn.empty(fn.glob(install_path)) > 0 then
+    fn.system({'git', 'clone', '--depth', '1', 'https://github.com/wbthomason/packer.nvim', install_path})
+    vim.cmd [[packadd packer.nvim]]
+    return true
+  end
+  return false
 end
 
-require('packer').startup(function()
-  use 'wbthomason/packer.nvim'         -- package manager
+local packer_bootstrap = ensure_packer()
 
+require('packer').startup(function(use)
+  use 'wbthomason/packer.nvim'         -- package manager
+  use 'lewis6991/impatient.nvim'
   use 'google/vim-searchindex'         -- display match number k of n
 
   use 'FooSoft/vim-argwrap'            -- fold args surrounded by parentheses
