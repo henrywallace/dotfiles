@@ -41,9 +41,10 @@ export CGO_CPPFLAGS="$CGO_CPPFLAGS -Wno-unused-result"
 export GOTMPDIR=/tmp/go/
 [ -d $GOTMPDIR ] || mkdir -p $GOTMPDIR
 export MANWIDTH=100
-# if command -v bat &>/dev/null; then
-#   export MANPAGER="sh -c 'col -b | less'"
-# fi
+if command -v bat &>/dev/null; then
+  # https://github.com/sharkdp/bat#man
+  export MANPAGER="sh -c 'col -bx | bat -l man -p'"
+fi
 
 export PAGER=less
 
