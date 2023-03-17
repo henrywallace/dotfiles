@@ -1,6 +1,10 @@
 # rustlang
 PATH="$HOME/.cargo/bin:$PATH"
 
+if command -v pyenv 1>/dev/null 2>&1; then
+  eval "$(pyenv init -)"
+fi
+
 # golang
 GOPATH=$HOME/go
 PATH=$GOPATH/bin:$PATH
@@ -8,11 +12,6 @@ PATH=$PATH:/usr/local/go/bin
 
 # python pip install --user
 PATH=$HOME/.local/bin:$PATH
-
-# ruby
-if [ "$(uname -s)" = "Darwin" ]; then
-  PATH=/usr/local/Cellar/ruby/2.6.5/bin:$PATH
-fi
 
 # personal scripts
 PATH=$HOME/bin:$PATH
