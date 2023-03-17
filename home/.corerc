@@ -1,10 +1,13 @@
 #!/bin/bash
 
+eval $(/opt/homebrew/bin/brew shellenv)
+
 . ~/.pathrc
 . ~/.aliasrc
 [ -f ~/.diffeorc ] && . ~/.diffeorc
 [ -f ~/.salesforcerc ] && . ~/.salesforcerc
 [ -f ~/.customrc ] && . ~/.customrc
+
 
 
 # In particular, this is useful for i3-sensible-terminal which will loop
@@ -22,6 +25,8 @@ export GPG_TTY=$(tty)
 #   *bash) [ -f ~/.fzf.bash ] && . ~/.fzf.bash;;
 # esac
 
+# Avoid null's being invisible on dark backgrounds.
+#
 # https://github.com/stedolan/jq/pull/1397
 #   - color for `null`
 #   - color for `false`
@@ -30,16 +35,12 @@ export GPG_TTY=$(tty)
 #   - color for strings
 #   - color for arrays
 #   - color for objects
-
-export JQ_COLORS='0;39:0;39:0;39:0;39:0;39:1;39:1;39'
-
-# if [ "$(uname -s)" = Darwin ]; then
-#   sudo launchctl limit maxfiles 65536 200000
-# fi
+export JQ_COLORS="0;37:0;39:0;39:0;39:0;32:1;39:1;39"
 
 export CGO_CPPFLAGS="$CGO_CPPFLAGS -Wno-unused-result"
 export GOTMPDIR=/tmp/go/
 [ -d $GOTMPDIR ] || mkdir -p $GOTMPDIR
+
 export MANWIDTH=100
 if command -v bat &>/dev/null; then
   # https://github.com/sharkdp/bat#man
@@ -73,10 +74,3 @@ export EDITOR=nvim
 # EDITOR_THEME=LIGHT
 
 export BAT_THEME="ansi"
-
-# if [ "$(uname -s)" = Darwin ]; then
-#   defaults write -g InitialKeyRepeat -int 10 # normal minimum is 15 (225 ms)
-#   defaults write -g KeyRepeat -int 1 # normal minimum is 2 (30 ms)
-# fi
-
-export JQ_COLORS="0;37:0;39:0;39:0;39:0;32:1;39:1;39"
