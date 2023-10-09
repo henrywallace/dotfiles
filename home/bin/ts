@@ -1,0 +1,8 @@
+#!/bin/bash
+
+if [ "$#" -eq 0 ]; then
+	tailscale status
+	exit
+fi
+
+tailscale "$@"
