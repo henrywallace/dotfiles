@@ -1,0 +1,38 @@
+#!/bin/bash
+
+# Check if a URL is provided
+if [ -z "$1" ]; then
+  echo "Usage: $0 <URL>"
+  exit 1
+fi
+
+# Check if Node.js is installed
+if ! command -v node &>/dev/null; then
+  echo "Node.js is not installed. Please install it first."
+  exit 1
+fi
+
+# Generate a random temporary file name
+TEMP_FILE=$(mktemp)
+
+# Download the web page using wget
+wget -O "$TEMP_FILE" "$1"
+
+# Run the Readability.js script to extract readable content
+node -e "
+  const fs = require('fs');
+  const JSDOM = require('jsdom').JSDOM;
+  const Readability = require('./Readability.js').Readability;
+
+  const fileContent = fs.readFileSync('$TEMP_FILE', 'utf8');
+  const doc = new JSDOM(fileContent, {
+    url: '$1'
+  });
+  const reader = new Readability(doc.window.document);
+  const article = reader.parse();
+
+  console.log(article.textContent);
+"
+
+# Remove the temporary file
+rm "$TEMP_FILE"
