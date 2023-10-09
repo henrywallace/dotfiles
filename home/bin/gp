@@ -1,0 +1,87 @@
+#!/bin/bash
+
+set -euo pipefail
+
+export OPENAI_API_HOST='https://openrouter.ai/api'
+export OPENAI_API_KEY=$(op read op://Personal/OpenAI/openrouter-api-key)
+export DEFAULT_TEMPERATURE=0.42
+export HEADER_HTTP_REFERER=https://henrywallace.io
+
+# Define the path of the file that will store the chat number
+CHAT_NUMBER_FILE="$HOME/chat_number.txt"
+
+# Check if the file exists. If it doesn't, create it and write the number 1 to it
+if [ ! -f "$CHAT_NUMBER_FILE" ]; then
+    echo 1 > "$CHAT_NUMBER_FILE"
+fi
+
+# # Check if the --new flag was passed to the script
+# for arg in "$@"; do
+#     if [ "$arg" == "--new" ]; then
+#         # If the --new flag was passed, reset the number in the file to 1
+#         echo 1 > "$CHAT_NUMBER_FILE"
+#         # Remove the --new flag from the script arguments
+#         set -- "${@/$arg}"
+#         break
+#     fi
+# done
+
+# Read the number from the file
+CHAT_NUMBER=$(cat "$CHAT_NUMBER_FILE")
+
+# Pass the number to the sgpt --chat flag
+export CHAT_FLAG="--chat=$CHAT_NUMBER"
+
+# Print out the chosen chat name
+# echo "Using chat: $CHAT_NUMBER from $CHAT_NUMBER_FILE"
+
+# Obtain the number of tokens in the input
+TOKEN_COUNT=$(echo "$@" | toks --model=openai/gpt-4)
+echo "Token count: $TOKEN_COUNT"
+
+# Define a function to select the most appropriate model based on token count and cost
+select_model() {
+    local token_count=$1
+    # Model, Context Limit, Cost (Prompt + Completion)
+    local models=( \
+        "openai/gpt-3.5-turbo 4095 0.0035" \
+        "openai/gpt-3.5-turbo-16k 16383 0.007" \
+        "openai/gpt-4 8191 0.09" \
+        "openai/gpt-4-32k 32767 0.18" \
+        "anthropic/claude-2 100000 0.0437" \
+        "anthropic/claude-instant-v1 100000 0.00714" \
+        "google/palm-2-chat-bison 8000 0.004" \
+        "meta-llama/llama-2-13b-chat 4096 0.0002" \
+        "meta-llama/llama-2-70b-chat 4096 0.0015" \
+        "nousresearch/nous-hermes-llama2-13b 4096 0.0002" \
+    )
+
+    local max_cost=0
+    local best_model=""
+
+    for model_data in "${models[@]}"; do
+        local model=$(echo "$model_data" | awk '{print $1}')
+        local limit=$(echo "$model_data" | awk '{print $2}')
+        local cost=$(echo "$model_data" | awk '{print $3}')
+
+        # Check if model can handle the input and is more expensive than the current best
+        if [ "$token_count" -le "$limit" ] && awk "BEGIN {exit !($cost > $max_cost)}"; then
+            max_cost=$cost
+            best_model=$model
+        fi
+    done
+
+    echo "$best_model"
+}
+
+# Get the best model
+BEST_MODEL=$(select_model "$TOKEN_COUNT")
+BEST_MODEL=openai/gpt-4
+# BEST_MODEL=openai/gpt-4-32k
+# BEST_MODEL=anthropic/claude-2
+export DEFAULT_MODEL=$BEST_MODEL
+# export DEFAULT_MODEL="openai/gpt-3.5-turbo-instruct"
+echo "Using model: $BEST_MODEL"
+sgpt --no-cache "$@"
+# sgpt --no-cache "$@" | unbuffer par 100 | bat -pp -lmd
+# sgpt --no-cache "$@" | bat -pp -lmd
