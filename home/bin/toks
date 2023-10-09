@@ -1,0 +1,131 @@
+#!/usr/bin/env python3
+
+import argparse
+import sys
+from transformers import PreTrainedTokenizerFast, LlamaTokenizerFast
+import tiktoken
+from tabulate import tabulate
+import numpy as np
+from sklearn.preprocessing import StandardScaler, MinMaxScaler
+
+
+def tiktoken_count(text, model):
+    enc = tiktoken.encoding_for_model(model)
+    return len(enc.encode(text))
+
+
+def claude_count(text):
+    tokenizer_path = "/Users/henry/Downloads/claude-v1-tokenization.json"
+    fast_tokenizer = PreTrainedTokenizerFast(tokenizer_file=tokenizer_path)
+    tokens = fast_tokenizer.tokenize(text)
+    return len(tokens)
+
+
+def llama_count(text):
+    tokenizer = LlamaTokenizerFast.from_pretrained(
+        "hf-internal-testing/llama-tokenizer"
+    )
+    tokens = tokenizer.encode(text)
+    return len(tokens)
+
+
+def main():
+    parser = argparse.ArgumentParser(
+        description="Token counter CLI for different models."
+    )
+    parser.add_argument(
+        "--file",
+        type=str,
+        help="Input file containing the text. If not provided, stdin will be used.",
+    )
+    parser.add_argument(
+        "--model",
+        type=str,
+        default="openai/gpt-4",
+        help="model name, e.g. openai/gpt-4-32k",
+    )
+    parser.add_argument(
+        "--list",
+        action="store_true",
+        help="List available models.",
+    )
+    args = parser.parse_args()
+
+    if args.list:
+        models_data = [
+            ["openai/gpt-3.5-turbo", 4095, 0.0015, 0.002],
+            ["openai/gpt-3.5-turbo-16k", 16383, 0.003, 0.004],
+            ["openai/gpt-4", 8191, 0.03, 0.06],
+            ["openai/gpt-4-32k", 32767, 0.06, 0.12],
+            ["anthropic/claude-2", 100000, 0.01102, 0.03268],
+            ["anthropic/claude-instant-v1", 100000, 0.00163, 0.00551],
+            ["google/palm-2-chat-bison", 8000, 0.002, 0.002],
+            ["meta-llama/llama-2-13b-chat", 4096, 0.0001, 0.0001],
+            ["meta-llama/llama-2-70b-chat", 4096, 0.00075, 0.00075],
+            ["nousresearch/nous-hermes-llama2-13b", 4096, 0.0001, 0.0001],
+        ]
+
+        def rff_score(rank, k):
+            return 1 / (k + rank + 1)
+
+        # Calculate RFF scores
+        k = 60
+        contexts = sorted(models_data, key=lambda x: x[1], reverse=True)
+        # We reverse the costs, as higher cost models are often better quality.
+        prompt_costs = sorted(models_data, key=lambda x: x[2], reverse=True)
+        completion_costs = sorted(models_data, key=lambda x: x[3], reverse=True)
+        scores = []
+        for model in models_data:
+            score = sum(
+                [
+                    rff_score(contexts.index(model), k),
+                    rff_score(prompt_costs.index(model), k),
+                    rff_score(completion_costs.index(model), k),
+                ]
+            )
+            scores.append(score)
+        scores = StandardScaler().fit_transform(np.array(scores).reshape(-1, 1))
+        scores = MinMaxScaler((0, 100)).fit_transform(scores)
+        scores = scores.round()
+        ranked = []
+        for i, score in enumerate(scores.reshape(-1)):
+            ranked.append([score] + models_data[i])
+        ranked.sort(reverse=True)
+        headers = ["Score", "Model", "Context", "Prompt Cost/1k", "Completion Cost/1k"]
+        table = tabulate(ranked, headers)
+        print(table)
+        sys.exit()
+
+    # Read the input
+    if args.file:
+        with open(args.file, "r") as f:
+            text = f.read()
+    else:
+        text = sys.stdin.read()
+
+    # Count tokens based on the chosen model
+    if (
+        "openai" in args.model
+        or "google" in args.model
+        or "meta" in args.model
+        or "nousresearch" in args.model
+    ):
+        count = tiktoken_count(text, args.model.split("/")[-1])
+    elif "claude" in args.model:
+        count = claude_count(text)
+    elif "llama" in args.model:
+        if not args.llama_path:
+            print(
+                "Error: Please provide the path to the LLaMA model using --llama-path."
+            )
+            sys.exit(1)
+        count = llama_count(text)
+    else:
+        print(f"Error: Unknown model {args.model}.")
+        sys.exit(1)
+
+    print(count)
+
+
+if __name__ == "__main__":
+    main()
