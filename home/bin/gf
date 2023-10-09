@@ -1,5 +1,19 @@
 #!/bin/bash
 
-commit=$(NO_STAT=yes lg | rg -v "fixup!" | sed '$d' | fzf --ansi --height 20 | awk '{print $2}')
+set -e
+
+if [ "$#" -ge 1 ]; then
+  git commit --fixup "$1"
+  exit 0
+fi
+
+k=2
+out=$(NO_STAT=yes lg 2>&1)
+if echo "$out" | grep 'refs/remotes/origin/HEAD is not a symbolic ref'; then
+  echo a
+  out=$(gl | tac)
+  k=1
+fi
+commit=$(echo "$out" | rg -v "fixup!" | sed '$d' | fzf --ansi --height 20 | awk "{print \$$k}")
 echo "git commit --fixup $commit"
 git commit --fixup "$commit"
