@@ -8,5 +8,6 @@ if [ -n "$1" ]; then
   fi
   shift
 fi
+go mod tidy
 go install -v "$@" "$root"/...
 go mod tidy
