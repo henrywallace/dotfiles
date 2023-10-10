@@ -1,0 +1,121 @@
+#!/usr/bin/env python3
+
+import sys
+import uuid
+import argparse
+import subprocess
+
+
+def protect_code_blocks_final(content):
+    """Replace code blocks with unique placeholders."""
+    code_blocks = {}
+    modified_lines = []
+    inside_code_block = False
+    current_block = []
+    for line in content.split("\n"):
+        if line.strip().startswith("```"):
+            if inside_code_block:
+                placeholder = f"CODEBLOCK_{uuid.uuid4().hex.upper()}"
+                code_blocks[placeholder] = "\n".join(current_block)
+                modified_lines.append(placeholder)
+                current_block = []
+            else:
+                inside_code_block = True
+        elif inside_code_block and not line.strip().startswith("```"):
+            current_block.append(line)
+        else:
+            inside_code_block = False
+            modified_lines.append(line)
+    return "\n".join(modified_lines), code_blocks
+
+
+def simulate_par_effect_refined(content, col_width=50):
+    """Simulate the 'par' effect while avoiding reflowing inline code snippets."""
+    lines = content.split("\n")
+    reflowed_lines = []
+    current_line = ""
+    inside_inline_code = False
+    for line in lines:
+        if (
+            line.startswith("#")
+            or line.startswith("```")
+            or line.startswith("- ")
+            or line.startswith("CODEBLOCK_")
+        ):
+            if current_line:
+                reflowed_lines.append(current_line)
+                current_line = ""
+            reflowed_lines.append(line)
+        else:
+            words = line.split()
+            for word in words:
+                if "`" in word:
+                    inside_inline_code = not inside_inline_code
+                if len(current_line) + len(word) + 1 <= col_width or inside_inline_code:
+                    current_line += word + " "
+                else:
+                    reflowed_lines.append(current_line.strip())
+                    current_line = word + " "
+    if current_line:
+        reflowed_lines.append(current_line.strip())
+    return "\n".join(reflowed_lines)
+
+
+def restore_code_blocks_refined(content, code_blocks):
+    """Restore the original code blocks in the content."""
+    for placeholder, block in code_blocks.items():
+        content = content.replace(placeholder, "```\n" + block + "\n```")
+    return content
+
+
+def run_par(content, col_width, par_args):
+    """Run content through 'par' using subprocess."""
+    try:
+        cmd = ["par", f"-w{col_width}"] + par_args
+        result = subprocess.run(
+            cmd, input=content, text=True, capture_output=True, check=True
+        )
+        return result.stdout
+    except FileNotFoundError:
+        return subprocess.run(
+            ["echo", content], text=True, capture_output=True, check=True
+        ).stdout
+
+
+def process_markdown_content(content, col_width=80):
+    """Process the markdown content to reflow text while preserving code blocks."""
+    protected_content, code_blocks = protect_code_blocks_final(content)
+    reflowed_protected_content = simulate_par_effect_refined(
+        protected_content, col_width=col_width
+    )
+    final_content = restore_code_blocks_refined(reflowed_protected_content, code_blocks)
+    return final_content
+
+
+def main():
+    parser = argparse.ArgumentParser(
+        description="Process markdown content to reflow text while preserving code blocks.",
+        formatter_class=argparse.ArgumentDefaultsHelpFormatter,
+    )
+    parser.add_argument(
+        "--col-width", type=int, default=80, help="Column width for reflowing text."
+    )
+    parser.add_argument(
+        "--par-mode", action="store_true", help="Use 'par' for text reflowing."
+    )
+    parser.add_argument(
+        "par-args",
+        nargs="*",
+        help="Arguments to pass to 'par' if --par-mode is enabled.",
+    )
+    args = parser.parse_args()
+    content = sys.stdin.read()
+    if args.par_mode:
+        processed_content = run_par(content, args.col_width, args.par_args)
+    else:
+        processed_content = process_markdown_content(content, args.col_width)
+    print(processed_content)
+
+
+if __name__ == "__main__":
+    main()
