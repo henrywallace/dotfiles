@@ -17,12 +17,20 @@ up \
 	gopls \
 	pyright \
 	rust-analyzer \
-	sqls
+	prettier
 
-yarn global upgrade \
+npm update -g \
 	diagnostic-languageserver \
 	vscode-langservers-extracted \
-	yaml-language-server
+	yaml-language-server \
+	sql-language-server \
+	typescript typescript-language-server
 
 go install github.com/nametake/golangci-lint-langserver@latest
 go install github.com/golangci/golangci-lint/cmd/golangci-lint@latest
+go install github.com/google/yamlfmt/cmd/yamlfmt@latest
+go install golang.org/x/tools/cmd/goimports@latest
+go install github.com/mgechev/revive@latest
+go install github.com/rogpeppe/gohack@latest
+go install golang.org/x/pkgsite/cmd/pkgsite@latest
+go install github.com/rhysd/actionlint/cmd/actionlint@latest
