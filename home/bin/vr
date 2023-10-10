@@ -1,3 +1,47 @@
 #!/bin/bash
 
-nvim +"normal '0"
+set -e
+
+: "${DRY_RUN:=false}"
+
+# Define a blacklist of file regex patterns to skip
+declare -a BLACKLIST=(
+    '\.git/'
+    'NvimTree'
+    '\[packer\]'
+)
+
+# Filter the old files to remove blacklisted paths using space as a delimiter
+OLD_FILES=$(nvim --headless -c "echo join(v:oldfiles, ' ')" -c 'qa!' 2>&1 \
+  | rg -v 'gp.nvim config.openai_api_key is not set, run :checkhealth gp' )
+
+# Loop through each filename in OLD_FILES
+FILE_TO_OPEN=""
+echo "found $(wc -w <<< "$OLD_FILES") oldfiles"
+for file in $OLD_FILES; do
+    #echo "Checking $file"
+    skip=false
+    for pattern in "${BLACKLIST[@]}"; do
+        # Check if the line matches the blacklist pattern
+        if echo "$file" | rg -q "$pattern"; then
+            skip=true
+            echo "skipping $file, matched $pattern"
+            break
+        fi
+    done
+
+    # If the line doesn't match any of the blacklist patterns, use it
+    if [ "$skip" = false ]; then
+        FILE_TO_OPEN="$file"
+        break
+    fi
+done
+
+if [ -z "$FILE_TO_OPEN" ]; then
+    echo "No files to open"
+    nvim "$@"
+    exit "$?"
+fi
+echo "opening file $FILE_TO_OPEN"
+nvim "$@" "$FILE_TO_OPEN"
+exit "$?"
