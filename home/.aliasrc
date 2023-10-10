@@ -19,9 +19,7 @@ alias j='jobs -l'
 # elif [ "$(uname -s)" = Darwin ]; then
 #   alias ls='ls -FGH'
 # fi
-alias ls='exa'
-alias l='ls'
-alias ll='exa -l --sort modified --git'
+alias ls='l'
 
 if [ "$(uname -s)" = Darwin ]; then
   alias make='gmake'
@@ -62,7 +60,7 @@ alias sudo='sudo '
 
 # Time, status, and weather.
 alias utc='TZ=":UTC" date'
-alias ts='date +%s'
+# alias ts='date +%s'
 when() {
   echo """
 ${BOLD}Los Angeles$NC %% $(TZ=America/Los_Angeles date +"%H:%M %z")
