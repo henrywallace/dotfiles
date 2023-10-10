@@ -1,5 +1,7 @@
 #!/usr/bin/env bash
 
+set -e
+
 HEAD='HEAD'
 if [ -n "$1" ]; then
   HEAD="$1"
