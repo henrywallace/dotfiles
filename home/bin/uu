@@ -5,4 +5,10 @@ brew upgrade
 
 update-lsp
 
-nvim +PackerSync
+python3 -m pip install --upgrade pip
+if [ -f ~/src/requirements.txt ]; then
+  python3 -m pip install --upgrade -r ~/src/requirements.txt
+fi
+
+# https://github.com/folke/lazy.nvim#-usage
+nvim --headless "+Lazy! sync" +qa
