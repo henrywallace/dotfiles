@@ -1,9 +1,10 @@
 local actions = require('telescope.actions')
 
-path_display = function(opts, path)
-  -- local tail = require("telescope.utils").path_tail(path)
-  -- return string.format("%s (%s)", tail, path)
-  -- print(vim.inspect(path))
+local path_display = function(opts, path)
+  -- Returns a modified version of the given path using the fnamemodify function from Vim.
+  -- The ":~" modifier is used to shorten the path by replacing the home directory with a tilde (~).
+  -- This is often done to make long paths more readable and concise.
+  -- For more information, refer to the Vim documentation: https://neovim.io/doc/user/eval.html#fnamemodify()
   return vim.fn.fnamemodify(path, ":~")
 end
 
@@ -35,18 +36,40 @@ require('telescope').load_extension('fzf')
 
 -- vim.api.nvim_set_keymap(
 --   'n',
---   '<c-r>',
+--   '<l-r>',
 --   ":lua require('telescope').extensions.frecency.frecency(require('telescope.themes').get_ivy{previewer=false})<cr>",
 --   {noremap = true, silent = true}
 -- )
-vim.api.nvim_set_keymap(
-  'n',
-  '<c-r>',
-  ":lua require('telescope.builtin').oldfiles(require('telescope.themes').get_ivy{previewer=false})<cr>",
-  {noremap = true, silent = true}
-)
 
-search_dirs = function()
+-- vim.api.nvim_set_keymap(
+--   'n',
+--   '<c-b>',
+--   ":lua require('telescope.builtin').buffers(require('telescope.themes').get_ivy{previewer=false})<cr>",
+--   {noremap = true, silent = true}
+-- )
+
+local builtin = require('telescope.builtin')
+local themes = require('telescope.themes')
+local ivy_theme = themes.get_ivy({
+  previewer=false,
+  layout_config = {
+    height = 10,
+  },
+})
+
+vim.keymap.set({'n', 'i', 'v'}, '<c-b>', function()
+  builtin.buffers(ivy_theme)
+end)
+
+vim.keymap.set({'n', 'v', 'i'}, '<c-r>', function()
+  builtin.oldfiles(ivy_theme)
+end)
+
+-- vim.keymap.set({'n', 'v', 'i'}, '<c-f>', function()
+--   builtin.current_buffer_fuzzy_find(ivy_theme)
+-- end)
+
+local search_dirs = function()
   local Job = require'plenary.job'
   local job = Job:new({
     command = 'git',
@@ -62,8 +85,6 @@ search_dirs = function()
   }
 end
 
--- search_dirs()
-
 vim.api.nvim_set_keymap(
   'n',
   '<c-p>',
@@ -76,9 +97,10 @@ vim.cmd([[
   nnoremap <c-x> :lua require('telescope.builtin').commands(require('telescope.themes').get_ivy())<cr>
   nnoremap <c-g> :lua require('telescope.builtin').live_grep(require('telescope.themes').get_ivy())<cr>
   nnoremap <c-s> :Telescope lsp_document_symbols<cr>
+  nnoremap <c-d> :lua require'telescope.builtin'.grep_string{shorten_path = true, word_match = "-w", only_sort_text = true, search = ''}<cr>
   " nnoremap <c-d> :lua require('telescope.builtin').live_grep{ search_dirs = {vim.fn.expand('%:p:h')} }<cr>
+  " nnoremap <c-f> :Telescope current_buffer_fuzzy_find<cr>
 ]])
--- nnoremap <c-f> :Telescope current_buffer_fuzzy_find<cr>
 
 local pickers = require('telescope.pickers')
 local finders = require('telescope.finders')

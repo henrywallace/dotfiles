@@ -2,7 +2,8 @@ require('lualine').setup {
   options = {
     component_separators = '',
     section_separators = { left = '', right = '' },
-    theme = 'tokyonight',
+    -- theme = 'tokyonight',
+    theme = 'neon',
   },
   extensions = {
     'nvim-tree',
@@ -22,7 +23,12 @@ require('lualine').setup {
     lualine_c = {
       {'filename', path = 1},
     },
-    lualine_x = {'encoding', 'fileformat', 'filetype'},
+    lualine_x = {
+      -- require('codegpt').get_status,
+      'encoding',
+      'fileformat',
+      'filetype',
+    },
     lualine_y = {'progress'},
     lualine_z = {'location'}
   },
