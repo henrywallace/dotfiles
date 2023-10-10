@@ -7,4 +7,4 @@ if [ -n "$1" ]; then
   i="$1"
 fi
 printf "Stash index: %d\n" "$i"
-git stash show -p "stash@{$i}"
+git stash show --stat -p "stash@{$i}"
