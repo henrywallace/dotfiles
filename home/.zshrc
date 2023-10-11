@@ -14,7 +14,13 @@ if command -v kubectl &>/dev/null; then
   . <(kubectl completion zsh)
 fi
 
+[ -f $HOME/.cargo/env ] && . $HOME/.cargo/env
+
 fpath=( "$HOME/.zfunctions" $fpath )
+
+if [ -f /opt/homebrew/bin/brew ]; then
+  eval "$(/opt/homebrew/bin/brew shellenv)"
+fi
 
 # Tab complete dir colors.
 # https://github.com/robbyrussell/oh-my-zsh/issues/1563#issuecomment-26591369.
@@ -23,9 +29,7 @@ zstyle ':completion:*' list-colors "${(@s.:.)LS_COLORS}"
 # Allow completing inside of words.
 setopt completeinword
 
-eval "$(/opt/homebrew/bin/brew shellenv)"
-
-# Bash-style delete backword
+# Bash-style delete word backwards.
 autoload -Uz select-word-style
 select-word-style whitespace
 
