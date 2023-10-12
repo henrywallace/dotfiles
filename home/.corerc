@@ -8,7 +8,11 @@ eval $(/opt/homebrew/bin/brew shellenv)
 [ -f ~/.salesforcerc ] && . ~/.salesforcerc
 [ -f ~/.customrc ] && . ~/.customrc
 
+export PATH=$HOME/bin:$PATH
 
+# export OPENAI_API_HOST=https://api.openai.com/v1
+# export OPENAI_API_HOST="api.openai.com"
+# export OPENAI_API_HOST='https://openrouter.ai/api'
 
 # In particular, this is useful for i3-sensible-terminal which will loop
 # through various terminals, checking this env first. i3 will use the
